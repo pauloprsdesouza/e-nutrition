@@ -1,0 +1,30 @@
+{
+  "version": "0.2.0",
+  "configurations": [
+    {
+      "name": "NutrInfo.Admin.Api",
+      "type": "coreclr",
+      "request": "launch",
+      "preLaunchTask": "build",
+      "program": "${workspaceFolder}/NutrInfo/src/NutrInfo.Admin.Api/bin/Debug/netcoreapp3.1/NutrInfo.Admin.Api.dll",
+      "args": [
+        "--urls",
+        "http://localhost:5000"
+      ],
+      "cwd": "${workspaceFolder}/NutrInfo/src/NutrInfo.Admin.Api",
+      "stopAtEntry": false,
+      "serverReadyAction": {
+        "action": "openExternally",
+        "pattern": "\\bNow listening on:\\s+(https?://\\S+)",
+        "uriFormat": "%s/swagger/index.html"
+      },
+      "env": {
+        "ASPNETCORE_ENVIRONMENT": "Development",
+        "ASPNETCORE_JWT__Secret": "87c10446-aa6a-4df3-8615-d4302cd205fb",
+      },
+      "sourceFileMap": {
+        "/Views": "${workspaceFolder}/Views"
+      }
+    }
+  ]
+}

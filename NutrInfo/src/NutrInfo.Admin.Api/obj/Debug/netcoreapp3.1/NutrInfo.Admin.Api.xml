@@ -1,0 +1,53 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>NutrInfo.Admin.Api</name>
+    </assembly>
+    <members>
+        <member name="M:NutrInfo.Admin.Api.Controllers.NutritionistsController.List(NutrInfo.Admin.Api.Models.Nutritionists.GetNutritionistsQuery)">
+            <summary>
+            List all registered nutritionists
+            </summary>
+            <param name="queryString"></param>
+            <returns></returns>
+        </member>
+        <member name="M:NutrInfo.Admin.Api.Controllers.NutritionistsController.Find(System.Int32)">
+            <summary>
+            Find a registered nutritionist
+            </summary>
+            <param name="crn"></param>
+            <returns></returns>
+        </member>
+        <member name="M:NutrInfo.Admin.Api.Controllers.NutritionistsController.Create(NutrInfo.Admin.Api.Models.Nutritionists.PostNutritionistRequest)">
+            <summary>
+            Create a new Nutritionist
+            </summary>
+            <param name="nutritionistRequest"></param>
+        </member>
+        <member name="M:NutrInfo.Admin.Api.Controllers.NutritionistsController.Update(System.Int32,NutrInfo.Admin.Api.Models.Nutritionists.PutNutritionistRequest)">
+            <summary>
+            Update a registered nutritionist
+            </summary>
+            <param name="crn"></param>
+            <param name="nutritionistRequest"></param>
+            <returns></returns>
+        </member>
+        <member name="M:NutrInfo.Admin.Api.Controllers.NutritionistsController.Delete(System.Int32)">
+            <summary>
+            Delete a registered nutritionist
+            </summary>
+            <param name="crn"></param>
+            <returns></returns>
+        </member>
+        <member name="P:NutrInfo.Admin.Api.Models.Nutritionists.GetNutritionistsQuery.Name">
+            <summary>
+            Name
+            </summary>
+        </member>
+        <member name="P:NutrInfo.Admin.Api.Models.Nutritionists.GetNutritionistsQuery.Crn">
+            <summary>
+            Crn
+            </summary>
+        </member>
+    </members>
+</doc>

@@ -1,0 +1,10 @@
+POST https://cnn.cfn.org.br/application/front-resource/get
+Content-Type: application/json
+
+{
+  "comando": "get-nutricionista",
+  "options": {
+    "nome": "Rafaella Cristina",
+    "geral": true
+  }
+}
