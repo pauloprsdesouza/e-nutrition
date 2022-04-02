@@ -37,6 +37,7 @@ namespace NutrInfo.Admin.Api.Controllers
             var nutritionists = await _dbContext.Nutritionists
                                                 .ContainsName(queryString.Name)
                                                 .WithCRN(queryString.Crn)
+                                                .IncludeUser()
                                                 .ToListAsync();
 
             return Ok(new GetNutritionistResponse()

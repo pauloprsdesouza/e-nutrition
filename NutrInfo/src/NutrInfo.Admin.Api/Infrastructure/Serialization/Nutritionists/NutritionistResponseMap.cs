@@ -10,11 +10,11 @@ namespace NutrInfo.Admin.Api.Infrastructure.Serialization.Nutritionists
             return new NutritionistResponse()
             {
                 Crn = nutritionist.Crn,
-                Name = nutritionist.Name,
-                Email = nutritionist.Email,
-                Status = nutritionist.Status,
-                CreatedAt = nutritionist.CreatedAt,
-                UpdatedAt = nutritionist.UpdatedAt
+                Name = nutritionist.User.Name,
+                Email = nutritionist.User.Email,
+                Status = nutritionist.User.Status,
+                CreatedAt = nutritionist.User.CreatedAt,
+                UpdatedAt = nutritionist.User.UpdatedAt
             };
         }
     }

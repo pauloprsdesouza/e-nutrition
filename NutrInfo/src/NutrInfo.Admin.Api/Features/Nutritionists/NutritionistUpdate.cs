@@ -18,7 +18,7 @@ namespace NutrInfo.Admin.Api.Features.Nutritionists
 
         public async Task Update(Nutritionist nutritionist)
         {
-            nutritionist.UpdatedAt = DateTimeOffset.UtcNow;
+            nutritionist.User.UpdatedAt = DateTimeOffset.UtcNow;
             nutritionist.Password = BCrypt.Net.BCrypt.HashPassword(nutritionist.Password);
 
             _dbContext.Nutritionists.Update(nutritionist);

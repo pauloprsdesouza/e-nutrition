@@ -1,6 +1,9 @@
 using Microsoft.EntityFrameworkCore;
+using NutrInfo.Admin.Api.Infrastructure.Database.DataModel.Addresses;
+using NutrInfo.Admin.Api.Infrastructure.Database.DataModel.Evaluations;
 using NutrInfo.Admin.Api.Infrastructure.Database.DataModel.Nutritionists;
 using NutrInfo.Admin.Api.Infrastructure.Database.DataModel.Patients;
+using NutrInfo.Admin.Api.Infrastructure.Database.DataModel.Users;
 
 namespace NutrInfo.Admin.Api.Infrastructure.Database.DataModel
 {
@@ -12,6 +15,9 @@ namespace NutrInfo.Admin.Api.Infrastructure.Database.DataModel
 
         public DbSet<Nutritionist> Nutritionists { get; set; }
         public DbSet<Patient> Patients { get; set; }
+        public DbSet<User> Users { get; set; }
+        public DbSet<Address> Addresses { get; set; }
+        public DbSet<Evaluation> Evaluations { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -19,6 +25,9 @@ namespace NutrInfo.Admin.Api.Infrastructure.Database.DataModel
 
             modelBuilder.Entity<Nutritionist>().Configure();
             modelBuilder.Entity<Patient>().Configure();
+            modelBuilder.Entity<User>().Configure();
+            modelBuilder.Entity<Address>().Configure();
+            modelBuilder.Entity<Evaluation>().Configure();
         }
     }
 }

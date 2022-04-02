@@ -20,6 +20,7 @@ namespace NutrInfo.Admin.Api.Features.Nutritionists
         {
             var nutritionist = await _dbContext.Nutritionists
                                                .WhereCrn(crn)
+                                               .IncludeUser()
                                                .SingleOrDefaultAsync();
 
             NutritionistNotFound = nutritionist == null;

@@ -1,11 +1,11 @@
 using System.ComponentModel.DataAnnotations;
 using NutrInfo.Admin.Api.Infrastructure.Database.DataModel.Addresses;
-using NutrInfo.Admin.Api.Infrastructure.Database.DataModel.Nutritionists;
+using NutrInfo.Admin.Api.Infrastructure.Database.DataModel.Patients;
 using NutrInfo.Admin.Api.Infrastructure.Database.DataModel.Users;
 
-namespace NutrInfo.Admin.Api.Models.Nutritionists
+namespace NutrInfo.Admin.Api.Models.Patients
 {
-    public class PostNutritionistRequest
+    public class PostPatientRequest
     {
         [Required]
         [MaxLength(100)]
@@ -17,16 +17,6 @@ namespace NutrInfo.Admin.Api.Models.Nutritionists
 
         [Required]
         public string Cpf { get; set; }
-
-        [Required]
-        public string Password { get; set; }
-
-        [Required]
-        [Compare("Password")]
-        public string ConfirmPassword { get; set; }
-
-        [Required]
-        public int Crn { get; set; }
 
         [Required]
         public string Street { get; set; }
@@ -46,7 +36,7 @@ namespace NutrInfo.Admin.Api.Models.Nutritionists
         [Required]
         public int Number { get; set; }
 
-        public Nutritionist ToNutritionist()
+        public Patient ToPatient()
         {
             Address address = new Address()
             {
@@ -67,11 +57,9 @@ namespace NutrInfo.Admin.Api.Models.Nutritionists
                 Address = address
             };
 
-            return new Nutritionist()
+            return new Patient()
             {
-                Crn = Crn,
                 User = user,
-                Password = Password
             };
         }
     }

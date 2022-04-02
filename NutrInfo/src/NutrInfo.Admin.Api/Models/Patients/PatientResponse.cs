@@ -1,12 +1,11 @@
-
 using System;
 using NutrInfo.Admin.Api.Infrastructure.Database.DataModel.Users;
 
-namespace NutrInfo.Admin.Api.Models.Nutritionists
+namespace NutrInfo.Admin.Api.Models.Patients
 {
-    public class NutritionistResponse
+    public class PatientResponse
     {
-        public int Crn { get; set; }
+        public int Cpf { get; set; }
         public string Name { get; set; }
         public string Email { get; set; }
         public UserStatusEnum Status { get; set; }

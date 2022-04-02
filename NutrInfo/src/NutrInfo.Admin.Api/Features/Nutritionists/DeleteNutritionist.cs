@@ -1,6 +1,7 @@
 using System.Threading.Tasks;
 using NutrInfo.Admin.Api.Infrastructure.Database.DataModel;
 using NutrInfo.Admin.Api.Infrastructure.Database.DataModel.Nutritionists;
+using NutrInfo.Admin.Api.Infrastructure.Database.DataModel.Users;
 
 namespace NutrInfo.Admin.Api.Features.Nutritionists
 {
@@ -15,7 +16,7 @@ namespace NutrInfo.Admin.Api.Features.Nutritionists
 
         public async Task Delete(Nutritionist nutritionist)
         {
-            nutritionist.Status = NutritionistStatusEnum.Archived;
+            nutritionist.User.Status = UserStatusEnum.Archived;
 
             _dbContext.Nutritionists.Update(nutritionist);
             await _dbContext.SaveChangesAsync();

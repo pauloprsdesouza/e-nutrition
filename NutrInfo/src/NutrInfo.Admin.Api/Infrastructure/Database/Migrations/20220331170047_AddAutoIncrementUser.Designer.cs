@@ -2,6 +2,7 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 using NutrInfo.Admin.Api.Infrastructure.Database.DataModel;
@@ -9,9 +10,10 @@ using NutrInfo.Admin.Api.Infrastructure.Database.DataModel;
 namespace NutrInfo.Admin.Api.Migrations
 {
     [DbContext(typeof(ApiDbContext))]
-    partial class ApiDbContextModelSnapshot : ModelSnapshot
+    [Migration("20220331170047_AddAutoIncrementUser")]
+    partial class AddAutoIncrementUser
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -60,70 +62,6 @@ namespace NutrInfo.Admin.Api.Migrations
                     b.ToTable("address");
                 });
 
-            modelBuilder.Entity("NutrInfo.Admin.Api.Infrastructure.Database.DataModel.Evaluations.Evaluation", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("integer")
-                        .HasAnnotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn);
-
-                    b.Property<int>("BedNumber")
-                        .HasColumnType("integer");
-
-                    b.Property<DateTimeOffset>("CreatedAt")
-                        .HasColumnType("timestamp with time zone");
-
-                    b.Property<int>("DiseaseSeverity")
-                        .HasColumnType("integer");
-
-                    b.Property<float>("Energy")
-                        .HasColumnType("real");
-
-                    b.Property<bool>("HasAmputatedLimb")
-                        .HasColumnType("boolean");
-
-                    b.Property<bool>("HasAscites")
-                        .HasColumnType("boolean");
-
-                    b.Property<bool>("HasEdema")
-                        .HasColumnType("boolean");
-
-                    b.Property<float>("Height")
-                        .HasColumnType("real");
-
-                    b.Property<float>("Imc")
-                        .HasColumnType("real");
-
-                    b.Property<bool>("IsWalking")
-                        .HasColumnType("boolean");
-
-                    b.Property<int>("NutritionState")
-                        .HasColumnType("integer");
-
-                    b.Property<int>("NutritionistId")
-                        .HasColumnType("integer");
-
-                    b.Property<int>("PatientId")
-                        .HasColumnType("integer");
-
-                    b.Property<float>("Protein")
-                        .HasColumnType("real");
-
-                    b.Property<DateTimeOffset>("UpdatedAt")
-                        .HasColumnType("timestamp with time zone");
-
-                    b.Property<float>("Weight")
-                        .HasColumnType("real");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("NutritionistId");
-
-                    b.HasIndex("PatientId");
-
-                    b.ToTable("evaluation");
-                });
-
             modelBuilder.Entity("NutrInfo.Admin.Api.Infrastructure.Database.DataModel.Nutritionists.Nutritionist", b =>
                 {
                     b.Property<int>("UserId")
@@ -163,9 +101,6 @@ namespace NutrInfo.Admin.Api.Migrations
                         .HasColumnType("integer")
                         .HasAnnotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn);
 
-                    b.Property<DateTime>("BirhDate")
-                        .HasColumnType("timestamp without time zone");
-
                     b.Property<string>("Cpf")
                         .IsRequired()
                         .HasColumnType("text");
@@ -177,9 +112,6 @@ namespace NutrInfo.Admin.Api.Migrations
                         .IsRequired()
                         .HasColumnType("character varying(200)")
                         .HasMaxLength(200);
-
-                    b.Property<int>("Gender")
-                        .HasColumnType("integer");
 
                     b.Property<string>("Name")
                         .IsRequired()
@@ -205,21 +137,6 @@ namespace NutrInfo.Admin.Api.Migrations
                     b.HasOne("NutrInfo.Admin.Api.Infrastructure.Database.DataModel.Users.User", "User")
                         .WithOne("Address")
                         .HasForeignKey("NutrInfo.Admin.Api.Infrastructure.Database.DataModel.Addresses.Address", "UserId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-                });
-
-            modelBuilder.Entity("NutrInfo.Admin.Api.Infrastructure.Database.DataModel.Evaluations.Evaluation", b =>
-                {
-                    b.HasOne("NutrInfo.Admin.Api.Infrastructure.Database.DataModel.Nutritionists.Nutritionist", "Nutritionist")
-                        .WithMany("Evaluations")
-                        .HasForeignKey("NutritionistId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("NutrInfo.Admin.Api.Infrastructure.Database.DataModel.Patients.Patient", "Patient")
-                        .WithMany("Evaluations")
-                        .HasForeignKey("PatientId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
                 });

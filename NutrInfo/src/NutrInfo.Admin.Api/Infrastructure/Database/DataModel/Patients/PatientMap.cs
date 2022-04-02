@@ -13,19 +13,14 @@ namespace NutrInfo.Admin.Api.Infrastructure.Database.DataModel.Patients
         {
             patient.ToTable("patient");
 
-            patient.HasKey(p => p.Id);
+            patient.HasKey(p => p.UserId);
 
-            patient.Property(p => p.Id)
-                        .ValueGeneratedOnAdd();
+            patient.Property(p => p.UserId)
+                   .ValueGeneratedOnAdd();
 
-            patient.Property(p => p.Name)
-                        .HasMaxLength(100)
-                        .IsRequired();
-
-            patient.Property(p => p.CreatedAt)
-                        .IsRequired();
-
-            patient.Property(p => p.UpdatedAt);
+            patient.HasMany(p => p.Evaluations)
+                   .WithOne(p => p.Patient)
+                   .HasForeignKey(p => p.PatientId);
         }
     }
 }

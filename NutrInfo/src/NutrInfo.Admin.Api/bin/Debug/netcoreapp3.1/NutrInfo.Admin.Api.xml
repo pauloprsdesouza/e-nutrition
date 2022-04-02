@@ -39,6 +39,41 @@
             <param name="crn"></param>
             <returns></returns>
         </member>
+        <member name="M:NutrInfo.Admin.Api.Controllers.PatientsController.List(NutrInfo.Admin.Api.Models.Patients.GetPatientsQuery)">
+            <summary>
+            List all registered patients
+            </summary>
+            <param name="queryString"></param>
+            <returns></returns>
+        </member>
+        <member name="M:NutrInfo.Admin.Api.Controllers.PatientsController.Find(System.String)">
+            <summary>
+            Find a registered patient
+            </summary>
+            <param name="cpf"></param>
+            <returns></returns>
+        </member>
+        <member name="M:NutrInfo.Admin.Api.Controllers.PatientsController.Create(NutrInfo.Admin.Api.Models.Patients.PostPatientRequest)">
+            <summary>
+            Create a new patient
+            </summary>
+            <param name="patientRequest"></param>
+        </member>
+        <member name="M:NutrInfo.Admin.Api.Controllers.PatientsController.Update(System.String,NutrInfo.Admin.Api.Models.Patients.PutPatientRequest)">
+            <summary>
+            Update a registered patient
+            </summary>
+            <param name="cpf"></param>
+            <param name="patientRequest"></param>
+            <returns></returns>
+        </member>
+        <member name="M:NutrInfo.Admin.Api.Controllers.PatientsController.Delete(System.String)">
+            <summary>
+            Delete a registered patient
+            </summary>
+            <param name="cpf"></param>
+            <returns></returns>
+        </member>
         <member name="P:NutrInfo.Admin.Api.Models.Nutritionists.GetNutritionistsQuery.Name">
             <summary>
             Name

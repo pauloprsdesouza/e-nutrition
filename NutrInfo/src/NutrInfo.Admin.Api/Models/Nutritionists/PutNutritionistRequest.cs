@@ -13,6 +13,8 @@ namespace NutrInfo.Admin.Api.Models.Nutritionists
         [EmailAddress]
         public string Email { get; set; }
 
+        [Required]
+        public string Cpf { get; set; }
 
         [Required]
         public string Password { get; set; }
@@ -24,12 +26,38 @@ namespace NutrInfo.Admin.Api.Models.Nutritionists
         [Required]
         public int Crn { get; set; }
 
+        [Required]
+        public string Street { get; set; }
+
+        [Required]
+        public string City { get; set; }
+
+        [Required]
+        public string State { get; set; }
+
+        public string Neighborhood { get; set; }
+
+        public string Complement { get; set; }
+
+        public string ZipCode { get; set; }
+
+        [Required]
+        public int Number { get; set; }
+
         public void MapTo(Nutritionist nutritionist)
         {
             nutritionist.Crn = Crn;
-            nutritionist.Name = Name;
-            nutritionist.Email = Email;
+            nutritionist.User.Name = Name;
+            nutritionist.User.Email = Email;
+            nutritionist.User.Cpf = Cpf;
             nutritionist.Password = Password;
+            nutritionist.User.Address.City = City;
+            nutritionist.User.Address.Complement = Complement;
+            nutritionist.User.Address.Neighborhood = Neighborhood;
+            nutritionist.User.Address.Number = Number;
+            nutritionist.User.Address.State = State;
+            nutritionist.User.Address.Street = Street;
+            nutritionist.User.Address.ZipCode = ZipCode;
         }
     }
 }
