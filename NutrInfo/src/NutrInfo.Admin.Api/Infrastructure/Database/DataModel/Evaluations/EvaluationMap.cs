@@ -39,7 +39,7 @@ namespace NutrInfo.Admin.Api.Infrastructure.Database.DataModel.Evaluations
 
             evaluation.Property(p => p.HasEdema);
 
-            evaluation.Property(p => p.HasAscites);
+            evaluation.Property(p => p.HasAscite);
 
             evaluation.Property(p => p.HasAmputatedLimb);
 

@@ -1,15 +1,11 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 
 namespace NutrInfo.Admin.Api.Infrastructure.Database.DataModel.Evaluations
 {
     public enum NutritionStateEnum
     {
-        None,
-        Light,
-        Moderate,
-        Severe
+        None = 0,
+        Light = 1,
+        Moderate = 2,
+        Severe = 3
     }
 }
