@@ -5,6 +5,7 @@ using System.Security.Claims;
 using System.Text;
 using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
+using NutrInfo.Admin.Api.Infrastructure.Database.DataModel.Users;
 
 namespace  NutrInfo.Admin.Api.Authorization
 {
@@ -12,7 +13,7 @@ namespace  NutrInfo.Admin.Api.Authorization
     {
         private readonly JwtOptions _jwtOptions;
 
-       // public User User { get; set; }
+        public User User { get; set; }
 
         public ApiToken(IOptions<JwtOptions> jwtOptions)
         {

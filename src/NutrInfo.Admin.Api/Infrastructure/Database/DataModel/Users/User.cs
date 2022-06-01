@@ -12,7 +12,7 @@ namespace NutrInfo.Admin.Api.Infrastructure.Database.DataModel.Users
         public string Email { get; set; }
         public string Cpf { get; set; }
         public GenderEnum Gender { get; set; }
-        public DateTime BirhDate { get; set; }
+        public DateTime BirthDate { get; set; }
         public UserStatusEnum Status { get; set; }
         public DateTimeOffset CreatedAt { get; set; }
         public DateTimeOffset UpdatedAt { get; set; }

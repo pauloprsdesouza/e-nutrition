@@ -1,5 +1,3 @@
-using System;
-using System.Collections.Generic;
 using System.Linq;
 using System.Net.Mime;
 using System.Threading.Tasks;
@@ -11,10 +9,11 @@ using NutrInfo.Admin.Api.Infrastructure.Database.DataModel;
 using NutrInfo.Admin.Api.Infrastructure.Database.DataModel.Nutritionists;
 using NutrInfo.Admin.Api.Infrastructure.Serialization.Nutritionists;
 using NutrInfo.Admin.Api.Models.Nutritionists;
+using NutrInfo.Admin.Api.Models;
 
 namespace NutrInfo.Admin.Api.Controllers
 {
-    [Route("Nutritionists")]
+    [Route("api/v1/nutritionists")]
     public class NutritionistsController : Controller
     {
         public readonly ApiDbContext _dbContext;
@@ -54,6 +53,7 @@ namespace NutrInfo.Admin.Api.Controllers
         [HttpGet, Route("{crn}")]
         [Produces(MediaTypeNames.Application.Json)]
         [ProducesResponseType(typeof(NutritionistResponse), StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(NutritionistResponse), StatusCodes.Status404NotFound)]
         public async Task<IActionResult> Find([FromRoute] int crn)
         {
             var nutritionistSearch = new NutritionistSearch(_dbContext);
@@ -61,7 +61,7 @@ namespace NutrInfo.Admin.Api.Controllers
 
             if (nutritionistSearch.NutritionistNotFound)
             {
-                return NotFound();
+                return NotFound(new ResponseError("NUTRITIONIST_NOT_FOUND"));
             }
 
             return Ok(nutritionist.MapToResponse());
@@ -74,19 +74,18 @@ namespace NutrInfo.Admin.Api.Controllers
         [HttpPost]
         [Produces(MediaTypeNames.Application.Json)]
         [ProducesResponseType(typeof(NutritionistResponse), StatusCodes.Status201Created)]
+        [ProducesResponseType(typeof(ResponseError), StatusCodes.Status422UnprocessableEntity)]
         public async Task<IActionResult> Create([FromBody] PostNutritionistRequest nutritionistRequest)
         {
-            var nutritionistSearch = new NutritionistSearch(_dbContext);
-            var nutritionist = await nutritionistSearch.Find(nutritionistRequest.Crn);
+            var nutritionistRegistration = new NutritionistRegistration(_dbContext);
+            var nutritionist = await nutritionistRegistration.Register(nutritionistRequest.ToNutritionist());
 
-            if (nutritionist == null)
+            if (nutritionistRegistration.NutritionistAlreadyExists)
             {
-                var createNutritionist = new CreateNutritionist(_dbContext);
-                nutritionist = nutritionistRequest.ToNutritionist();
-                await createNutritionist.Register(nutritionist);
+                return UnprocessableEntity(new ResponseError("NUTRITIONIST_ALREADY_EXISTS"));
             }
 
-            return Created("", nutritionist.MapToResponse());
+            return Created($"api/v1/nutritionists/{nutritionist.UserId}", nutritionist.MapToResponse());
         }
 
         /// <summary>
@@ -100,18 +99,13 @@ namespace NutrInfo.Admin.Api.Controllers
         [ProducesResponseType(typeof(NutritionistResponse), StatusCodes.Status200OK)]
         public async Task<IActionResult> Update([FromRoute] int crn, [FromBody] PutNutritionistRequest nutritionistRequest)
         {
-            var nutritionistSearch = new NutritionistSearch(_dbContext);
-            var nutritionist = await nutritionistSearch.Find(crn);
+            var nutritionistUpdate = new NutritionistUpdate(_dbContext);
+            var nutritionist = await nutritionistUpdate.Update(crn, nutritionistRequest);
 
-            if (nutritionistSearch.NutritionistNotFound)
+            if (nutritionistUpdate.NutritionistNotFound)
             {
-                return NotFound();
+                return NotFound(new ResponseError("NUTRITIONIST_NOT_FOUND"));
             }
-
-            var updateNutritionist = new NutritionistUpdate(_dbContext);
-            nutritionistRequest.MapTo(nutritionist);
-
-            await updateNutritionist.Update(nutritionist);
 
             return Ok(nutritionist.MapToResponse());
         }
@@ -124,6 +118,7 @@ namespace NutrInfo.Admin.Api.Controllers
         [HttpDelete, Route("{crn}")]
         [Produces(MediaTypeNames.Application.Json)]
         [ProducesResponseType(typeof(NutritionistResponse), StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(ResponseError), StatusCodes.Status404NotFound)]
         public async Task<IActionResult> Delete([FromRoute] int crn)
         {
             var nutritionistSearch = new NutritionistSearch(_dbContext);
@@ -134,8 +129,8 @@ namespace NutrInfo.Admin.Api.Controllers
                 return NotFound();
             }
 
-            var deleteNutritionist = new DeleteNutritionist(_dbContext);
-            await deleteNutritionist.Delete(nutritionist);
+            var deleteNutritionist = new NutritionistRemoval(_dbContext);
+            await deleteNutritionist.Delete(crn);
 
             return Ok(nutritionist.MapToResponse());
         }

@@ -9,10 +9,11 @@ using NutrInfo.Admin.Api.Infrastructure.Database.DataModel;
 using NutrInfo.Admin.Api.Infrastructure.Database.DataModel.Patients;
 using NutrInfo.Admin.Api.Infrastructure.Serialization.Patients;
 using NutrInfo.Admin.Api.Models.Patients;
+using NutrInfo.Admin.Api.Models;
 
 namespace NutrInfo.Admin.Api.Controllers
 {
-    [Route("Patients")]
+    [Route("api/v1/patients")]
     public class PatientsController : Controller
     {
         private readonly ApiDbContext _dbContext;
