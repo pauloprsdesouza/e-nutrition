@@ -6,12 +6,12 @@
       "type": "coreclr",
       "request": "launch",
       "preLaunchTask": "build",
-      "program": "${workspaceFolder}/NutrInfo/src/NutrInfo.Admin.Api/bin/Debug/netcoreapp3.1/NutrInfo.Admin.Api.dll",
+      "program": "${workspaceFolder}/src/NutrInfo.Admin.Api/bin/Debug/net6.0/NutrInfo.Admin.Api.dll",
       "args": [
         "--urls",
         "http://localhost:5000"
       ],
-      "cwd": "${workspaceFolder}/NutrInfo/src/NutrInfo.Admin.Api",
+      "cwd": "${workspaceFolder}/src/NutrInfo.Admin.Api",
       "stopAtEntry": false,
       "serverReadyAction": {
         "action": "openExternally",
