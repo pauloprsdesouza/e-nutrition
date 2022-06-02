@@ -21,6 +21,14 @@ namespace NutrInfo.Admin.Api.Infrastructure.Database.DataModel.Patients
             return patients.Where(patient => patient.User.Cpf == cpf);
         }
 
+        public static IQueryable<Patient> WithId(this IQueryable<Patient> patients, int patientId)
+        {
+            if (patientId == 0)
+                return patients;
+
+            return patients.Where(patient => patient.UserId == patientId);
+        }
+
         public static IQueryable<Patient> IncludeUser(this IQueryable<Patient> patients)
         {
             return patients.Include(patient => patient.User);

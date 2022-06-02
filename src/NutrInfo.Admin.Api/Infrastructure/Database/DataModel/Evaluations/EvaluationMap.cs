@@ -20,8 +20,7 @@ namespace NutrInfo.Admin.Api.Infrastructure.Database.DataModel.Evaluations
             evaluation.Property(p => p.PatientId)
                       .ValueGeneratedNever();
 
-            evaluation.Property(p => p.BedNumber)
-                      .IsRequired();
+            evaluation.Property(p => p.BedNumber);
 
             evaluation.Property(p => p.Protein);
 

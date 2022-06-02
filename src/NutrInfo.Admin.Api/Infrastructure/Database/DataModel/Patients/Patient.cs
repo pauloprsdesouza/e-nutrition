@@ -10,6 +10,7 @@ namespace NutrInfo.Admin.Api.Infrastructure.Database.DataModel.Patients
     public class Patient
     {
         public int UserId { get; set; }
+        public RaceEnum Race { get; set; }
 
         public User User { get; set; }
         public ICollection<Evaluation> Evaluations { get; set; }

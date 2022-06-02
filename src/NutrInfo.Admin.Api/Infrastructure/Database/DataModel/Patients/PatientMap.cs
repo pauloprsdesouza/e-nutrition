@@ -1,7 +1,3 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
@@ -17,6 +13,9 @@ namespace NutrInfo.Admin.Api.Infrastructure.Database.DataModel.Patients
 
             patient.Property(p => p.UserId)
                    .ValueGeneratedOnAdd();
+
+            patient.Property(p => p.Race)
+                   .IsRequired();
 
             patient.HasMany(p => p.Evaluations)
                    .WithOne(p => p.Patient)

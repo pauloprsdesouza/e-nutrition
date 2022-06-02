@@ -16,10 +16,10 @@ namespace NutrInfo.Admin.Api.Features.Patients
 
         public bool PatientNotFound { get; private set; }
 
-        public async Task<Patient> Find(string cpf)
+        public async Task<Patient> Find(int patientId)
         {
             var patient = await _dbContext.Patients
-                                          .WithCpf(cpf)
+                                          .WithId(patientId)
                                           .IncludeUser()
                                           .SingleOrDefaultAsync();
 

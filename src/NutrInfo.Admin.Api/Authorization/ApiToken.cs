@@ -23,7 +23,7 @@ namespace  NutrInfo.Admin.Api.Authorization
         public override string ToString()
         {
             var claims = new List<Claim>();
-           // claims.Add(new Claim(ClaimTypes.Name, User.Id.ToString()));
+            claims.Add(new Claim(ClaimTypes.Name, User.Id.ToString()));
 
             // foreach (var role in User.Roles)
             // {
