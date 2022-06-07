@@ -58,5 +58,14 @@ namespace NutrInfo.Admin.Api.Controllers
 
             return Ok(evaluation.MapToResponse());
         }
+
+        [HttpPut, Route("{evaluationId}")]
+        [Produces(MediaTypeNames.Application.Json)]
+        [ProducesResponseType(typeof(EvaluationResponse), StatusCodes.Status200OK)]
+        public async Task<IActionResult> Update([FromRoute] int evaluationId, [FromBody] PatchInitialEvaluationRequest weightHeightEstimationRequest)
+        {
+            return Ok();
+
+        }
     }
 }

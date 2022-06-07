@@ -1,4 +1,6 @@
 using System;
+using System.Collections.Generic;
+using NutrInfo.Admin.Api.Infrastructure.Database.DataModel.AmputatedLimbs;
 using NutrInfo.Admin.Api.Infrastructure.Database.DataModel.Nutritionists;
 using NutrInfo.Admin.Api.Infrastructure.Database.DataModel.Patients;
 
@@ -26,5 +28,6 @@ namespace NutrInfo.Admin.Api.Infrastructure.Database.DataModel.Evaluations
 
         public Nutritionist Nutritionist { get; set; }
         public Patient Patient { get; set; }
+        public List<AmputatedLimb> AmputatedLimbs { get; set; }
     }
 }

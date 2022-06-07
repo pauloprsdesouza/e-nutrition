@@ -1,5 +1,6 @@
 using Microsoft.EntityFrameworkCore;
 using NutrInfo.Admin.Api.Infrastructure.Database.DataModel.Addresses;
+using NutrInfo.Admin.Api.Infrastructure.Database.DataModel.AmputatedLimbs;
 using NutrInfo.Admin.Api.Infrastructure.Database.DataModel.Evaluations;
 using NutrInfo.Admin.Api.Infrastructure.Database.DataModel.Nutritionists;
 using NutrInfo.Admin.Api.Infrastructure.Database.DataModel.Patients;
@@ -18,6 +19,7 @@ namespace NutrInfo.Admin.Api.Infrastructure.Database.DataModel
         public DbSet<User> Users { get; set; }
         public DbSet<Address> Addresses { get; set; }
         public DbSet<Evaluation> Evaluations { get; set; }
+        public DbSet<AmputatedLimb> AmputatedLimbs { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -28,6 +30,8 @@ namespace NutrInfo.Admin.Api.Infrastructure.Database.DataModel
             modelBuilder.Entity<User>().Configure();
             modelBuilder.Entity<Address>().Configure();
             modelBuilder.Entity<Evaluation>().Configure();
+            modelBuilder.Entity<AmputatedLimb>().Configure();
         }
     }
 }
+

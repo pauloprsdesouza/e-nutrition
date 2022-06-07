@@ -36,8 +36,6 @@ namespace NutrInfo.Admin.Api.Infrastructure.Database.DataModel.Evaluations
 
             evaluation.Property(p => p.HasEdema);
 
-            evaluation.Property(p => p.HasEdema);
-
             evaluation.Property(p => p.HasAscite);
 
             evaluation.Property(p => p.HasAmputatedLimb);
@@ -51,6 +49,9 @@ namespace NutrInfo.Admin.Api.Infrastructure.Database.DataModel.Evaluations
 
             evaluation.Property(p => p.UpdatedAt);
 
+            evaluation.HasMany(p => p.AmputatedLimbs)
+                      .WithMany(p => p.Evaluations)
+                      .UsingEntity("amputatedlimbs");;
         }
     }
 }
