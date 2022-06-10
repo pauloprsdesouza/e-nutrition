@@ -24,6 +24,7 @@ namespace NutrInfo.Admin.Api.Features.Evaluations
         {
             var patientSearch = new PatientSearch(_dbContext);
             var patient = await patientSearch.Find(request.PatientId);
+            var amputatedLimbEstimation = new AmputatedLimbEstimation();
 
             if (patientSearch.PatientNotFound)
             {
@@ -43,6 +44,11 @@ namespace NutrInfo.Admin.Api.Features.Evaluations
             var age = DateTime.Now.Year - patient.User.BirthDate.Year;
             var estimatedHeight = HeightEstimation.EstimateHeightByRaceAgeGender(patient.Race, age, patient.User.Gender, request.KneeHeight, request.ArmCircumference);
             var estimatedWheight = WeightEstimation.EstimateWeightByRaceAgeGender(patient.Race, age, patient.User.Gender, request.KneeHeight, request.ArmCircumference);
+
+            foreach (int id in request.AmputatedLimbs)
+            {
+                estimatedWheight += amputatedLimbEstimation.Estimate(id, estimatedWheight);
+            }
 
             evaluation.Weight = estimatedWheight;
             evaluation.Height = estimatedHeight;

@@ -44,14 +44,12 @@ namespace NutrInfo.Admin.Api.Infrastructure.Database.DataModel.Evaluations
 
             evaluation.Property(p => p.DiseaseSeverity);
 
+            evaluation.Ignore(p => p.AmputatedLimbs);
+
             evaluation.Property(p => p.CreatedAt)
                       .IsRequired();
 
             evaluation.Property(p => p.UpdatedAt);
-
-            evaluation.HasMany(p => p.AmputatedLimbs)
-                      .WithMany(p => p.Evaluations)
-                      .UsingEntity("amputatedlimbs");;
         }
     }
 }

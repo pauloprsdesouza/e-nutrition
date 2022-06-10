@@ -19,7 +19,7 @@ namespace NutrInfo.Admin.Api.Models.Evaluations
         public double WeightEdema { get; set; }
         public DiseaseSeverityEnum AsciticAscite { get; set; }
         public DiseaseSeverityEnum PeripheralAscite { get; set; }
-       public List<AmputatedLimb> AmputatedLimbs { get; set; }
+        public List<int> AmputatedLimbs { get; set; }
 
         public void MapTo(Evaluation evaluation)
         {

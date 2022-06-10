@@ -10,7 +10,7 @@ namespace NutrInfo.Admin.Api.Infrastructure.Serialization.AmputatedLimbs
             return new AmputatedLimbResponse()
             {
                 Id = amputatedLimb.Id,
-                Limb = amputatedLimb.Limb,
+                Limb = amputatedLimb.LimbName,
                 Percentual = amputatedLimb.Percentual
             };
         }

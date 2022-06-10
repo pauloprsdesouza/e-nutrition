@@ -30,7 +30,6 @@ namespace NutrInfo.Admin.Api.Infrastructure.Database.DataModel
             modelBuilder.Entity<User>().Configure();
             modelBuilder.Entity<Address>().Configure();
             modelBuilder.Entity<Evaluation>().Configure();
-            modelBuilder.Entity<AmputatedLimb>().Configure();
         }
     }
 }

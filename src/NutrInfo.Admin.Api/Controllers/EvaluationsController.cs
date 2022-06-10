@@ -1,13 +1,9 @@
-using System;
-using System.Linq;
 using System.Net.Mime;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using NutrInfo.Admin.Api.Features.Evaluations;
-using NutrInfo.Admin.Api.Features.Patients;
 using NutrInfo.Admin.Api.Infrastructure.Database.DataModel;
-using NutrInfo.Admin.Api.Infrastructure.Formulas;
 using NutrInfo.Admin.Api.Infrastructure.Serialization.Evaluations;
 using NutrInfo.Admin.Api.Models;
 using NutrInfo.Admin.Api.Models.Evaluations;

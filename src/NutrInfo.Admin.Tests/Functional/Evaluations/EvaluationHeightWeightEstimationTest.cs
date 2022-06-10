@@ -14,6 +14,7 @@ using NutrInfo.Admin.Api.Infrastructure.Database.DataModel.Nutritionists;
 using NutrInfo.Admin.Tests.Factories.Nutritionists;
 using System.Text.Json;
 using System.Linq;
+using System;
 
 namespace NutrInfo.Admin.Tests.Functional.Evaluations
 {
@@ -55,9 +56,35 @@ namespace NutrInfo.Admin.Tests.Functional.Evaluations
         }
 
         [Fact]
+        public async Task ShouldCalculateWithAmputatedLimbs()
+        {
+            var userNutritionist = new User().Build();
+            var nutritionist = new Nutritionist().Build().WithUser(userNutritionist);
+
+            var userPatient = new User().Build();
+            var patient = new Patient().Build().WithUser(userPatient);
+            var evaluation = new Evaluation().WithPatient(patient).WithNutritionist(nutritionist);
+
+            await _server.Database.Evaluations.AddAsync(evaluation);
+            await _server.Database.SaveChangesAsync();
+
+            var getWeightHeightEstimationRequest = new GetWeightHeightEstimationRequest()
+            {
+                PatientId = patient.UserId,
+                ArmCircumference = 32,
+                KneeHeight = 55
+            };
+
+            var response = await _client.GetAsync($"api/v1/evaluations/{evaluation.Id}?patientId={patient.UserId}&armCircumference={32}&kneeHeight={55}&amputatedLimbs[0]=1&amputatedLimbs[1]=2");
+            var evaluationResponse = await _client.ReadAsJsonAsync<EvaluationResponse>(response);
+
+            Assert.Equal(HttpStatusCode.OK, response.StatusCode);
+        }
+
+        [Fact]
         public async Task ShouldRespond404PatientNotFoundCalculate()
         {
-             var userPatient = new User().Build();
+            var userPatient = new User().Build();
             var patient = new Patient().Build().WithUser(userPatient);
             var evaluation = new Evaluation().WithPatient(patient);
 

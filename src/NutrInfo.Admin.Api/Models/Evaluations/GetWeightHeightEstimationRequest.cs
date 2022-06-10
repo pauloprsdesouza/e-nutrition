@@ -1,8 +1,5 @@
-using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
-using System.Linq;
-using System.Threading.Tasks;
 
 namespace NutrInfo.Admin.Api.Models.Evaluations
 {
@@ -16,5 +13,8 @@ namespace NutrInfo.Admin.Api.Models.Evaluations
 
         [Required]
         public double ArmCircumference { get; set; }
+
+        [Required]
+        public List<int> AmputatedLimbs { get; set; }
     }
 }
