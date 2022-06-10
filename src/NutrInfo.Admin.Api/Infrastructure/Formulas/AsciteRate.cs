@@ -9,6 +9,5 @@ namespace NutrInfo.Admin.Api.Infrastructure.Formulas
         public const double PERIPHERAL_WEIGHT_LIGHT = 1;
         public const double PERIPHERAL_WEIGHT_MODERATE = 5;
         public const double PERIPHERAL_WEIGHT_SEVERE = 10;
-
     }
 }
