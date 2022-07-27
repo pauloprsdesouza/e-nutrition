@@ -1,5 +1,6 @@
 
 using System;
+using Nutrinfo.Admin.Domain.Users;
 using NutrInfo.Admin.Api.Infrastructure.Database.DataModel.Users;
 
 namespace NutrInfo.Admin.Api.Models.Nutritionists

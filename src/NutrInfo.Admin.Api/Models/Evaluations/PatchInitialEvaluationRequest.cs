@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using Nutrinfo.Admin.Domain.Evaluations;
 using NutrInfo.Admin.Api.Infrastructure.Database.DataModel.AmputatedLimbs;
 using NutrInfo.Admin.Api.Infrastructure.Database.DataModel.Evaluations;
 using NutrInfo.Admin.Api.Infrastructure.Formulas;
@@ -15,7 +16,7 @@ namespace NutrInfo.Admin.Api.Models.Evaluations
         public bool HasAmputatedLimb { get; set; }
         public double KneeHeight { get; set; }
         public double ArmCircumference { get; set; }
-        public EdemaEnum Edema { get; set; }
+        public EdemaDegree Edema { get; set; }
         public double WeightEdema { get; set; }
         public DiseaseSeverityEnum AsciticAscite { get; set; }
         public DiseaseSeverityEnum PeripheralAscite { get; set; }
@@ -26,9 +27,7 @@ namespace NutrInfo.Admin.Api.Models.Evaluations
             evaluation.Height = Height;
             evaluation.Weight = Weight;
             evaluation.IsWalking = IsWalking;
-            evaluation.HasEdema = HasEdema;
             evaluation.HasAscite = HasAscite;
-            evaluation.HasAmputatedLimb = HasAmputatedLimb;
             evaluation.AmputatedLimbs = AmputatedLimbs;
         }
     }

@@ -1,5 +1,6 @@
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
+using Nutrinfo.Admin.Domain.Evaluations;
 using NutrInfo.Admin.Api.Infrastructure.Database.DataModel;
 using NutrInfo.Admin.Api.Infrastructure.Database.DataModel.Evaluations;
 

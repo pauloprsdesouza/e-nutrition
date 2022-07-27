@@ -5,7 +5,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.IdentityModel.Tokens;
 
-namespace  NutrInfo.Admin.Api.Authorization
+namespace NutrInfo.Admin.Api.Authorization
 {
     public static class JwtExtensions
     {

@@ -1,9 +1,8 @@
 using System;
 using System.Threading.Tasks;
+using Nutrinfo.Admin.Domain.Evaluations;
 using NutrInfo.Admin.Api.Features.Patients;
 using NutrInfo.Admin.Api.Infrastructure.Database.DataModel;
-using NutrInfo.Admin.Api.Infrastructure.Database.DataModel.Evaluations;
-using NutrInfo.Admin.Api.Infrastructure.Database.DataModel.Patients;
 
 namespace NutrInfo.Admin.Api.Features.Evaluations
 {

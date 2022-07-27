@@ -1,8 +1,8 @@
 using System;
 using System.Threading.Tasks;
+using Nutrinfo.Admin.Domain.Patients;
+using Nutrinfo.Admin.Domain.Users;
 using NutrInfo.Admin.Api.Infrastructure.Database.DataModel;
-using NutrInfo.Admin.Api.Infrastructure.Database.DataModel.Patients;
-using NutrInfo.Admin.Api.Infrastructure.Database.DataModel.Users;
 
 namespace NutrInfo.Admin.Api.Features.Patients
 {

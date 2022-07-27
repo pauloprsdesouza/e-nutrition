@@ -7,14 +7,15 @@ using NutrInfo.Admin.Tests.Factories.Users;
 using Xunit;
 using NutrInfo.Admin.Tests.Factories.Patients;
 using NutrInfo.Admin.Api.Models.Evaluations;
-using NutrInfo.Admin.Api.Infrastructure.Database.DataModel.Evaluations;
 using NutrInfo.Admin.Tests.Factories.Evaluations;
 using System.Net;
-using NutrInfo.Admin.Api.Infrastructure.Database.DataModel.Nutritionists;
 using NutrInfo.Admin.Tests.Factories.Nutritionists;
 using System.Text.Json;
 using System.Linq;
-using System;
+using Nutrinfo.Admin.Domain.Users;
+using Nutrinfo.Admin.Domain.Patients;
+using Nutrinfo.Admin.Domain.Evaluations;
+using Nutrinfo.Admin.Domain.Nutritionists;
 
 namespace NutrInfo.Admin.Tests.Functional.Evaluations
 {
@@ -56,7 +57,7 @@ namespace NutrInfo.Admin.Tests.Functional.Evaluations
         }
 
         [Fact]
-        public async Task ShouldCalculateWithAmputatedLimbs()
+        public async Task ShouldRespond404PatientNotFoundCalculate()
         {
             var userNutritionist = new User().Build();
             var nutritionist = new Nutritionist().Build().WithUser(userNutritionist);
@@ -82,7 +83,7 @@ namespace NutrInfo.Admin.Tests.Functional.Evaluations
         }
 
         [Fact]
-        public async Task ShouldRespond404PatientNotFoundCalculate()
+        public async Task ShouldCalculateWithAmputatedLimbs()
         {
             var userPatient = new User().Build();
             var patient = new Patient().Build().WithUser(userPatient);

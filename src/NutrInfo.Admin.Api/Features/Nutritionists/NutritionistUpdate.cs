@@ -1,7 +1,7 @@
 using System;
 using System.Threading.Tasks;
+using Nutrinfo.Admin.Domain.Nutritionists;
 using NutrInfo.Admin.Api.Infrastructure.Database.DataModel;
-using NutrInfo.Admin.Api.Infrastructure.Database.DataModel.Nutritionists;
 using NutrInfo.Admin.Api.Models.Nutritionists;
 
 namespace NutrInfo.Admin.Api.Features.Nutritionists

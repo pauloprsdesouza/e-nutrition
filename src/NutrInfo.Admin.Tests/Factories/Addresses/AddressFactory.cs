@@ -1,6 +1,6 @@
 using Bogus;
-using NutrInfo.Admin.Api.Infrastructure.Database.DataModel.Addresses;
-using NutrInfo.Admin.Api.Infrastructure.Database.DataModel.Users;
+using Nutrinfo.Admin.Domain.Addresses;
+using Nutrinfo.Admin.Domain.Users;
 
 namespace NutrInfo.Admin.Tests.Factories.Addresses
 {

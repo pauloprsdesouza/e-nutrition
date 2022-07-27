@@ -1,4 +1,7 @@
 using System.ComponentModel.DataAnnotations;
+using Nutrinfo.Admin.Domain.Addresses;
+using Nutrinfo.Admin.Domain.Patients;
+using Nutrinfo.Admin.Domain.Users;
 using NutrInfo.Admin.Api.Infrastructure.Database.DataModel.Addresses;
 using NutrInfo.Admin.Api.Infrastructure.Database.DataModel.Patients;
 using NutrInfo.Admin.Api.Infrastructure.Database.DataModel.Users;
@@ -38,7 +41,7 @@ namespace NutrInfo.Admin.Api.Models.Patients
 
         public Patient ToPatient()
         {
-            Address address = new Address()
+            var address = new Address()
             {
                 City = City,
                 Complement = Complement,
@@ -49,7 +52,7 @@ namespace NutrInfo.Admin.Api.Models.Patients
                 ZipCode = ZipCode,
             };
 
-            User user = new User()
+            var user = new User()
             {
                 Name = Name,
                 Email = Email,

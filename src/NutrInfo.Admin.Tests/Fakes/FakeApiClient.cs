@@ -5,10 +5,10 @@ using System.Text.Json;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.TestHost;
+using Nutrinfo.Admin.Domain.Nutritionists;
+using Nutrinfo.Admin.Domain.Users;
+using Nutrinfo.Admin.Infrastructure.Serialization;
 using NutrInfo.Admin.Api.Authorization;
-using NutrInfo.Admin.Api.Configuration;
-using NutrInfo.Admin.Api.Infrastructure.Database.DataModel.Nutritionists;
-using NutrInfo.Admin.Api.Infrastructure.Database.DataModel.Users;
 
 namespace Improve.Admin.Tests.Fakes
 {

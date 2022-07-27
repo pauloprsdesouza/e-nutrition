@@ -1,5 +1,6 @@
 using System;
 using System.Threading.Tasks;
+using Nutrinfo.Admin.Domain.Evaluations;
 using NutrInfo.Admin.Api.Infrastructure.Database.DataModel;
 using NutrInfo.Admin.Api.Infrastructure.Database.DataModel.Evaluations;
 using NutrInfo.Admin.Api.Infrastructure.Formulas;
@@ -35,10 +36,10 @@ namespace NutrInfo.Admin.Api.Features.Evaluations
             {
                 switch (request.Edema)
                 {
-                    case EdemaEnum.ANKLE_ONLY:
+                    case EdemaDegree.ANKLE_ONLY:
                         request.Weight -= 1;
                         break;
-                    case EdemaEnum.UP_KNEE:
+                    case EdemaDegree.UP_KNEE:
                         if (request.WeightEdema >= 3 && request.WeightEdema <= 4)
                             request.Weight -= request.WeightEdema;
                         else
@@ -47,7 +48,7 @@ namespace NutrInfo.Admin.Api.Features.Evaluations
                             return null;
                         }
                         break;
-                    case EdemaEnum.UP_THIGH:
+                    case EdemaDegree.UP_THIGH:
                         if (request.WeightEdema >= 5 && request.WeightEdema <= 6)
                             request.Weight -= request.WeightEdema;
                         else
@@ -56,7 +57,7 @@ namespace NutrInfo.Admin.Api.Features.Evaluations
                             return null;
                         }
                         break;
-                    case EdemaEnum.ANASARCA:
+                    case EdemaDegree.ANASARCA:
                         if (request.WeightEdema >= 10 && request.WeightEdema <= 12)
                             request.Weight -= request.WeightEdema;
                         else

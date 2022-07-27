@@ -4,7 +4,6 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using NutrInfo.Admin.Api.Features.Evaluations;
 using NutrInfo.Admin.Api.Infrastructure.Database.DataModel;
-using NutrInfo.Admin.Api.Infrastructure.Serialization.Evaluations;
 using NutrInfo.Admin.Api.Models;
 using NutrInfo.Admin.Api.Models.Evaluations;
 
@@ -23,13 +22,19 @@ namespace NutrInfo.Admin.Api.Controllers
         [HttpPost]
         [Produces(MediaTypeNames.Application.Json)]
         [ProducesResponseType(typeof(EvaluationResponse), StatusCodes.Status201Created)]
+        [ProducesResponseType(typeof(ResponseError), StatusCodes.Status422UnprocessableEntity)]
         public async Task<IActionResult> Create([FromBody] PostEvaluationRequest evaluationRequest)
         {
-            var createEvaluation = new CreateEvaluation(_dbContext);
+            var evaluationRegistration = new EvaluationRegistration(_dbContext);
             var evaluation = evaluationRequest.ToEvaluation();
             evaluation.NutritionistId = int.Parse(HttpContext.User.Identity.Name);
 
-            await createEvaluation.Register(evaluation);
+            await evaluationRegistration.Register(evaluation);
+
+            if (evaluationRegistration.PatientNotFound)
+            {
+                return UnprocessableEntity(new ResponseError("PATIENT_NOT_FOUND"));
+            }
 
             return Created("api/v1/evaluations/", evaluation.MapToResponse());
         }
@@ -37,6 +42,7 @@ namespace NutrInfo.Admin.Api.Controllers
         [HttpGet, Route("{evaluationId}")]
         [Produces(MediaTypeNames.Application.Json)]
         [ProducesResponseType(typeof(EvaluationResponse), StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(ResponseError), StatusCodes.Status404NotFound)]
         public async Task<IActionResult> EstimateWeightAndHeight([FromRoute] int evaluationId, GetWeightHeightEstimationRequest weightHeightEstimationRequest)
         {
             var weightHeightEstimation = new WeightHeightEstimation(_dbContext);

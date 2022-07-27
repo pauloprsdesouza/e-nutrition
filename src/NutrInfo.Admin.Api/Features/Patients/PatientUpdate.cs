@@ -1,7 +1,7 @@
 using System;
 using System.Threading.Tasks;
+using Nutrinfo.Admin.Domain.Patients;
 using NutrInfo.Admin.Api.Infrastructure.Database.DataModel;
-using NutrInfo.Admin.Api.Infrastructure.Database.DataModel.Patients;
 
 namespace NutrInfo.Admin.Api.Features.Patients
 {

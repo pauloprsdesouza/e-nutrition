@@ -1,27 +1,24 @@
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
+using Nutrinfo.Admin.Domain.Patients;
 using NutrInfo.Admin.Api.Infrastructure.Database.DataModel;
-using NutrInfo.Admin.Api.Infrastructure.Database.DataModel.Patients;
 
 namespace NutrInfo.Admin.Api.Features.Patients
 {
     public class PatientSearch
     {
-        private readonly ApiDbContext _dbContext;
+        private readonly IPatientRepository _patientRepository;
 
-        public PatientSearch(ApiDbContext dbContext)
+        public PatientSearch(IPatientRepository patientRepository)
         {
-            _dbContext = dbContext;
+            _patientRepository = patientRepository;
         }
 
         public bool PatientNotFound { get; private set; }
 
         public async Task<Patient> Find(int patientId)
         {
-            var patient = await _dbContext.Patients
-                                          .WithId(patientId)
-                                          .IncludeUser()
-                                          .SingleOrDefaultAsync();
+            var patient = await _patientRepository.FindById(patientId);
 
             PatientNotFound = patient == null;
 

@@ -7,8 +7,8 @@ using Microsoft.AspNetCore.Mvc.Authorization;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Nutrinfo.Admin.Infrastructure.Serialization;
 using NutrInfo.Admin.Api.Authorization;
-using NutrInfo.Admin.Api.Configuration;
 using NutrInfo.Admin.Api.Filters;
 using NutrInfo.Admin.Api.Infrastructure.Database.DataModel;
 

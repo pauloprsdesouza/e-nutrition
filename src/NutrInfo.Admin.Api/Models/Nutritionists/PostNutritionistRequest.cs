@@ -1,4 +1,7 @@
 using System.ComponentModel.DataAnnotations;
+using Nutrinfo.Admin.Domain.Addresses;
+using Nutrinfo.Admin.Domain.Nutritionists;
+using Nutrinfo.Admin.Domain.Users;
 using NutrInfo.Admin.Api.Infrastructure.Database.DataModel.Addresses;
 using NutrInfo.Admin.Api.Infrastructure.Database.DataModel.Nutritionists;
 using NutrInfo.Admin.Api.Infrastructure.Database.DataModel.Users;
@@ -48,7 +51,7 @@ namespace NutrInfo.Admin.Api.Models.Nutritionists
 
         public Nutritionist ToNutritionist()
         {
-            Address address = new Address()
+            var address = new Address()
             {
                 City = City,
                 Complement = Complement,
@@ -59,7 +62,7 @@ namespace NutrInfo.Admin.Api.Models.Nutritionists
                 ZipCode = ZipCode,
             };
 
-            User user = new User()
+            var user = new User()
             {
                 Name = Name,
                 Email = Email,

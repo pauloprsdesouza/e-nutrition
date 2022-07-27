@@ -3,8 +3,11 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Nutrinfo.Admin.Infrastructure.Serialization;
+using NutrInfo.Admin.Api.Authorization;
 using NutrInfo.Admin.Api.Configuration;
 using NutrInfo.Admin.Api.Filters;
+using NutrInfo.Admin.Api.Infrastructure.API;
 using NutrInfo.Admin.Api.Infrastructure.Database.DataModel;
 
 namespace NutrInfo.Admin.Api
@@ -41,8 +44,9 @@ namespace NutrInfo.Admin.Api
            .AddJsonOptions(options => options.JsonSerializerOptions.Default());
 
             services.AddSwaggerDocumentation();
+            services.AddCFNAuthentication();
 
-            //services.AddDefaultCorsPolicy();
+            services.AddDefaultCorsPolicy();
             //services.AddJwtAuthentication(_configuration.GetSection("JWT"));
         }
 
@@ -52,7 +56,7 @@ namespace NutrInfo.Admin.Api
 
             app.UseRouting();
 
-            //app.UseCors();
+            app.UseCors();
             //app.UseAuthentication();
             //app.UseAuthorization();
 

@@ -1,5 +1,6 @@
 using System;
 using System.Threading.Tasks;
+using Nutrinfo.Admin.Domain.Evaluations;
 using NutrInfo.Admin.Api.Features.Patients;
 using NutrInfo.Admin.Api.Infrastructure.Database.DataModel;
 using NutrInfo.Admin.Api.Infrastructure.Database.DataModel.Evaluations;
@@ -45,9 +46,12 @@ namespace NutrInfo.Admin.Api.Features.Evaluations
             var estimatedHeight = HeightEstimation.EstimateHeightByRaceAgeGender(patient.Race, age, patient.User.Gender, request.KneeHeight, request.ArmCircumference);
             var estimatedWheight = WeightEstimation.EstimateWeightByRaceAgeGender(patient.Race, age, patient.User.Gender, request.KneeHeight, request.ArmCircumference);
 
-            foreach (int id in request.AmputatedLimbs)
+            if (request.AmputatedLimbs != null)
             {
-                estimatedWheight += amputatedLimbEstimation.Estimate(id, estimatedWheight);
+                foreach (int id in request.AmputatedLimbs)
+                {
+                    estimatedWheight += amputatedLimbEstimation.Estimate(id, estimatedWheight);
+                }
             }
 
             evaluation.Weight = estimatedWheight;

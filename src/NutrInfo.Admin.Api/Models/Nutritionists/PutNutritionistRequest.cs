@@ -1,4 +1,5 @@
 using System.ComponentModel.DataAnnotations;
+using Nutrinfo.Admin.Domain.Nutritionists;
 using NutrInfo.Admin.Api.Infrastructure.Database.DataModel.Nutritionists;
 
 namespace NutrInfo.Admin.Api.Models.Nutritionists

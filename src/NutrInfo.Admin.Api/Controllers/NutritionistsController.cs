@@ -6,10 +6,11 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using NutrInfo.Admin.Api.Features.Nutritionists;
 using NutrInfo.Admin.Api.Infrastructure.Database.DataModel;
-using NutrInfo.Admin.Api.Infrastructure.Database.DataModel.Nutritionists;
-using NutrInfo.Admin.Api.Infrastructure.Serialization.Nutritionists;
 using NutrInfo.Admin.Api.Models.Nutritionists;
 using NutrInfo.Admin.Api.Models;
+using NutrInfo.Admin.Api.Infrastructure.API;
+using NutrInfo.Admin.Api.Infrastructure.API.Models;
+using Nutrinfo.Admin.Domain.Nutritionists;
 
 namespace NutrInfo.Admin.Api.Controllers
 {
@@ -17,10 +18,14 @@ namespace NutrInfo.Admin.Api.Controllers
     public class NutritionistsController : Controller
     {
         public readonly ApiDbContext _dbContext;
+        private readonly ICFNClient _cfnClient;
+        private readonly INutritionistRepository _nutritionistRepository;
 
-        public NutritionistsController(ApiDbContext dbContext)
+        public NutritionistsController(ApiDbContext dbContext, ICFNClient cfnClient, INutritionistRepository nutritionistRepository)
         {
             _dbContext = dbContext;
+            _cfnClient = cfnClient;
+            _nutritionistRepository = nutritionistRepository;
         }
 
         /// <summary>
@@ -33,16 +38,8 @@ namespace NutrInfo.Admin.Api.Controllers
         [ProducesResponseType(typeof(GetNutritionistResponse), StatusCodes.Status200OK)]
         public async Task<IActionResult> List([FromQuery] GetNutritionistsQuery queryString)
         {
-            var nutritionists = await _dbContext.Nutritionists
-                                                .ContainsName(queryString.Name)
-                                                .WithCRN(queryString.Crn)
-                                                .IncludeUser()
-                                                .ToListAsync();
 
-            return Ok(new GetNutritionistResponse()
-            {
-                Nutritionists = nutritionists.Select(nutritionist => nutritionist.MapToResponse())
-            });
+            return Ok();
         }
 
         /// <summary>
@@ -65,6 +62,26 @@ namespace NutrInfo.Admin.Api.Controllers
             }
 
             return Ok(nutritionist.MapToResponse());
+        }
+
+        /// <summary>
+        /// Find a registered nutritionist
+        /// </summary>
+        /// <param name="region"></param>
+        /// <param name="crn"></param>
+        /// <returns></returns>
+        [HttpGet, Route("{crn}/{region}")]
+        [Produces(MediaTypeNames.Application.Json)]
+        [ProducesResponseType(typeof(CFNNutritionistResponse), StatusCodes.Status200OK)]
+        public async Task<IActionResult> FindFromCFN([FromRoute] int region, [FromRoute] int crn)
+        {
+            var nutritionistSearch = new NutritionistCFNSearch(_cfnClient);
+            var nutritionists = await nutritionistSearch.Search(region, crn);
+
+            return Ok(new GetNutritionistResponse()
+            {
+                Nutritionists = nutritionists.Select(p => p.MapToResponse())
+            });
         }
 
         /// <summary>

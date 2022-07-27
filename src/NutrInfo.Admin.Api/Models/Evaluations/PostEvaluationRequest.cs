@@ -1,5 +1,5 @@
 using System.ComponentModel.DataAnnotations;
-using NutrInfo.Admin.Api.Infrastructure.Database.DataModel.Evaluations;
+using Nutrinfo.Admin.Domain.Evaluations;
 
 namespace NutrInfo.Admin.Api.Models.Evaluations
 {

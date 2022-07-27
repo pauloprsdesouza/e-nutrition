@@ -14,7 +14,6 @@ namespace NutrInfo.Admin.Api.Models.Evaluations
         [Required]
         public double ArmCircumference { get; set; }
 
-        [Required]
         public List<int> AmputatedLimbs { get; set; }
     }
 }

@@ -1,7 +1,8 @@
+using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
+using Nutrinfo.Admin.Domain.Evaluations;
 using NutrInfo.Admin.Api.Infrastructure.Database.DataModel;
-using NutrInfo.Admin.Api.Infrastructure.Database.DataModel.Evaluations;
 
 namespace NutrInfo.Admin.Api.Features.Evaluations
 {
@@ -19,9 +20,9 @@ namespace NutrInfo.Admin.Api.Features.Evaluations
         public async Task<Evaluation> Find(int id)
         {
             var evaluation = await _dbContext.Evaluations
-                                             .WithId(id)
-                                             .IncludePatient()
-                                             .IncludeUser()
+                                             .Where(p => p.Id == id)
+                                             .Include(p => p.Patient)
+                                             .Include(p => p.Patient.User)
                                              .SingleOrDefaultAsync();
 
             EvaluationNotFound = evaluation == null;

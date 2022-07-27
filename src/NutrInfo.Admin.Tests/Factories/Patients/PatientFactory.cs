@@ -1,6 +1,7 @@
 using Bogus;
+using Nutrinfo.Admin.Domain.Patients;
+using Nutrinfo.Admin.Domain.Users;
 using NutrInfo.Admin.Api.Infrastructure.Database.DataModel.Patients;
-using NutrInfo.Admin.Api.Infrastructure.Database.DataModel.Users;
 
 namespace NutrInfo.Admin.Tests.Factories.Patients
 {

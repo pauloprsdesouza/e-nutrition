@@ -5,7 +5,7 @@ using System.Security.Claims;
 using System.Text;
 using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
-using NutrInfo.Admin.Api.Infrastructure.Database.DataModel.Users;
+using Nutrinfo.Admin.Domain.Users;
 
 namespace  NutrInfo.Admin.Api.Authorization
 {
