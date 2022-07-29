@@ -8,18 +8,18 @@ namespace NutrInfo.Admin.Api.Features.Evaluations
 {
     public class EvaluationRegistration
     {
-        private readonly ApiDbContext _dbContext;
+        private readonly IEvaluationRepository _evaluationRepository;
 
-        public EvaluationRegistration(ApiDbContext dbContext)
+        public EvaluationRegistration(IEvaluationRepository evaluationRepository)
         {
-            _dbContext = dbContext;
+            _evaluationRepository = evaluationRepository;
         }
 
         public bool PatientNotFound { get; private set; }
 
         public async Task<Evaluation> Register(Evaluation evaluation)
         {
-            var patientSearch = new PatientSearch(_dbContext);
+            var patientSearch = new PatientSearch(_evaluationRepository);
             var patient = await patientSearch.Find(evaluation.PatientId);
 
             if (patientSearch.PatientNotFound)
