@@ -26,7 +26,7 @@ namespace NutrInfo.Admin.Api.Models.Evaluations
             evaluation.NutritionalState = NutritionalState;
             evaluation.ReducedDietaryIntake = ReducedDietaryIntake;
             evaluation.LostWeightLastThreeMonths = LostWeightLastThreeMonths;
-            evaluation.Steps = EvaluationStepsEnum.NRN_2002;
+            evaluation.Step = EvaluationStepsEnum.NRS_2002;
         }
     }
 }

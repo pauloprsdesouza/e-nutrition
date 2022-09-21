@@ -2,6 +2,7 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 using NutrInfo.Admin.Api.Infrastructure.Database.DataModel;
@@ -11,9 +12,10 @@ using NutrInfo.Admin.Api.Infrastructure.Database.DataModel;
 namespace NutrInfo.Admin.Api.Migrations
 {
     [DbContext(typeof(ApiDbContext))]
-    partial class ApiDbContextModelSnapshot : ModelSnapshot
+    [Migration("20220921135643_AddUpdatedAtAsNull4")]
+    partial class AddUpdatedAtAsNull4
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -96,7 +98,7 @@ namespace NutrInfo.Admin.Api.Migrations
                     b.Property<bool>("IsWalking")
                         .HasColumnType("boolean");
 
-                    b.Property<double>("LostWeightLastThreeMonths")
+                    b.Property<double?>("LostWeightLastThreeMonths")
                         .HasColumnType("double precision");
 
                     b.Property<string>("NutritionalState")

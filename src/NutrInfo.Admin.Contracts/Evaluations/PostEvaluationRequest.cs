@@ -14,7 +14,7 @@ namespace NutrInfo.Admin.Api.Models.Evaluations
             {
                 PatientId = PatientId,
                 Status = EvaluationStatusEnum.PROCESSING,
-                Steps = EvaluationStepsEnum.CREATED
+                Step = EvaluationStepsEnum.CREATED
             };
         }
     }

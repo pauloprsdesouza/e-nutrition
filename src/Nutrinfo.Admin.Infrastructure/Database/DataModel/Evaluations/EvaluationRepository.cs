@@ -25,7 +25,10 @@ namespace Nutrinfo.Admin.Infrastructure.Database.DataModel.Evaluations
 
         public async Task<Evaluation> FindById(int evaluationId)
         {
-            return await _evaluations.Where(x => x.Id == evaluationId).SingleOrDefaultAsync();
+            return await _evaluations.Where(x => x.Id == evaluationId)
+                                     .Include(x => x.Patient)
+                                     .ThenInclude(x => x.User)
+                                     .SingleOrDefaultAsync();
         }
 
         public async Task<Evaluation> Update(Evaluation evaluation)

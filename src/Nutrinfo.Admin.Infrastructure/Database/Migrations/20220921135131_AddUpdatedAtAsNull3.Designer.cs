@@ -2,6 +2,7 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 using NutrInfo.Admin.Api.Infrastructure.Database.DataModel;
@@ -11,9 +12,10 @@ using NutrInfo.Admin.Api.Infrastructure.Database.DataModel;
 namespace NutrInfo.Admin.Api.Migrations
 {
     [DbContext(typeof(ApiDbContext))]
-    partial class ApiDbContextModelSnapshot : ModelSnapshot
+    [Migration("20220921135131_AddUpdatedAtAsNull3")]
+    partial class AddUpdatedAtAsNull3
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -71,36 +73,34 @@ namespace NutrInfo.Admin.Api.Migrations
 
                     NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
 
-                    b.Property<double>("AsciteWeight")
+                    b.Property<double?>("AsciteWeight")
                         .HasColumnType("double precision");
 
                     b.Property<DateTimeOffset>("CreatedAt")
                         .HasColumnType("timestamp with time zone");
 
                     b.Property<string>("DiseaseSeverity")
-                        .IsRequired()
                         .HasColumnType("text");
 
-                    b.Property<double>("EdemaWeight")
+                    b.Property<double?>("EdemaWeight")
                         .HasColumnType("double precision");
 
                     b.Property<bool>("HasAscite")
                         .HasColumnType("boolean");
 
-                    b.Property<double>("Height")
+                    b.Property<double?>("Height")
                         .HasColumnType("double precision");
 
-                    b.Property<double>("Imc")
+                    b.Property<double?>("Imc")
                         .HasColumnType("double precision");
 
                     b.Property<bool>("IsWalking")
                         .HasColumnType("boolean");
 
-                    b.Property<double>("LostWeightLastThreeMonths")
+                    b.Property<double?>("LostWeightLastThreeMonths")
                         .HasColumnType("double precision");
 
                     b.Property<string>("NutritionalState")
-                        .IsRequired()
                         .HasColumnType("text");
 
                     b.Property<int>("NutritionistId")
@@ -126,7 +126,7 @@ namespace NutrInfo.Admin.Api.Migrations
                     b.Property<DateTimeOffset?>("UpdatedAt")
                         .HasColumnType("timestamp with time zone");
 
-                    b.Property<double>("Weight")
+                    b.Property<double?>("Weight")
                         .HasColumnType("double precision");
 
                     b.HasKey("Id");

@@ -9,13 +9,13 @@ namespace NutrInfo.Admin.Api.Models.Evaluations
         [Required]
         public bool IsWalking { get; set; }
 
-        [Required]
+        [Required, Range(50, 200)]
         public double Weight { get; set; }
 
-        [Required]
+        [Required, Range(0.5, 2.5)]
         public double Height { get; set; }
 
-        [Required]
+        [Required, Range(1, 12)]
         public double EdemaWeight { get; set; }
 
         [Required]
@@ -23,9 +23,6 @@ namespace NutrInfo.Admin.Api.Models.Evaluations
 
         [Required]
         public bool HasAmputatedLimb { get; set; }
-
-        [Required]
-        public int BedNumber { get; set; }
 
         public void MapTo(Evaluation evaluation)
         {
@@ -35,7 +32,7 @@ namespace NutrInfo.Admin.Api.Models.Evaluations
             evaluation.EdemaWeight = EdemaWeight;
             evaluation.HasAscite = HasAscite;
             evaluation.Imc = Weight / Math.Pow(Height, 2);
-            evaluation.Steps = EvaluationStepsEnum.INITIAL_EVALUATION;
+            evaluation.Step = EvaluationStepsEnum.INITIAL;
         }
     }
 }

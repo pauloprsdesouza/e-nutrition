@@ -23,6 +23,27 @@ namespace NutrInfo.Admin.Api.Controllers
         }
 
         /// <summary>
+        /// Find a registered Evaluation
+        /// </summary>
+        /// <param name="evaluationId"></param>
+        [HttpGet, Route("{evaluationId}")]
+        [Produces(MediaTypeNames.Application.Json)]
+        [ProducesResponseType(typeof(EvaluationResponse), StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(ResponseError), StatusCodes.Status404NotFound)]
+        public async Task<IActionResult> Get([FromRoute] int evaluationId)
+        {
+            var evaluationSearch = new EvaluationSearch(_evaluationRepository);
+            var evaluation = await evaluationSearch.Find(evaluationId);
+
+            if (evaluationSearch.EvaluationNotFound)
+            {
+                return UnprocessableEntity(new ResponseError("EVALUATION_NOT_FOUND"));
+            }
+
+            return Ok(evaluation.MapToResponse());
+        }
+
+        /// <summary>
         /// Create a new Evaluation
         /// </summary>
         /// <param name="request"></param>
@@ -48,17 +69,16 @@ namespace NutrInfo.Admin.Api.Controllers
         /// <summary>
         /// Update a registered evaluation with Initial data
         /// </summary>
+        /// <param name="evaluationId"></param>
         /// <param name="request"></param>
         [HttpPut, Route("{evaluationId}/initial")]
         [Produces(MediaTypeNames.Application.Json)]
         [ProducesResponseType(typeof(EvaluationResponse), StatusCodes.Status200OK)]
         [ProducesResponseType(typeof(ResponseError), StatusCodes.Status422UnprocessableEntity)]
-        public async Task<IActionResult> InitialEvaluation([FromBody] PutInitialEvaluationRequest request)
+        public async Task<IActionResult> InitialEvaluation([FromRoute] int evaluationId, [FromBody] PutInitialEvaluationRequest request)
         {
-            var nutritionistId = int.Parse(HttpContext.User.Identity.Name);
-
             var evaluationRegistration = new InitialEvaluationRegistration(_evaluationRepository);
-            var evaluation = await evaluationRegistration.Register(nutritionistId, request);
+            var evaluation = await evaluationRegistration.Register(evaluationId, request);
 
             if (evaluationRegistration.EvaluationNotFound)
             {
@@ -68,22 +88,21 @@ namespace NutrInfo.Admin.Api.Controllers
             return Ok(evaluation.MapToResponse());
         }
 
-         /// <summary>
+        /// <summary>
         /// Udpdate a registered evaluation with NRS2022 data
         /// </summary>
+        /// <param name="evaluationId"></param>
         /// <param name="request"></param>
         [HttpPut, Route("{evaluationId}/NRS")]
         [Produces(MediaTypeNames.Application.Json)]
         [ProducesResponseType(typeof(EvaluationResponse), StatusCodes.Status200OK)]
         [ProducesResponseType(typeof(ResponseError), StatusCodes.Status422UnprocessableEntity)]
-        public async Task<IActionResult> NRSEvaluation([FromBody] PutInitialEvaluationRequest request)
+        public async Task<IActionResult> NRSEvaluation([FromRoute] int evaluationId, [FromBody] PutNRSEvaluationRequest request)
         {
-            var nutritionistId = int.Parse(HttpContext.User.Identity.Name);
+            var nrsEvaluationRegistration = new NRSEvaluationRegistration(_evaluationRepository);
+            var evaluation = await nrsEvaluationRegistration.Register(evaluationId, request);
 
-            var evaluationRegistration = new InitialEvaluationRegistration(_evaluationRepository);
-            var evaluation = await evaluationRegistration.Register(nutritionistId, request);
-
-            if (evaluationRegistration.EvaluationNotFound)
+            if (nrsEvaluationRegistration.EvaluationNotFound)
             {
                 return UnprocessableEntity(new ResponseError("EVALUATION_NOT_FOUND"));
             }

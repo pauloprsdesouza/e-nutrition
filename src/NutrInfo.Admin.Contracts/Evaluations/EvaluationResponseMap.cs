@@ -12,21 +12,19 @@ namespace NutrInfo.Admin.Api.Models.Evaluations
             return new EvaluationResponse()
             {
                 Id = evaluation.Id,
-                PatientName = evaluation.Patient.User.Name,
-                // BedNumber = evaluation.BedNumber,
-                // Protein = evaluation.Protein,
-                // Energy = evaluation.Energy,
-                // Imc = evaluation.Imc,
+                //PatientName = evaluation.Patient.User.Name,
+                Imc = evaluation.Imc,
+                Weight = evaluation.Weight,
+                Height = evaluation.Height,
                 LowImc = evaluation.Imc < _imcThreshold,
-                // IsWalking = evaluation.IsWalking,
-                // HasEdema = evaluation.HasEdema,
-                // HasAscites = evaluation.HasAscite,
-                // HasAmputatedLimb = evaluation.HasAmputatedLimb,
-                // NutritionState = evaluation.NutritionState,
-                // DiseaseSeverity = evaluation.DiseaseSeverity,
+                IsWalking = evaluation.IsWalking,
+                HasAscites = evaluation.HasAscite,
+                NutritionState = evaluation.NutritionalState,
+                DiseaseSeverity = evaluation.DiseaseSeverity,
+                Status = evaluation.Status,
+                Step = evaluation.Step,
                 CreatedAt = evaluation.CreatedAt,
                 UpdatedAt = evaluation.UpdatedAt
-
             };
         }
     }

@@ -31,9 +31,26 @@ namespace NutrInfo.Admin.Api.Infrastructure.Database.DataModel.Evaluations
 
             builder.Property(p => p.HasAscite);
 
-            builder.Property(p => p.NutritionalState);
+            builder.Property(p => p.LostWeightLastThreeMonths);
 
-            builder.Property(p => p.DiseaseSeverity);
+            builder.Property(p => p.ReducedDietaryIntake);
+
+            builder.Property(p => p.SeriouslyIllPatient);
+
+            builder.Property(p => p.NutritionalState)
+                   .HasConversion(
+                        v => v.ToString(),
+                        v => (NutritionalStateEnum)Enum.Parse(typeof(NutritionalStateEnum), v));
+
+            builder.Property(p => p.DiseaseSeverity)
+                   .HasConversion(
+                        v => v.ToString(),
+                        v => (DiseaseSeverityEnum)Enum.Parse(typeof(DiseaseSeverityEnum), v));
+
+            builder.Property(p => p.Step)
+                    .HasConversion(
+                        v => v.ToString(),
+                        v => (EvaluationStepsEnum)Enum.Parse(typeof(EvaluationStepsEnum), v));
 
             builder.Property(p => p.Status)
                     .HasConversion(
@@ -43,7 +60,8 @@ namespace NutrInfo.Admin.Api.Infrastructure.Database.DataModel.Evaluations
             builder.Property(p => p.CreatedAt)
                    .IsRequired();
 
-            builder.Property(p => p.UpdatedAt);
+            builder.Property(p => p.UpdatedAt)
+                   .IsRequired(false);
         }
     }
 }
