@@ -1,24 +1,23 @@
 using System.Threading.Tasks;
 using Nutrinfo.Admin.Domain.Nutritionists;
 using Nutrinfo.Admin.Domain.Users;
-using NutrInfo.Admin.Api.Infrastructure.Database.DataModel;
 
 namespace NutrInfo.Admin.Api.Features.Nutritionists
 {
     public class NutritionistRemoval
     {
-        private readonly ApiDbContext _dbContext;
+        private readonly INutritionistRepository _repository;
 
-        public NutritionistRemoval(ApiDbContext dbContext)
+        public NutritionistRemoval(INutritionistRepository repository)
         {
-            _dbContext = dbContext;
+            _repository = repository;
         }
 
         public bool NutritionistNotFound { get; private set; }
 
         public async Task<Nutritionist> Delete(int crn)
         {
-            var nutritionistSearch = new NutritionistSearch(_dbContext);
+            var nutritionistSearch = new NutritionistSearch(_repository);
             var nutritionist = await nutritionistSearch.Find(crn);
 
             if (nutritionistSearch.NutritionistNotFound)
@@ -29,10 +28,7 @@ namespace NutrInfo.Admin.Api.Features.Nutritionists
 
             nutritionist.User.Status = UserStatusEnum.Archived;
 
-            _dbContext.Nutritionists.Update(nutritionist);
-            await _dbContext.SaveChangesAsync();
-
-            return nutritionist;
+            return await _repository.Update(nutritionist);
         }
     }
 }

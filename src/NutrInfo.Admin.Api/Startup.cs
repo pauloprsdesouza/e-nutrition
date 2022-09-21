@@ -1,11 +1,14 @@
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Mvc.Authorization;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Nutrinfo.Admin.Infrastructure.Serialization;
 using NutrInfo.Admin.Api.Authorization;
 using NutrInfo.Admin.Api.Configuration;
+using NutrInfo.Admin.Api.Dependencies;
 using NutrInfo.Admin.Api.Filters;
 using NutrInfo.Admin.Api.Infrastructure.API;
 using NutrInfo.Admin.Api.Infrastructure.Database.DataModel;
@@ -33,11 +36,11 @@ namespace NutrInfo.Admin.Api
 
             services.AddControllers(options =>
            {
-            //    var policy = new AuthorizationPolicyBuilder()
-            //        .RequireAuthenticatedUser()
-            //        .Build();
+               var policy = new AuthorizationPolicyBuilder()
+                   .RequireAuthenticatedUser()
+                   .Build();
 
-               //options.Filters.Add(new AuthorizeFilter(policy));
+               options.Filters.Add(new AuthorizeFilter(policy));
                options.Filters.Add(typeof(ExceptionFilter));
                options.Filters.Add(typeof(RequestValidationFilter));
            })
@@ -45,9 +48,10 @@ namespace NutrInfo.Admin.Api
 
             services.AddSwaggerDocumentation();
             services.AddCFNAuthentication();
+            services.AddRepositories();
 
             services.AddDefaultCorsPolicy();
-            //services.AddJwtAuthentication(_configuration.GetSection("JWT"));
+            services.AddJwtAuthentication(_configuration.GetSection("JWT"));
         }
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
@@ -57,8 +61,8 @@ namespace NutrInfo.Admin.Api
             app.UseRouting();
 
             app.UseCors();
-            //app.UseAuthentication();
-            //app.UseAuthorization();
+            app.UseAuthentication();
+            app.UseAuthorization();
 
             app.UseEndpoints(endpoints => endpoints.MapControllers());
         }

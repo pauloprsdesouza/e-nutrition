@@ -1,28 +1,22 @@
 using System.Threading.Tasks;
-using Microsoft.EntityFrameworkCore;
 using Nutrinfo.Admin.Domain.Nutritionists;
-using NutrInfo.Admin.Api.Infrastructure.Database.DataModel;
-using NutrInfo.Admin.Api.Infrastructure.Database.DataModel.Nutritionists;
 
 namespace NutrInfo.Admin.Api.Features.Nutritionists
 {
     public class NutritionistSearch
     {
-        private readonly ApiDbContext _dbContext;
+        private readonly INutritionistRepository _repository;
 
-        public NutritionistSearch(ApiDbContext dbContext)
+        public NutritionistSearch(INutritionistRepository repository)
         {
-            _dbContext = dbContext;
+            _repository = repository;
         }
 
         public bool NutritionistNotFound { get; private set; }
 
         public async Task<Nutritionist> Find(int crn)
         {
-            var nutritionist = await _dbContext.Nutritionists
-                                               .WhereCrn(crn)
-                                               .IncludeUser()
-                                               .SingleOrDefaultAsync();
+            var nutritionist = await _repository.FindByCrn(crn);
 
             NutritionistNotFound = nutritionist == null;
 

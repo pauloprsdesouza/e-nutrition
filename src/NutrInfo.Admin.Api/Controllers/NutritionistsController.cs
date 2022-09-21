@@ -1,31 +1,27 @@
-using System.Linq;
 using System.Net.Mime;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
 using NutrInfo.Admin.Api.Features.Nutritionists;
-using NutrInfo.Admin.Api.Infrastructure.Database.DataModel;
 using NutrInfo.Admin.Api.Models.Nutritionists;
 using NutrInfo.Admin.Api.Models;
-using NutrInfo.Admin.Api.Infrastructure.API;
-using NutrInfo.Admin.Api.Infrastructure.API.Models;
 using Nutrinfo.Admin.Domain.Nutritionists;
+using Microsoft.AspNetCore.Authorization;
+using NutrInfo.Admin.Api.Authorization;
+using Microsoft.Extensions.Options;
 
 namespace NutrInfo.Admin.Api.Controllers
 {
     [Route("api/v1/nutritionists")]
     public class NutritionistsController : Controller
     {
-        public readonly ApiDbContext _dbContext;
-        private readonly ICFNClient _cfnClient;
         private readonly INutritionistRepository _nutritionistRepository;
+            private readonly IOptions<JwtOptions> _jwtOptions;
 
-        public NutritionistsController(ApiDbContext dbContext, ICFNClient cfnClient, INutritionistRepository nutritionistRepository)
+        public NutritionistsController(INutritionistRepository nutritionistRepository, IOptions<JwtOptions> jwtOptions)
         {
-            _dbContext = dbContext;
-            _cfnClient = cfnClient;
             _nutritionistRepository = nutritionistRepository;
+            _jwtOptions = jwtOptions;
         }
 
         /// <summary>
@@ -51,9 +47,9 @@ namespace NutrInfo.Admin.Api.Controllers
         [Produces(MediaTypeNames.Application.Json)]
         [ProducesResponseType(typeof(NutritionistResponse), StatusCodes.Status200OK)]
         [ProducesResponseType(typeof(NutritionistResponse), StatusCodes.Status404NotFound)]
-        public async Task<IActionResult> Find([FromRoute] int crn)
+        public async Task<IActionResult> Get([FromRoute] int crn)
         {
-            var nutritionistSearch = new NutritionistSearch(_dbContext);
+            var nutritionistSearch = new NutritionistSearch(_nutritionistRepository);
             var nutritionist = await nutritionistSearch.Find(crn);
 
             if (nutritionistSearch.NutritionistNotFound)
@@ -65,36 +61,16 @@ namespace NutrInfo.Admin.Api.Controllers
         }
 
         /// <summary>
-        /// Find a registered nutritionist
-        /// </summary>
-        /// <param name="region"></param>
-        /// <param name="crn"></param>
-        /// <returns></returns>
-        [HttpGet, Route("{crn}/{region}")]
-        [Produces(MediaTypeNames.Application.Json)]
-        [ProducesResponseType(typeof(CFNNutritionistResponse), StatusCodes.Status200OK)]
-        public async Task<IActionResult> FindFromCFN([FromRoute] int region, [FromRoute] int crn)
-        {
-            var nutritionistSearch = new NutritionistCFNSearch(_cfnClient);
-            var nutritionists = await nutritionistSearch.Search(region, crn);
-
-            return Ok(new GetNutritionistResponse()
-            {
-                Nutritionists = nutritionists.Select(p => p.MapToResponse())
-            });
-        }
-
-        /// <summary>
         /// Create a new Nutritionist
         /// </summary>
         /// <param name="nutritionistRequest"></param>
-        [HttpPost]
+        [HttpPost, AllowAnonymous]
         [Produces(MediaTypeNames.Application.Json)]
         [ProducesResponseType(typeof(NutritionistResponse), StatusCodes.Status201Created)]
         [ProducesResponseType(typeof(ResponseError), StatusCodes.Status422UnprocessableEntity)]
         public async Task<IActionResult> Create([FromBody] PostNutritionistRequest nutritionistRequest)
         {
-            var nutritionistRegistration = new NutritionistRegistration(_dbContext);
+            var nutritionistRegistration = new NutritionistRegistration(_nutritionistRepository);
             var nutritionist = await nutritionistRegistration.Register(nutritionistRequest.ToNutritionist());
 
             if (nutritionistRegistration.NutritionistAlreadyExists)
@@ -116,7 +92,7 @@ namespace NutrInfo.Admin.Api.Controllers
         [ProducesResponseType(typeof(NutritionistResponse), StatusCodes.Status200OK)]
         public async Task<IActionResult> Update([FromRoute] int crn, [FromBody] PutNutritionistRequest nutritionistRequest)
         {
-            var nutritionistUpdate = new NutritionistUpdate(_dbContext);
+            var nutritionistUpdate = new NutritionistUpdate(_nutritionistRepository);
             var nutritionist = await nutritionistUpdate.Update(crn, nutritionistRequest);
 
             if (nutritionistUpdate.NutritionistNotFound)
@@ -138,18 +114,47 @@ namespace NutrInfo.Admin.Api.Controllers
         [ProducesResponseType(typeof(ResponseError), StatusCodes.Status404NotFound)]
         public async Task<IActionResult> Delete([FromRoute] int crn)
         {
-            var nutritionistSearch = new NutritionistSearch(_dbContext);
-            var nutritionist = await nutritionistSearch.Find(crn);
+            var nutritionistRemoval = new NutritionistRemoval(_nutritionistRepository);
+            var nutritionist = await nutritionistRemoval.Delete(crn);
 
-            if (nutritionistSearch.NutritionistNotFound)
+            if (nutritionistRemoval.NutritionistNotFound)
             {
-                return NotFound();
+                return NotFound(new ResponseError("NUTRITIONIST_NOT_FOUND"));
             }
 
-            var deleteNutritionist = new NutritionistRemoval(_dbContext);
-            await deleteNutritionist.Delete(crn);
-
             return Ok(nutritionist.MapToResponse());
+        }
+
+        /// <summary>
+        /// User's Login
+        /// </summary>
+        /// <remarks>
+        /// Create a Login From User's Credendentials
+        /// </remarks>
+        [HttpPost, AllowAnonymous, Route("signin")]
+        [Produces(MediaTypeNames.Application.Json)]
+        [ProducesResponseType(typeof(NutritionistResponse), StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(ResponseError), StatusCodes.Status422UnprocessableEntity)]
+        [ProducesResponseType(typeof(ResponseError), StatusCodes.Status403Forbidden)]
+        public async Task<ActionResult> SignIn([FromBody] PostSignInRequest request)
+        {
+            var nutritionistSignIn = new NutritionistSignIn(_nutritionistRepository);
+            var nutritionist = await nutritionistSignIn.Validate(request.ToUser());
+
+            if (nutritionistSignIn.NutritionistNotFound)
+            {
+                return UnprocessableEntity(new ResponseError("NUTRITIONIST_NOT_FOUND"));
+            }
+
+            if (nutritionistSignIn.InvalidPassword)
+            {
+                return Forbid();
+            }
+
+            var apiToken = new ApiToken(_jwtOptions);
+            apiToken.User = nutritionist.User;
+
+            return Ok(new { Token = apiToken.ToString(), User = nutritionist.MapToResponse() });
         }
     }
 }

@@ -14,13 +14,6 @@ namespace NutrInfo.Admin.Tests.Factories.Nutritionists
             nutritionistRequest.Email = nutritionist.User.Email;
             nutritionistRequest.Password = nutritionist.Password;
             nutritionistRequest.ConfirmPassword = nutritionist.Password;
-            nutritionistRequest.City = nutritionist.User.Address.City;
-            nutritionistRequest.Complement = nutritionist.User.Address.Complement;
-            nutritionistRequest.Neighborhood = nutritionist.User.Address.Neighborhood;
-            nutritionistRequest.State = nutritionist.User.Address.State;
-            nutritionistRequest.Street = nutritionist.User.Address.Street;
-            nutritionistRequest.ZipCode = nutritionist.User.Address.ZipCode;
-            nutritionistRequest.Number = nutritionist.User.Address.Number;
 
             return nutritionistRequest;
         }

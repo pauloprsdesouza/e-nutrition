@@ -4,5 +4,7 @@ namespace Nutrinfo.Admin.Domain.Nutritionists
     {
         Task<Nutritionist> FindByName(string name);
         Task<Nutritionist> FindByCrn(int crn);
+        Task<Nutritionist> Update(Nutritionist nutritionist);
+        Task<Nutritionist> Create(Nutritionist nutritionist);
     }
 }

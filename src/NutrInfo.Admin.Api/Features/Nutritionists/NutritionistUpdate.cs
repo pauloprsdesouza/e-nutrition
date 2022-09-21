@@ -1,25 +1,24 @@
 using System;
 using System.Threading.Tasks;
 using Nutrinfo.Admin.Domain.Nutritionists;
-using NutrInfo.Admin.Api.Infrastructure.Database.DataModel;
 using NutrInfo.Admin.Api.Models.Nutritionists;
 
 namespace NutrInfo.Admin.Api.Features.Nutritionists
 {
     public class NutritionistUpdate
     {
-        private readonly ApiDbContext _dbContext;
+        private readonly INutritionistRepository _repository;
 
-        public NutritionistUpdate(ApiDbContext dbContext)
+        public NutritionistUpdate(INutritionistRepository repository)
         {
-            _dbContext = dbContext;
+            _repository = repository;
         }
 
         public bool NutritionistNotFound { get; private set; }
 
         public async Task<Nutritionist> Update(int crn, PutNutritionistRequest nutritionistRequest)
         {
-            var nutritionistSearch = new NutritionistSearch(_dbContext);
+            var nutritionistSearch = new NutritionistSearch(_repository);
             var nutritionist = await nutritionistSearch.Find(crn);
 
             if (nutritionistSearch.NutritionistNotFound)
@@ -33,10 +32,7 @@ namespace NutrInfo.Admin.Api.Features.Nutritionists
             nutritionist.User.UpdatedAt = DateTimeOffset.UtcNow;
             nutritionist.Password = BCrypt.Net.BCrypt.HashPassword(nutritionist.Password);
 
-            _dbContext.Nutritionists.Update(nutritionist);
-            await _dbContext.SaveChangesAsync();
-
-            return nutritionist;
+            return await _repository.Update(nutritionist);
         }
     }
 }

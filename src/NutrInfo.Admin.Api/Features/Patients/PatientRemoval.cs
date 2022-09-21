@@ -1,22 +1,21 @@
-using System;
 using System.Threading.Tasks;
 using Nutrinfo.Admin.Domain.Patients;
-using NutrInfo.Admin.Api.Models.Patients;
+using Nutrinfo.Admin.Domain.Users;
 
 namespace NutrInfo.Admin.Api.Features.Patients
 {
-    public class PatientUpdate
+    public class PatientRemoval
     {
         private readonly IPatientRepository _repository;
 
-        public PatientUpdate(IPatientRepository repository)
+        public PatientRemoval(IPatientRepository repository)
         {
             _repository = repository;
         }
 
         public bool PatientNotFound { get; private set; }
 
-        public async Task<Patient> Update(int patientId, PutPatientRequest patientRequest)
+        public async Task<Patient> Delete(int patientId)
         {
             var patientSearch = new PatientSearch(_repository);
             var patient = await patientSearch.Find(patientId);
@@ -27,9 +26,7 @@ namespace NutrInfo.Admin.Api.Features.Patients
                 return null;
             }
 
-            patientRequest.MapTo(patient);
-
-            patient.User.UpdatedAt = DateTimeOffset.UtcNow;
+            patient.User.Status = UserStatusEnum.Archived;
 
             return await _repository.Update(patient);
         }

@@ -2,24 +2,23 @@ using System;
 using System.Threading.Tasks;
 using Nutrinfo.Admin.Domain.Nutritionists;
 using Nutrinfo.Admin.Domain.Users;
-using NutrInfo.Admin.Api.Infrastructure.Database.DataModel;
 
 namespace NutrInfo.Admin.Api.Features.Nutritionists
 {
     public class NutritionistRegistration
     {
-        private readonly ApiDbContext _dbContext;
+        private readonly INutritionistRepository _repository;
 
-        public NutritionistRegistration(ApiDbContext dbContext)
+        public NutritionistRegistration(INutritionistRepository repository)
         {
-            _dbContext = dbContext;
+            _repository = repository;
         }
 
         public bool NutritionistAlreadyExists { get; private set; }
 
         public async Task<Nutritionist> Register(Nutritionist nutritionist)
         {
-            var nutritionistSearch = new NutritionistSearch(_dbContext);
+            var nutritionistSearch = new NutritionistSearch(_repository);
             var nutritionistContext = await nutritionistSearch.Find(nutritionist.Crn);
 
             if (nutritionistContext != null)
@@ -32,10 +31,7 @@ namespace NutrInfo.Admin.Api.Features.Nutritionists
             nutritionist.User.Status = UserStatusEnum.Active;
             nutritionist.User.CreatedAt = DateTimeOffset.UtcNow;
 
-            await _dbContext.Nutritionists.AddAsync(nutritionist);
-            await _dbContext.SaveChangesAsync();
-
-            return nutritionist;
+            return await _repository.Create(nutritionist);
         }
     }
 }

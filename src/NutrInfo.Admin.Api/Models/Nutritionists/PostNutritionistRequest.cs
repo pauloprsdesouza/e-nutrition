@@ -1,17 +1,13 @@
 using System.ComponentModel.DataAnnotations;
-using Nutrinfo.Admin.Domain.Addresses;
 using Nutrinfo.Admin.Domain.Nutritionists;
 using Nutrinfo.Admin.Domain.Users;
-using NutrInfo.Admin.Api.Infrastructure.Database.DataModel.Addresses;
-using NutrInfo.Admin.Api.Infrastructure.Database.DataModel.Nutritionists;
-using NutrInfo.Admin.Api.Infrastructure.Database.DataModel.Users;
 
 namespace NutrInfo.Admin.Api.Models.Nutritionists
 {
     public class PostNutritionistRequest
     {
         [Required]
-        [MaxLength(100)]
+        [MaxLength(200)]
         public string Name { get; set; }
 
         [Required]
@@ -31,43 +27,13 @@ namespace NutrInfo.Admin.Api.Models.Nutritionists
         [Required]
         public int Crn { get; set; }
 
-        [Required]
-        public string Street { get; set; }
-
-        [Required]
-        public string City { get; set; }
-
-        [Required]
-        public string State { get; set; }
-
-        public string Neighborhood { get; set; }
-
-        public string Complement { get; set; }
-
-        public string ZipCode { get; set; }
-
-        [Required]
-        public int Number { get; set; }
-
         public Nutritionist ToNutritionist()
         {
-            var address = new Address()
-            {
-                City = City,
-                Complement = Complement,
-                Neighborhood = Neighborhood,
-                Number = Number,
-                State = State,
-                Street = Street,
-                ZipCode = ZipCode,
-            };
-
             var user = new User()
             {
                 Name = Name,
                 Email = Email,
-                Cpf = Cpf,
-                Address = address
+                Cpf = Cpf
             };
 
             return new Nutritionist()

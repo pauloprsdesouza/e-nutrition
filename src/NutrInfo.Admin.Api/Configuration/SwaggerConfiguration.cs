@@ -28,7 +28,7 @@ namespace NutrInfo.Admin.Api.Configuration
                 options.AddSecurityDefinition("api-key", new OpenApiSecurityScheme
                 {
                     Type = SecuritySchemeType.ApiKey,
-                    Name = "x-api-key",
+                    Name = "Authorization",
                     In = ParameterLocation.Header
                 });
 
