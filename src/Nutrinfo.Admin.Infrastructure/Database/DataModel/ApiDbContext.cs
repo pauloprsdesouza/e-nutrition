@@ -5,7 +5,6 @@ using Nutrinfo.Admin.Domain.Nutritionists;
 using Nutrinfo.Admin.Domain.Patients;
 using Nutrinfo.Admin.Domain.Users;
 using NutrInfo.Admin.Api.Infrastructure.Database.DataModel.Addresses;
-using NutrInfo.Admin.Api.Infrastructure.Database.DataModel.AmputatedLimbs;
 using NutrInfo.Admin.Api.Infrastructure.Database.DataModel.Evaluations;
 using NutrInfo.Admin.Api.Infrastructure.Database.DataModel.Nutritionists;
 using NutrInfo.Admin.Api.Infrastructure.Database.DataModel.Patients;
@@ -24,7 +23,6 @@ namespace NutrInfo.Admin.Api.Infrastructure.Database.DataModel
         public DbSet<User> Users { get; set; }
         public DbSet<Address> Addresses { get; set; }
         public DbSet<Evaluation> Evaluations { get; set; }
-        public DbSet<AmputatedLimb> AmputatedLimbs { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {

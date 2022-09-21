@@ -2,13 +2,13 @@ using System.Net.Mime;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using NutrInfo.Admin.Api.Features.Nutritionists;
 using NutrInfo.Admin.Api.Models.Nutritionists;
 using NutrInfo.Admin.Api.Models;
 using Nutrinfo.Admin.Domain.Nutritionists;
 using Microsoft.AspNetCore.Authorization;
 using NutrInfo.Admin.Api.Authorization;
 using Microsoft.Extensions.Options;
+using NutrInfo.Admin.Application.Nutritionists;
 
 namespace NutrInfo.Admin.Api.Controllers
 {

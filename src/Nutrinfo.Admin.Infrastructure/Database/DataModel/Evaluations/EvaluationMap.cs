@@ -6,47 +6,44 @@ namespace NutrInfo.Admin.Api.Infrastructure.Database.DataModel.Evaluations
 {
     public static class EvaluationMap
     {
-        public static void Configure(this EntityTypeBuilder<Evaluation> evaluation)
+        public static void Configure(this EntityTypeBuilder<Evaluation> builder)
         {
-            evaluation.ToTable("evaluation");
+            builder.ToTable("evaluation");
 
-            evaluation.HasKey(p => p.Id);
+            builder.HasKey(p => p.Id);
 
-            evaluation.Property(p => p.Id)
+            builder.Property(p => p.Id)
                       .ValueGeneratedOnAdd();
 
-            evaluation.Property(p => p.NutritionistId)
+            builder.Property(p => p.NutritionistId)
                       .ValueGeneratedNever();
 
-            evaluation.Property(p => p.PatientId)
+            builder.Property(p => p.PatientId)
                       .ValueGeneratedNever();
 
-            evaluation.Property(p => p.BedNumber);
+            builder.Property(p => p.Weight);
 
-            evaluation.Property(p => p.Protein);
+            builder.Property(p => p.Height);
 
-            evaluation.Property(p => p.Energy);
+            builder.Property(p => p.Imc);
 
-            evaluation.Property(p => p.Weight);
+            builder.Property(p => p.IsWalking);
 
-            evaluation.Property(p => p.Height);
+            builder.Property(p => p.HasAscite);
 
-            evaluation.Property(p => p.Imc);
+            builder.Property(p => p.NutritionalState);
 
-            evaluation.Property(p => p.IsWalking);
+            builder.Property(p => p.DiseaseSeverity);
 
-            evaluation.Property(p => p.HasAscite);
+            builder.Property(p => p.Status)
+                    .HasConversion(
+                        v => v.ToString(),
+                        v => (EvaluationStatusEnum)Enum.Parse(typeof(EvaluationStatusEnum), v));
 
-            evaluation.Property(p => p.NutritionState);
+            builder.Property(p => p.CreatedAt)
+                   .IsRequired();
 
-            evaluation.Property(p => p.DiseaseSeverity);
-
-            evaluation.Ignore(p => p.AmputatedLimbs);
-
-            evaluation.Property(p => p.CreatedAt)
-                      .IsRequired();
-
-            evaluation.Property(p => p.UpdatedAt);
+            builder.Property(p => p.UpdatedAt);
         }
     }
 }
