@@ -1,12 +1,9 @@
 using System.Threading.Tasks;
 using Improve.Admin.Tests.Fakes;
 using NutrInfo.Admin.Api.Authorization;
-using NutrInfo.Admin.Api.Infrastructure.Database.DataModel.Patients;
-using NutrInfo.Admin.Api.Infrastructure.Database.DataModel.Users;
 using NutrInfo.Admin.Tests.Factories.Users;
 using Xunit;
 using NutrInfo.Admin.Tests.Factories.Patients;
-using NutrInfo.Admin.Api.Models.Evaluations;
 using NutrInfo.Admin.Tests.Factories.Evaluations;
 using System.Net;
 using NutrInfo.Admin.Tests.Factories.Nutritionists;
@@ -16,6 +13,7 @@ using Nutrinfo.Admin.Domain.Users;
 using Nutrinfo.Admin.Domain.Patients;
 using Nutrinfo.Admin.Domain.Evaluations;
 using Nutrinfo.Admin.Domain.Nutritionists;
+using NutrInfo.Admin.Contracts.Evaluations;
 
 namespace NutrInfo.Admin.Tests.Functional.Evaluations
 {

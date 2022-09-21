@@ -1,7 +1,7 @@
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 
-namespace NutrInfo.Admin.Api.Models.Evaluations
+namespace NutrInfo.Admin.Contracts.Evaluations
 {
     public class GetWeightHeightEstimationRequest
     {

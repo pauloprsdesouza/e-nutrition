@@ -1,7 +1,7 @@
 using System;
 using System.Threading.Tasks;
 using Nutrinfo.Admin.Domain.Evaluations;
-using NutrInfo.Admin.Api.Models.Evaluations;
+using NutrInfo.Admin.Contracts.Evaluations;
 
 namespace NutrInfo.Admin.Application.Evaluations
 {

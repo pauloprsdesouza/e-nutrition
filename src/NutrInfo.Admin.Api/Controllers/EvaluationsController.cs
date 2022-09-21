@@ -4,9 +4,9 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Nutrinfo.Admin.Domain.Evaluations;
 using Nutrinfo.Admin.Domain.Patients;
-using NutrInfo.Admin.Api.Models;
-using NutrInfo.Admin.Api.Models.Evaluations;
 using NutrInfo.Admin.Application.Evaluations;
+using NutrInfo.Admin.Contracts;
+using NutrInfo.Admin.Contracts.Evaluations;
 
 namespace NutrInfo.Admin.Api.Controllers
 {
@@ -103,6 +103,28 @@ namespace NutrInfo.Admin.Api.Controllers
             var evaluation = await nrsEvaluationRegistration.Register(evaluationId, request);
 
             if (nrsEvaluationRegistration.EvaluationNotFound)
+            {
+                return UnprocessableEntity(new ResponseError("EVALUATION_NOT_FOUND"));
+            }
+
+            return Ok(evaluation.MapToResponse());
+        }
+
+        /// <summary>
+        /// Udpdate a registered evaluation with NRS2022 data
+        /// </summary>
+        /// <param name="evaluationId"></param>
+        /// <param name="request"></param>
+        [HttpPut, Route("{evaluationId}/anthropometry")]
+        [Produces(MediaTypeNames.Application.Json)]
+        [ProducesResponseType(typeof(EvaluationResponse), StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(ResponseError), StatusCodes.Status422UnprocessableEntity)]
+        public async Task<IActionResult> AnthropometryEvaluation([FromRoute] int evaluationId, [FromBody] PutAnthropometryEvaluationRequest request)
+        {
+            var anthropometryEvaluationRegistration = new AnthropometryEvaluationRegistration(_evaluationRepository);
+            var evaluation = await anthropometryEvaluationRegistration.Register(evaluationId, request);
+
+            if (anthropometryEvaluationRegistration.EvaluationNotFound)
             {
                 return UnprocessableEntity(new ResponseError("EVALUATION_NOT_FOUND"));
             }

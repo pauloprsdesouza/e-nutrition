@@ -2,7 +2,7 @@ using System.ComponentModel.DataAnnotations;
 using Nutrinfo.Admin.Domain.Nutritionists;
 using Nutrinfo.Admin.Domain.Users;
 
-namespace NutrInfo.Admin.Api.Models.Nutritionists
+namespace NutrInfo.Admin.Contracts.Nutritionists
 {
     public class PostNutritionistRequest
     {

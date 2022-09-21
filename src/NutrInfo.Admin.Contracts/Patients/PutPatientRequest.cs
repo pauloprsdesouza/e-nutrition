@@ -1,7 +1,7 @@
 using System.ComponentModel.DataAnnotations;
 using Nutrinfo.Admin.Domain.Patients;
 
-namespace NutrInfo.Admin.Api.Models.Patients
+namespace NutrInfo.Admin.Contracts.Patients
 {
     public class PutPatientRequest
     {

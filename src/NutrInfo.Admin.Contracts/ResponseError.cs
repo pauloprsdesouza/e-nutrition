@@ -1,6 +1,6 @@
 using System.Collections.Generic;
 
-namespace NutrInfo.Admin.Api.Models
+namespace NutrInfo.Admin.Contracts
 {
     public class ResponseError
     {

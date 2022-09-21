@@ -7,18 +7,18 @@ using NutrInfo.Admin.Contracts.Evaluations;
 
 namespace NutrInfo.Admin.Application.Evaluations
 {
-    public class NRSEvaluationRegistration
+    public class AnthropometryEvaluationRegistration
     {
         private readonly IEvaluationRepository _evaluationRepository;
 
-        public NRSEvaluationRegistration(IEvaluationRepository evaluationRepository)
+        public AnthropometryEvaluationRegistration(IEvaluationRepository evaluationRepository)
         {
             _evaluationRepository = evaluationRepository;
         }
 
         public bool EvaluationNotFound { get; private set; }
 
-        public async Task<Evaluation> Register(int evaluationId, PutNRSEvaluationRequest request)
+        public async Task<Evaluation> Register(int evaluationId, PutAnthropometryEvaluationRequest request)
         {
             var evaluationSearch = new EvaluationSearch(_evaluationRepository);
             var evaluation = await evaluationSearch.Find(evaluationId);
@@ -30,9 +30,11 @@ namespace NutrInfo.Admin.Application.Evaluations
             }
 
             request.MapTo(evaluation);
-            evaluation.UpdatedAt = DateTimeOffset.UtcNow;
 
-            return await _evaluationRepository.Update(evaluation);
+            evaluation.UpdatedAt = DateTimeOffset.UtcNow;
+            _evaluationRepository.Update(evaluation);
+
+            return evaluation;
         }
     }
 }

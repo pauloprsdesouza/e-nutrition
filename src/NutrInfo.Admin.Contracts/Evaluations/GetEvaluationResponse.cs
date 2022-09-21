@@ -1,6 +1,6 @@
 using System.Collections.Generic;
 
-namespace NutrInfo.Admin.Api.Models.Evaluations
+namespace NutrInfo.Admin.Contracts.Evaluations
 {
     public class GetEvaluationResponse
     {

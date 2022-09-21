@@ -1,7 +1,5 @@
-using System;
-using System.Threading.Tasks;
 using Nutrinfo.Admin.Domain.Patients;
-using NutrInfo.Admin.Api.Models.Patients;
+using NutrInfo.Admin.Contracts.Patients;
 
 namespace NutrInfo.Admin.Application.Patients
 {

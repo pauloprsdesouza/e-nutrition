@@ -5,7 +5,7 @@ namespace Nutrinfo.Admin.Domain.Evaluations
         CREATED,
         INITIAL,
         NRS_2002,
-        ANTHROPOMETRIC,
+        ANTHROPOMETRY,
         DIAGNOSIS
     }
 }

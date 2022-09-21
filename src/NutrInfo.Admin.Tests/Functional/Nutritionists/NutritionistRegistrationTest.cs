@@ -7,10 +7,10 @@ using Xunit;
 using NutrInfo.Admin.Tests.Factories.Nutritionists;
 using NutrInfo.Admin.Tests.Factories.Addresses;
 using System.Net;
-using NutrInfo.Admin.Api.Models.Nutritionists;
 using Nutrinfo.Admin.Domain.Nutritionists;
 using Nutrinfo.Admin.Domain.Users;
 using Nutrinfo.Admin.Domain.Addresses;
+using NutrInfo.Admin.Contracts.Nutritionists;
 
 namespace NutrInfo.Admin.Tests.Functional.Nutritionists
 {

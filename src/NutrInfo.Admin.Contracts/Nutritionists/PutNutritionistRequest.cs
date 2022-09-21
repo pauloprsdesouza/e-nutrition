@@ -1,7 +1,7 @@
 using System.ComponentModel.DataAnnotations;
 using Nutrinfo.Admin.Domain.Nutritionists;
 
-namespace NutrInfo.Admin.Api.Models.Nutritionists
+namespace NutrInfo.Admin.Contracts.Nutritionists
 {
     public class PutNutritionistRequest
     {

@@ -1,7 +1,7 @@
 using System;
 using Nutrinfo.Admin.Domain.Evaluations;
 
-namespace NutrInfo.Admin.Api.Models.Evaluations
+namespace NutrInfo.Admin.Contracts.Evaluations
 {
     public class EvaluationResponse
     {
@@ -16,6 +16,7 @@ namespace NutrInfo.Admin.Api.Models.Evaluations
         public bool HasAscites { get; set; }
         public NutritionalStateEnum NutritionState { get; set; }
         public DiseaseSeverityEnum DiseaseSeverity { get; set; }
+        public bool HasNutritionalRisk { get; set; }
         public EvaluationStatusEnum Status { get; set; }
         public EvaluationStepsEnum Step { get; set; }
         public DateTimeOffset CreatedAt { get; set; }

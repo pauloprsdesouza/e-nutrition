@@ -17,10 +17,10 @@ namespace Nutrinfo.Admin.Infrastructure.Database.DataModel.Evaluations
 
         public async Task<Evaluation> Create(Evaluation evaluation)
         {
-            await _evaluations.AddAsync(evaluation);
+            var evaluationContext = await _evaluations.AddAsync(evaluation);
             await _dbContext.SaveChangesAsync();
 
-            return evaluation;
+            return evaluationContext.Entity;
         }
 
         public async Task<Evaluation> FindById(int evaluationId)
@@ -33,10 +33,10 @@ namespace Nutrinfo.Admin.Infrastructure.Database.DataModel.Evaluations
 
         public async Task<Evaluation> Update(Evaluation evaluation)
         {
-            _evaluations.Update(evaluation);
+            var evaluationContext = _evaluations.Update(evaluation);
             await _dbContext.SaveChangesAsync();
 
-            return evaluation;
+            return evaluationContext.Entity;
         }
     }
 }

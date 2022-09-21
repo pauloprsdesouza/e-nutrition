@@ -2,10 +2,10 @@ using System.Net.Mime;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using NutrInfo.Admin.Api.Models.Patients;
-using NutrInfo.Admin.Api.Models;
 using Nutrinfo.Admin.Domain.Patients;
 using NutrInfo.Admin.Application.Patients;
+using NutrInfo.Admin.Contracts;
+using NutrInfo.Admin.Contracts.Patients;
 
 namespace NutrInfo.Admin.Api.Controllers
 {

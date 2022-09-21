@@ -1,5 +1,5 @@
 
-namespace NutrInfo.Admin.Api.Models.Patients
+namespace NutrInfo.Admin.Contracts.Patients
 {
     public class GetPatientsQuery
     {

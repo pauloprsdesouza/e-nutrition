@@ -3,7 +3,7 @@ using Nutrinfo.Admin.Domain.Addresses;
 using Nutrinfo.Admin.Domain.Patients;
 using Nutrinfo.Admin.Domain.Users;
 
-namespace NutrInfo.Admin.Api.Models.Patients
+namespace NutrInfo.Admin.Contracts.Patients
 {
     public class PostPatientRequest
     {
@@ -19,12 +19,12 @@ namespace NutrInfo.Admin.Api.Models.Patients
         public string Cpf { get; set; }
 
         [Required]
+        public DateTime BirthDate { get; set; }
+
         public string Street { get; set; }
 
-        [Required]
         public string City { get; set; }
 
-        [Required]
         public string State { get; set; }
 
         public string Neighborhood { get; set; }
@@ -33,28 +33,16 @@ namespace NutrInfo.Admin.Api.Models.Patients
 
         public string ZipCode { get; set; }
 
-        [Required]
         public int Number { get; set; }
 
         public Patient ToPatient()
         {
-            var address = new Address()
-            {
-                City = City,
-                Complement = Complement,
-                Neighborhood = Neighborhood,
-                Number = Number,
-                State = State,
-                Street = Street,
-                ZipCode = ZipCode,
-            };
-
             var user = new User()
             {
                 Name = Name,
                 Email = Email,
                 Cpf = Cpf,
-                Address = address
+                BirthDate = BirthDate
             };
 
             return new Patient()

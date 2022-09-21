@@ -1,7 +1,7 @@
 
 using Nutrinfo.Admin.Domain.Evaluations;
 
-namespace NutrInfo.Admin.Api.Models.Evaluations
+namespace NutrInfo.Admin.Contracts.Evaluations
 {
     public static class EvaluationResponseMap
     {
@@ -9,10 +9,13 @@ namespace NutrInfo.Admin.Api.Models.Evaluations
 
         public static EvaluationResponse MapToResponse(this Evaluation evaluation)
         {
+            var scoreGreaterThan70Years = DateTime.UtcNow.Subtract(evaluation.Patient.User.BirthDate).Days >= 70 ? 1 : 0;
+            var nutritionalRisk = (int)evaluation.NutritionalState + (int)evaluation.DiseaseSeverity + scoreGreaterThan70Years;
+
             return new EvaluationResponse()
             {
                 Id = evaluation.Id,
-                //PatientName = evaluation.Patient.User.Name,
+                PatientName = evaluation.Patient.User.Name,
                 Imc = evaluation.Imc,
                 Weight = evaluation.Weight,
                 Height = evaluation.Height,
@@ -23,6 +26,7 @@ namespace NutrInfo.Admin.Api.Models.Evaluations
                 DiseaseSeverity = evaluation.DiseaseSeverity,
                 Status = evaluation.Status,
                 Step = evaluation.Step,
+                HasNutritionalRisk = nutritionalRisk >= 3,
                 CreatedAt = evaluation.CreatedAt,
                 UpdatedAt = evaluation.UpdatedAt
             };

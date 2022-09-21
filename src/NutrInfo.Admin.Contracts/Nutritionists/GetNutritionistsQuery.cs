@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace NutrInfo.Admin.Api.Models.Nutritionists
+namespace NutrInfo.Admin.Contracts.Nutritionists
 {
     public class GetNutritionistsQuery
     {

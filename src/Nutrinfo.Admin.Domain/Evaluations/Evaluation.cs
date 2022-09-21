@@ -21,6 +21,10 @@ namespace Nutrinfo.Admin.Domain.Evaluations
         public double LostWeightLastThreeMonths { get; set; }
         public bool ReducedDietaryIntake { get; set; }
         public bool SeriouslyIllPatient { get; set; }
+        public double ArmCircumference { get; set; }
+        public double TricepsPleat { get; set; }
+        public double CalfCircumference { get; set; }
+        public double ArmMuscleCircumference { get; set; }
         public EvaluationStatusEnum Status { get; set; }
         public EvaluationStepsEnum Step { get; set; }
         public DateTimeOffset CreatedAt { get; set; }

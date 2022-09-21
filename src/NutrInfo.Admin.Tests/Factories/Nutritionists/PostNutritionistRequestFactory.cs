@@ -1,6 +1,5 @@
 using Nutrinfo.Admin.Domain.Nutritionists;
-using NutrInfo.Admin.Api.Infrastructure.Database.DataModel.Nutritionists;
-using NutrInfo.Admin.Api.Models.Nutritionists;
+using NutrInfo.Admin.Contracts.Nutritionists;
 
 namespace NutrInfo.Admin.Tests.Factories.Nutritionists
 {

@@ -1,6 +1,6 @@
 using System.Collections.Generic;
 
-namespace NutrInfo.Admin.Api.Models.Nutritionists
+namespace NutrInfo.Admin.Contracts.Nutritionists
 {
     public class GetNutritionistResponse
     {

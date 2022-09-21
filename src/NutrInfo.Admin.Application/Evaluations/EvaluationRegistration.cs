@@ -31,7 +31,9 @@ namespace NutrInfo.Admin.Application.Evaluations
             evaluation.NutritionistId = nutritionistId;
             evaluation.CreatedAt = System.DateTimeOffset.UtcNow;
 
-            return await _evaluationRepository.Create(evaluation);
+            var evaluationContext = await _evaluationRepository.Create(evaluation);
+
+            return await _evaluationRepository.FindById(evaluationContext.Id);
         }
     }
 }
