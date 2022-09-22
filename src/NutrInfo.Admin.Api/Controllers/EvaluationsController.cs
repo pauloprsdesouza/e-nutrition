@@ -2,11 +2,15 @@ using System.Net.Mime;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Nutrinfo.Admin.Domain.Limbs;
 using Nutrinfo.Admin.Domain.Evaluations;
 using Nutrinfo.Admin.Domain.Patients;
 using NutrInfo.Admin.Application.Evaluations;
 using NutrInfo.Admin.Contracts;
 using NutrInfo.Admin.Contracts.Evaluations;
+using NutrInfo.Admin.Contracts.Evaluations.Anthropometry;
+using NutrInfo.Admin.Contracts.Evaluations.Initial;
+using NutrInfo.Admin.Contracts.Evaluations.NRS2002;
 
 namespace NutrInfo.Admin.Api.Controllers
 {
@@ -15,11 +19,13 @@ namespace NutrInfo.Admin.Api.Controllers
     {
         private readonly IEvaluationRepository _evaluationRepository;
         private readonly IPatientRepository _patientRepository;
+        private readonly ILimbRepository _amputatedLimbRepository;
 
-        public EvaluationsController(IEvaluationRepository evaluationRepository, IPatientRepository patientRepository)
+        public EvaluationsController(IEvaluationRepository evaluationRepository, IPatientRepository patientRepository, ILimbRepository amputatedLimbRepository)
         {
             _evaluationRepository = evaluationRepository;
             _patientRepository = patientRepository;
+            _amputatedLimbRepository = amputatedLimbRepository;
         }
 
         /// <summary>
@@ -73,11 +79,11 @@ namespace NutrInfo.Admin.Api.Controllers
         /// <param name="request"></param>
         [HttpPut, Route("{evaluationId}/initial")]
         [Produces(MediaTypeNames.Application.Json)]
-        [ProducesResponseType(typeof(EvaluationResponse), StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(InitialEvaluationMapResponse), StatusCodes.Status200OK)]
         [ProducesResponseType(typeof(ResponseError), StatusCodes.Status422UnprocessableEntity)]
         public async Task<IActionResult> InitialEvaluation([FromRoute] int evaluationId, [FromBody] PutInitialEvaluationRequest request)
         {
-            var evaluationRegistration = new InitialEvaluationRegistration(_evaluationRepository);
+            var evaluationRegistration = new InitialEvaluationRegistration(_evaluationRepository, _amputatedLimbRepository);
             var evaluation = await evaluationRegistration.Register(evaluationId, request);
 
             if (evaluationRegistration.EvaluationNotFound)
@@ -85,7 +91,7 @@ namespace NutrInfo.Admin.Api.Controllers
                 return UnprocessableEntity(new ResponseError("EVALUATION_NOT_FOUND"));
             }
 
-            return Ok(evaluation.MapToResponse());
+            return Ok(evaluation.MapToInitialResponse());
         }
 
         /// <summary>
@@ -93,9 +99,9 @@ namespace NutrInfo.Admin.Api.Controllers
         /// </summary>
         /// <param name="evaluationId"></param>
         /// <param name="request"></param>
-        [HttpPut, Route("{evaluationId}/NRS")]
+        [HttpPut, Route("{evaluationId}/nrs")]
         [Produces(MediaTypeNames.Application.Json)]
-        [ProducesResponseType(typeof(EvaluationResponse), StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(NRSEvaluationResponse), StatusCodes.Status200OK)]
         [ProducesResponseType(typeof(ResponseError), StatusCodes.Status422UnprocessableEntity)]
         public async Task<IActionResult> NRSEvaluation([FromRoute] int evaluationId, [FromBody] PutNRSEvaluationRequest request)
         {
@@ -107,7 +113,7 @@ namespace NutrInfo.Admin.Api.Controllers
                 return UnprocessableEntity(new ResponseError("EVALUATION_NOT_FOUND"));
             }
 
-            return Ok(evaluation.MapToResponse());
+            return Ok(evaluation.MapToNRSResponse());
         }
 
         /// <summary>
@@ -117,7 +123,7 @@ namespace NutrInfo.Admin.Api.Controllers
         /// <param name="request"></param>
         [HttpPut, Route("{evaluationId}/anthropometry")]
         [Produces(MediaTypeNames.Application.Json)]
-        [ProducesResponseType(typeof(EvaluationResponse), StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(AnthropometryEvaluationMapResponse), StatusCodes.Status200OK)]
         [ProducesResponseType(typeof(ResponseError), StatusCodes.Status422UnprocessableEntity)]
         public async Task<IActionResult> AnthropometryEvaluation([FromRoute] int evaluationId, [FromBody] PutAnthropometryEvaluationRequest request)
         {
@@ -129,7 +135,20 @@ namespace NutrInfo.Admin.Api.Controllers
                 return UnprocessableEntity(new ResponseError("EVALUATION_NOT_FOUND"));
             }
 
-            return Ok(evaluation.MapToResponse());
+            return Ok(evaluation.MapToAnthropometryResponse());
+        }
+
+        /// <summary>
+        /// Generate a diagnosis from a registered evaluation
+        /// </summary>
+        /// <param name="evaluationId"></param>
+        [HttpGet, Route("{evaluationId}/diagnosis")]
+        [Produces(MediaTypeNames.Application.Json)]
+        [ProducesResponseType(typeof(EvaluationResponse), StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(ResponseError), StatusCodes.Status422UnprocessableEntity)]
+        public async Task<IActionResult> Diagnosis([FromRoute] int evaluationId)
+        {
+            return Ok();
         }
     }
 }

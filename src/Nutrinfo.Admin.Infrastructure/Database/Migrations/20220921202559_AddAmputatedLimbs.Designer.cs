@@ -2,6 +2,7 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 using NutrInfo.Admin.Api.Infrastructure.Database.DataModel;
@@ -11,9 +12,10 @@ using NutrInfo.Admin.Api.Infrastructure.Database.DataModel;
 namespace NutrInfo.Admin.Api.Migrations
 {
     [DbContext(typeof(ApiDbContext))]
-    partial class ApiDbContextModelSnapshot : ModelSnapshot
+    [Migration("20220921202559_AddAmputatedLimbs")]
+    partial class AddAmputatedLimbs
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -23,7 +25,7 @@ namespace NutrInfo.Admin.Api.Migrations
 
             NpgsqlModelBuilderExtensions.UseIdentityByDefaultColumns(modelBuilder);
 
-            modelBuilder.Entity("amputatedlimbs", b =>
+            modelBuilder.Entity("AmputatedLimbPatient", b =>
                 {
                     b.Property<int>("AmputatedLimbsId")
                         .HasColumnType("integer");
@@ -35,7 +37,7 @@ namespace NutrInfo.Admin.Api.Migrations
 
                     b.HasIndex("PatientsUserId");
 
-                    b.ToTable("amputatedlimbs", "nutrinfo");
+                    b.ToTable("AmputatedLimbPatient", "nutrinfo");
                 });
 
             modelBuilder.Entity("Nutrinfo.Admin.Domain.Addresses.Address", b =>
@@ -94,9 +96,7 @@ namespace NutrInfo.Admin.Api.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("Name");
-
-                    b.ToTable("amputatedlimb", "nutrinfo");
+                    b.ToTable("AmputatedLimb", "nutrinfo");
                 });
 
             modelBuilder.Entity("Nutrinfo.Admin.Domain.Evaluations.Evaluation", b =>
@@ -265,7 +265,7 @@ namespace NutrInfo.Admin.Api.Migrations
                     b.ToTable("user", "nutrinfo");
                 });
 
-            modelBuilder.Entity("amputatedlimbs", b =>
+            modelBuilder.Entity("AmputatedLimbPatient", b =>
                 {
                     b.HasOne("Nutrinfo.Admin.Domain.AmputatedLimbs.AmputatedLimb", null)
                         .WithMany()

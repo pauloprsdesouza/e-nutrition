@@ -1,6 +1,4 @@
-using System.Collections.Generic;
-
-namespace NutrInfo.Admin.Api.Models.AmputatedLimbs
+namespace NutrInfo.Admin.Contracts.AmputatedLimbs
 {
     public class GetAmputatedLimbResponse
     {

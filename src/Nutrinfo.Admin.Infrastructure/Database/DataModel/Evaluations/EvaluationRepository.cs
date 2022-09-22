@@ -27,6 +27,8 @@ namespace Nutrinfo.Admin.Infrastructure.Database.DataModel.Evaluations
         {
             return await _evaluations.Where(x => x.Id == evaluationId)
                                      .Include(x => x.Patient)
+                                     .ThenInclude(x => x.AmputatedLimbs)
+                                     .Include(x => x.Patient)
                                      .ThenInclude(x => x.User)
                                      .SingleOrDefaultAsync();
         }

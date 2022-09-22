@@ -1,8 +1,8 @@
-using System;
 using System.ComponentModel.DataAnnotations;
+using Nutrinfo.Admin.Domain.Limbs;
 using Nutrinfo.Admin.Domain.Evaluations;
 
-namespace NutrInfo.Admin.Contracts.Evaluations
+namespace NutrInfo.Admin.Contracts.Evaluations.Initial
 {
     public class PutInitialEvaluationRequest
     {
@@ -15,18 +15,16 @@ namespace NutrInfo.Admin.Contracts.Evaluations
         [Required, Range(0.5, 2.5)]
         public double Height { get; set; }
 
-        [Required, Range(1, 12)]
+        [Range(0, 12)]
         public double EdemaWeight { get; set; }
 
-        [Required]
         public bool HasAscite { get; set; }
 
-        [Required]
-        public bool HasAmputatedLimb { get; set; }
+        public List<int> AmputatedLimbs { get; set; }
 
         public void MapTo(Evaluation evaluation)
         {
-            evaluation.Weight = Weight;
+            evaluation.Weight = Weight - EdemaWeight;
             evaluation.Height = Height;
             evaluation.IsWalking = IsWalking;
             evaluation.EdemaWeight = EdemaWeight;

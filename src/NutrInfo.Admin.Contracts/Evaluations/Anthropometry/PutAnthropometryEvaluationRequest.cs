@@ -1,7 +1,7 @@
 using System.ComponentModel.DataAnnotations;
 using Nutrinfo.Admin.Domain.Evaluations;
 
-namespace NutrInfo.Admin.Contracts.Evaluations
+namespace NutrInfo.Admin.Contracts.Evaluations.Anthropometry
 {
     public class PutAnthropometryEvaluationRequest
     {

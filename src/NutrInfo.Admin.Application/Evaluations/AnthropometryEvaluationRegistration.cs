@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Nutrinfo.Admin.Domain.Evaluations;
 using NutrInfo.Admin.Contracts.Evaluations;
+using NutrInfo.Admin.Contracts.Evaluations.Anthropometry;
 
 namespace NutrInfo.Admin.Application.Evaluations
 {
