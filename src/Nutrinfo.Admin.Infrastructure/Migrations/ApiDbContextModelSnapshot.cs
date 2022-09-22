@@ -2,20 +2,18 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
-using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 using NutrInfo.Admin.Api.Infrastructure.Database.DataModel;
 
 #nullable disable
 
-namespace NutrInfo.Admin.Api.Migrations
+namespace Nutrinfo.Admin.Infrastructure.Migrations
 {
     [DbContext(typeof(ApiDbContext))]
-    [Migration("20220921202736_AddAmputatedLimbs2")]
-    partial class AddAmputatedLimbs2
+    partial class ApiDbContextModelSnapshot : ModelSnapshot
     {
-        protected override void BuildTargetModel(ModelBuilder modelBuilder)
+        protected override void BuildModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -25,19 +23,19 @@ namespace NutrInfo.Admin.Api.Migrations
 
             NpgsqlModelBuilderExtensions.UseIdentityByDefaultColumns(modelBuilder);
 
-            modelBuilder.Entity("amputatedlimbs", b =>
+            modelBuilder.Entity("AsciteDegreeEvaluation", b =>
                 {
-                    b.Property<int>("AmputatedLimbsId")
+                    b.Property<int>("AscitesId")
                         .HasColumnType("integer");
 
-                    b.Property<int>("PatientsUserId")
+                    b.Property<int>("EvaluationsId")
                         .HasColumnType("integer");
 
-                    b.HasKey("AmputatedLimbsId", "PatientsUserId");
+                    b.HasKey("AscitesId", "EvaluationsId");
 
-                    b.HasIndex("PatientsUserId");
+                    b.HasIndex("EvaluationsId");
 
-                    b.ToTable("amputatedlimbs", "nutrinfo");
+                    b.ToTable("AsciteDegreeEvaluation", "nutrinfo");
                 });
 
             modelBuilder.Entity("Nutrinfo.Admin.Domain.Addresses.Address", b =>
@@ -82,6 +80,31 @@ namespace NutrInfo.Admin.Api.Migrations
 
             modelBuilder.Entity("Nutrinfo.Admin.Domain.AmputatedLimbs.AmputatedLimb", b =>
                 {
+                    b.Property<int>("EvaluationId")
+                        .HasColumnType("integer");
+
+                    b.Property<int>("PatientId")
+                        .HasColumnType("integer");
+
+                    b.Property<int>("AmputatedLimbPercentageId")
+                        .HasColumnType("integer");
+
+                    b.Property<string>("Reason")
+                        .HasColumnType("text");
+
+                    b.HasKey("EvaluationId", "PatientId", "AmputatedLimbPercentageId");
+
+                    b.HasIndex("AmputatedLimbPercentageId");
+
+                    b.HasIndex("PatientId");
+
+                    b.HasIndex("Reason");
+
+                    b.ToTable("amputatedlimb", "nutrinfo");
+                });
+
+            modelBuilder.Entity("Nutrinfo.Admin.Domain.AmputatedLimbsPercentage.AmputatedLimbPercentage", b =>
+                {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("integer");
@@ -91,14 +114,34 @@ namespace NutrInfo.Admin.Api.Migrations
                     b.Property<string>("Name")
                         .HasColumnType("text");
 
-                    b.Property<double>("Percentil")
+                    b.Property<double>("Percentage")
                         .HasColumnType("double precision");
 
                     b.HasKey("Id");
 
-                    b.HasIndex("Name");
+                    b.ToTable("amputatedlimbpercentage", "nutrinfo");
+                });
 
-                    b.ToTable("amputatedlimb", "nutrinfo");
+            modelBuilder.Entity("Nutrinfo.Admin.Domain.AsciteDegrees.AsciteDegree", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("integer");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
+
+                    b.Property<double>("AsciticWeight")
+                        .HasColumnType("double precision");
+
+                    b.Property<int>("Degree")
+                        .HasColumnType("integer");
+
+                    b.Property<double>("PeripheralEdema")
+                        .HasColumnType("double precision");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("AsciteDegree", "nutrinfo");
                 });
 
             modelBuilder.Entity("Nutrinfo.Admin.Domain.Evaluations.Evaluation", b =>
@@ -130,9 +173,6 @@ namespace NutrInfo.Admin.Api.Migrations
 
                     b.Property<double>("EdemaWeight")
                         .HasColumnType("double precision");
-
-                    b.Property<bool>("HasAscite")
-                        .HasColumnType("boolean");
 
                     b.Property<double>("Height")
                         .HasColumnType("double precision");
@@ -267,17 +307,17 @@ namespace NutrInfo.Admin.Api.Migrations
                     b.ToTable("user", "nutrinfo");
                 });
 
-            modelBuilder.Entity("amputatedlimbs", b =>
+            modelBuilder.Entity("AsciteDegreeEvaluation", b =>
                 {
-                    b.HasOne("Nutrinfo.Admin.Domain.AmputatedLimbs.AmputatedLimb", null)
+                    b.HasOne("Nutrinfo.Admin.Domain.AsciteDegrees.AsciteDegree", null)
                         .WithMany()
-                        .HasForeignKey("AmputatedLimbsId")
+                        .HasForeignKey("AscitesId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("Nutrinfo.Admin.Domain.Patients.Patient", null)
+                    b.HasOne("Nutrinfo.Admin.Domain.Evaluations.Evaluation", null)
                         .WithMany()
-                        .HasForeignKey("PatientsUserId")
+                        .HasForeignKey("EvaluationsId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
                 });
@@ -291,6 +331,33 @@ namespace NutrInfo.Admin.Api.Migrations
                         .IsRequired();
 
                     b.Navigation("User");
+                });
+
+            modelBuilder.Entity("Nutrinfo.Admin.Domain.AmputatedLimbs.AmputatedLimb", b =>
+                {
+                    b.HasOne("Nutrinfo.Admin.Domain.AmputatedLimbsPercentage.AmputatedLimbPercentage", "LimbPercentage")
+                        .WithMany("AmputatedLimbs")
+                        .HasForeignKey("AmputatedLimbPercentageId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("Nutrinfo.Admin.Domain.Evaluations.Evaluation", "Evaluation")
+                        .WithMany("AmputatedLimbs")
+                        .HasForeignKey("EvaluationId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("Nutrinfo.Admin.Domain.Patients.Patient", "Patient")
+                        .WithMany("AmputatedLimbs")
+                        .HasForeignKey("PatientId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Evaluation");
+
+                    b.Navigation("LimbPercentage");
+
+                    b.Navigation("Patient");
                 });
 
             modelBuilder.Entity("Nutrinfo.Admin.Domain.Evaluations.Evaluation", b =>
@@ -334,6 +401,16 @@ namespace NutrInfo.Admin.Api.Migrations
                     b.Navigation("User");
                 });
 
+            modelBuilder.Entity("Nutrinfo.Admin.Domain.AmputatedLimbsPercentage.AmputatedLimbPercentage", b =>
+                {
+                    b.Navigation("AmputatedLimbs");
+                });
+
+            modelBuilder.Entity("Nutrinfo.Admin.Domain.Evaluations.Evaluation", b =>
+                {
+                    b.Navigation("AmputatedLimbs");
+                });
+
             modelBuilder.Entity("Nutrinfo.Admin.Domain.Nutritionists.Nutritionist", b =>
                 {
                     b.Navigation("Evaluations");
@@ -341,6 +418,8 @@ namespace NutrInfo.Admin.Api.Migrations
 
             modelBuilder.Entity("Nutrinfo.Admin.Domain.Patients.Patient", b =>
                 {
+                    b.Navigation("AmputatedLimbs");
+
                     b.Navigation("Evaluations");
                 });
 

@@ -1,5 +1,5 @@
 using System.ComponentModel.DataAnnotations;
-using Nutrinfo.Admin.Domain.Limbs;
+using Nutrinfo.Admin.Domain.AmputatedLimbs;
 using Nutrinfo.Admin.Domain.Evaluations;
 
 namespace NutrInfo.Admin.Contracts.Evaluations.Initial
@@ -18,8 +18,6 @@ namespace NutrInfo.Admin.Contracts.Evaluations.Initial
         [Range(0, 12)]
         public double EdemaWeight { get; set; }
 
-        public bool HasAscite { get; set; }
-
         public List<int> AmputatedLimbs { get; set; }
 
         public void MapTo(Evaluation evaluation)
@@ -28,7 +26,6 @@ namespace NutrInfo.Admin.Contracts.Evaluations.Initial
             evaluation.Height = Height;
             evaluation.IsWalking = IsWalking;
             evaluation.EdemaWeight = EdemaWeight;
-            evaluation.HasAscite = HasAscite;
             evaluation.Imc = Weight / Math.Pow(Height, 2);
             evaluation.Step = EvaluationStepsEnum.INITIAL;
         }

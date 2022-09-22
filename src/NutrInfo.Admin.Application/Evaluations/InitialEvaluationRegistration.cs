@@ -1,6 +1,6 @@
 using System;
 using System.Threading.Tasks;
-using Nutrinfo.Admin.Domain.Limbs;
+using Nutrinfo.Admin.Domain.AmputatedLimbs;
 using Nutrinfo.Admin.Domain.Evaluations;
 using NutrInfo.Admin.Application.AmputatedLimbs;
 using NutrInfo.Admin.Contracts.Evaluations;
@@ -11,9 +11,9 @@ namespace NutrInfo.Admin.Application.Evaluations
     public class InitialEvaluationRegistration
     {
         private readonly IEvaluationRepository _evaluationRepository;
-        private readonly ILimbRepository _amputatedLimbRepository;
+        private readonly IAmputatedLimbRepository _amputatedLimbRepository;
 
-        public InitialEvaluationRegistration(IEvaluationRepository evaluationRepository, ILimbRepository amputatedLimbRepository)
+        public InitialEvaluationRegistration(IEvaluationRepository evaluationRepository, IAmputatedLimbRepository amputatedLimbRepository)
         {
             _evaluationRepository = evaluationRepository;
             _amputatedLimbRepository = amputatedLimbRepository;
@@ -37,9 +37,9 @@ namespace NutrInfo.Admin.Application.Evaluations
                 evaluation.Patient.AmputatedLimbs.Clear();
 
                 var amputatedLimbSearch = new AmputatedLimbSearch(_amputatedLimbRepository);
-                evaluation.Patient.AmputatedLimbs = await amputatedLimbSearch.Find(request.AmputatedLimbs);
+                evaluation.Patient.AmputatedLimbs = await amputatedLimbSearch.Find(request.AmputatedLimbs, evaluation.PatientId);
 
-                var percentil = evaluation.Patient.AmputatedLimbs.Sum(x => x.Percentil);
+                var percentil = evaluation.Patient.AmputatedLimbs.Sum(x => x.LimbPercentage.Percentage);
 
                 evaluation.Weight -= evaluation.Weight * percentil / 100;
             }

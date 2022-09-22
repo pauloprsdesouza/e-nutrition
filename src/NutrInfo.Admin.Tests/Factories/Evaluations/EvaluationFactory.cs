@@ -11,7 +11,6 @@ namespace NutrInfo.Admin.Tests.Factories.Evaluations
         public static Evaluation Build(this Evaluation evaluation)
         {
             var evaluationFaker = new Faker<Evaluation>()
-            .RuleFor(p => p.HasAscite, f => f.Random.Bool())
             .RuleFor(p => p.DiseaseSeverity, f => f.PickRandom<DiseaseSeverityEnum>())
             .RuleFor(p => p.Height, f => f.Random.Double(150, 220))
             .RuleFor(p => p.Weight, f => f.Random.Double(20, 200))

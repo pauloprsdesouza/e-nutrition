@@ -9,7 +9,6 @@ namespace NutrInfo.Admin.Contracts.Evaluations.Initial
             return new InitialEvaluationResponse()
             {
                 EdemaWeight = evaluation.EdemaWeight,
-                HasAscite = evaluation.HasAscite,
                 Height = evaluation.Height,
                 IsWalking = evaluation.IsWalking,
                 Weight = evaluation.Weight

@@ -3,18 +3,18 @@ using System.Net.Mime;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using Nutrinfo.Admin.Domain.Limbs;
+using Nutrinfo.Admin.Domain.AmputatedLimbsPercentage;
 using NutrInfo.Admin.Contracts;
-using NutrInfo.Admin.Contracts.AmputatedLimbs;
+using NutrInfo.Admin.Contracts.AmputatedLimbsPercentage;
 
 namespace NutrInfo.Admin.Api.Controllers
 {
-    [Route("api/v1/amputatedlimbs")]
-    public class AmputatedLimbsController : Controller
+    [Route("api/v1/amputatedlimbspercentage")]
+    public class AmputatedLimbsPercentageController : Controller
     {
-        private readonly ILimbRepository _repository;
+        private readonly IAmputatedLimbPercentageRepository _repository;
 
-        public AmputatedLimbsController(ILimbRepository repository)
+        public AmputatedLimbsPercentageController(IAmputatedLimbPercentageRepository repository)
         {
             _repository = repository;
         }
@@ -24,15 +24,15 @@ namespace NutrInfo.Admin.Api.Controllers
         /// </summary>
         [HttpGet]
         [Produces(MediaTypeNames.Application.Json)]
-        [ProducesResponseType(typeof(GetAmputatedLimbResponse), StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(GetAmputatedLimbPercentageResponse), StatusCodes.Status200OK)]
         [ProducesResponseType(typeof(ResponseError), StatusCodes.Status422UnprocessableEntity)]
         public async Task<IActionResult> List()
         {
             var amputatedLimbs = await _repository.FindAll();
 
-            return Ok(new GetAmputatedLimbResponse()
+            return Ok(new GetAmputatedLimbPercentageResponse()
             {
-                AmputatedLimbs = amputatedLimbs.Select(x => x.MapToResponse())
+                LimbsPercentage = amputatedLimbs.Select(x => x.MapToResponse())
             });
         }
     }

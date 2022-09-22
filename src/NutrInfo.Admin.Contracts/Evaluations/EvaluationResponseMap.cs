@@ -14,7 +14,6 @@ namespace NutrInfo.Admin.Contracts.Evaluations
                 Weight = evaluation.Weight,
                 Height = evaluation.Height,
                 IsWalking = evaluation.IsWalking,
-                HasAscites = evaluation.HasAscite,
                 NutritionState = evaluation.NutritionalState,
                 DiseaseSeverity = evaluation.DiseaseSeverity,
                 Status = evaluation.Status,

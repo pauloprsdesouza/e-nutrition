@@ -2,7 +2,7 @@ using System.Net.Mime;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using Nutrinfo.Admin.Domain.Limbs;
+using Nutrinfo.Admin.Domain.AmputatedLimbs;
 using Nutrinfo.Admin.Domain.Evaluations;
 using Nutrinfo.Admin.Domain.Patients;
 using NutrInfo.Admin.Application.Evaluations;
@@ -19,9 +19,9 @@ namespace NutrInfo.Admin.Api.Controllers
     {
         private readonly IEvaluationRepository _evaluationRepository;
         private readonly IPatientRepository _patientRepository;
-        private readonly ILimbRepository _amputatedLimbRepository;
+        private readonly IAmputatedLimbRepository _amputatedLimbRepository;
 
-        public EvaluationsController(IEvaluationRepository evaluationRepository, IPatientRepository patientRepository, ILimbRepository amputatedLimbRepository)
+        public EvaluationsController(IEvaluationRepository evaluationRepository, IPatientRepository patientRepository, IAmputatedLimbRepository amputatedLimbRepository)
         {
             _evaluationRepository = evaluationRepository;
             _patientRepository = patientRepository;

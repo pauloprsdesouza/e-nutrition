@@ -1,6 +1,6 @@
 using Microsoft.EntityFrameworkCore;
 using Nutrinfo.Admin.Domain.Addresses;
-using Nutrinfo.Admin.Domain.Limbs;
+using Nutrinfo.Admin.Domain.AmputatedLimbs;
 using Nutrinfo.Admin.Domain.Evaluations;
 using Nutrinfo.Admin.Domain.Nutritionists;
 using Nutrinfo.Admin.Domain.Patients;
@@ -10,7 +10,9 @@ using NutrInfo.Admin.Api.Infrastructure.Database.DataModel.Evaluations;
 using NutrInfo.Admin.Api.Infrastructure.Database.DataModel.Nutritionists;
 using NutrInfo.Admin.Api.Infrastructure.Database.DataModel.Patients;
 using NutrInfo.Admin.Api.Infrastructure.Database.DataModel.Users;
-using Nutrinfo.Admin.Infrastructure.Database.DataModel.Limbs;
+using Nutrinfo.Admin.Infrastructure.Database.DataModel.AmputatedLimbs;
+using Nutrinfo.Admin.Domain.AmputatedLimbsPercentage;
+using Nutrinfo.Admin.Infrastructure.Database.DataModel.AmputatedLimbsPercentage;
 
 namespace NutrInfo.Admin.Api.Infrastructure.Database.DataModel
 {
@@ -25,7 +27,8 @@ namespace NutrInfo.Admin.Api.Infrastructure.Database.DataModel
         public DbSet<User> Users { get; set; }
         public DbSet<Address> Addresses { get; set; }
         public DbSet<Evaluation> Evaluations { get; set; }
-        public DbSet<Limb> AmputatedLimbs { get; set; }
+        public DbSet<AmputatedLimb> AmputatedLimbs { get; set; }
+        public DbSet<AmputatedLimbPercentage> AmputatedLimbsPercentage { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -36,7 +39,8 @@ namespace NutrInfo.Admin.Api.Infrastructure.Database.DataModel
             modelBuilder.Entity<User>().Configure();
             modelBuilder.Entity<Address>().Configure();
             modelBuilder.Entity<Evaluation>().Configure();
-            modelBuilder.Entity<Limb>().Configure();
+            modelBuilder.Entity<AmputatedLimb>().Configure();
+            modelBuilder.Entity<AmputatedLimbPercentage>().Configure();
         }
     }
 }

@@ -4,7 +4,7 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
 #nullable disable
 
-namespace NutrInfo.Admin.Api.Migrations
+namespace Nutrinfo.Admin.Infrastructure.Migrations
 {
     public partial class InitialMigration : Migration
     {
@@ -14,18 +14,34 @@ namespace NutrInfo.Admin.Api.Migrations
                 name: "nutrinfo");
 
             migrationBuilder.CreateTable(
-                name: "amputatedlimb",
+                name: "amputatedlimbpercentage",
                 schema: "nutrinfo",
                 columns: table => new
                 {
                     Id = table.Column<int>(type: "integer", nullable: false)
                         .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
-                    Limb = table.Column<string>(type: "text", nullable: true),
-                    Percentual = table.Column<double>(type: "double precision", nullable: false)
+                    Name = table.Column<string>(type: "text", nullable: true),
+                    Percentage = table.Column<double>(type: "double precision", nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_amputatedlimb", x => x.Id);
+                    table.PrimaryKey("PK_amputatedlimbpercentage", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "AsciteDegree",
+                schema: "nutrinfo",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "integer", nullable: false)
+                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
+                    Degree = table.Column<int>(type: "integer", nullable: false),
+                    AsciticWeight = table.Column<double>(type: "double precision", nullable: false),
+                    PeripheralEdema = table.Column<double>(type: "double precision", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_AsciteDegree", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
@@ -125,20 +141,25 @@ namespace NutrInfo.Admin.Api.Migrations
                         .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
                     PatientId = table.Column<int>(type: "integer", nullable: false),
                     NutritionistId = table.Column<int>(type: "integer", nullable: false),
-                    BedNumber = table.Column<int>(type: "integer", nullable: true),
-                    Protein = table.Column<double>(type: "double precision", nullable: true),
-                    Energy = table.Column<double>(type: "double precision", nullable: true),
-                    Weight = table.Column<double>(type: "double precision", nullable: true),
-                    Height = table.Column<double>(type: "double precision", nullable: true),
-                    Imc = table.Column<double>(type: "double precision", nullable: true),
-                    IsWalking = table.Column<bool>(type: "boolean", nullable: true),
-                    HasEdema = table.Column<bool>(type: "boolean", nullable: true),
-                    HasAscite = table.Column<bool>(type: "boolean", nullable: true),
-                    HasAmputatedLimb = table.Column<bool>(type: "boolean", nullable: true),
-                    NutritionState = table.Column<int>(type: "integer", nullable: true),
-                    DiseaseSeverity = table.Column<int>(type: "integer", nullable: true),
+                    Weight = table.Column<double>(type: "double precision", nullable: false),
+                    Height = table.Column<double>(type: "double precision", nullable: false),
+                    Imc = table.Column<double>(type: "double precision", nullable: false),
+                    IsWalking = table.Column<bool>(type: "boolean", nullable: false),
+                    EdemaWeight = table.Column<double>(type: "double precision", nullable: false),
+                    AsciteWeight = table.Column<double>(type: "double precision", nullable: false),
+                    NutritionalState = table.Column<string>(type: "text", nullable: false),
+                    DiseaseSeverity = table.Column<string>(type: "text", nullable: false),
+                    LostWeightLastThreeMonths = table.Column<double>(type: "double precision", nullable: false),
+                    ReducedDietaryIntake = table.Column<bool>(type: "boolean", nullable: false),
+                    SeriouslyIllPatient = table.Column<bool>(type: "boolean", nullable: false),
+                    ArmCircumference = table.Column<double>(type: "double precision", nullable: false),
+                    TricepsPleat = table.Column<double>(type: "double precision", nullable: false),
+                    CalfCircumference = table.Column<double>(type: "double precision", nullable: false),
+                    ArmMuscleCircumference = table.Column<double>(type: "double precision", nullable: false),
+                    Status = table.Column<string>(type: "text", nullable: false),
+                    Step = table.Column<string>(type: "text", nullable: false),
                     CreatedAt = table.Column<DateTimeOffset>(type: "timestamp with time zone", nullable: false),
-                    UpdatedAt = table.Column<DateTimeOffset>(type: "timestamp with time zone", nullable: false)
+                    UpdatedAt = table.Column<DateTimeOffset>(type: "timestamp with time zone", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -160,25 +181,61 @@ namespace NutrInfo.Admin.Api.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "amputatedlimbs",
+                name: "amputatedlimb",
                 schema: "nutrinfo",
                 columns: table => new
                 {
-                    AmputatedLimbsId = table.Column<int>(type: "integer", nullable: false),
+                    EvaluationId = table.Column<int>(type: "integer", nullable: false),
+                    PatientId = table.Column<int>(type: "integer", nullable: false),
+                    AmputatedLimbPercentageId = table.Column<int>(type: "integer", nullable: false),
+                    Reason = table.Column<string>(type: "text", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_amputatedlimb", x => new { x.EvaluationId, x.PatientId, x.AmputatedLimbPercentageId });
+                    table.ForeignKey(
+                        name: "FK_amputatedlimb_amputatedlimbpercentage_AmputatedLimbPercenta~",
+                        column: x => x.AmputatedLimbPercentageId,
+                        principalSchema: "nutrinfo",
+                        principalTable: "amputatedlimbpercentage",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_amputatedlimb_evaluation_EvaluationId",
+                        column: x => x.EvaluationId,
+                        principalSchema: "nutrinfo",
+                        principalTable: "evaluation",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_amputatedlimb_patient_PatientId",
+                        column: x => x.PatientId,
+                        principalSchema: "nutrinfo",
+                        principalTable: "patient",
+                        principalColumn: "UserId",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "AsciteDegreeEvaluation",
+                schema: "nutrinfo",
+                columns: table => new
+                {
+                    AscitesId = table.Column<int>(type: "integer", nullable: false),
                     EvaluationsId = table.Column<int>(type: "integer", nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_amputatedlimbs", x => new { x.AmputatedLimbsId, x.EvaluationsId });
+                    table.PrimaryKey("PK_AsciteDegreeEvaluation", x => new { x.AscitesId, x.EvaluationsId });
                     table.ForeignKey(
-                        name: "FK_amputatedlimbs_amputatedlimb_AmputatedLimbsId",
-                        column: x => x.AmputatedLimbsId,
+                        name: "FK_AsciteDegreeEvaluation_AsciteDegree_AscitesId",
+                        column: x => x.AscitesId,
                         principalSchema: "nutrinfo",
-                        principalTable: "amputatedlimb",
+                        principalTable: "AsciteDegree",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
-                        name: "FK_amputatedlimbs_evaluation_EvaluationsId",
+                        name: "FK_AsciteDegreeEvaluation_evaluation_EvaluationsId",
                         column: x => x.EvaluationsId,
                         principalSchema: "nutrinfo",
                         principalTable: "evaluation",
@@ -187,9 +244,27 @@ namespace NutrInfo.Admin.Api.Migrations
                 });
 
             migrationBuilder.CreateIndex(
-                name: "IX_amputatedlimbs_EvaluationsId",
+                name: "IX_amputatedlimb_AmputatedLimbPercentageId",
                 schema: "nutrinfo",
-                table: "amputatedlimbs",
+                table: "amputatedlimb",
+                column: "AmputatedLimbPercentageId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_amputatedlimb_PatientId",
+                schema: "nutrinfo",
+                table: "amputatedlimb",
+                column: "PatientId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_amputatedlimb_Reason",
+                schema: "nutrinfo",
+                table: "amputatedlimb",
+                column: "Reason");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_AsciteDegreeEvaluation_EvaluationsId",
+                schema: "nutrinfo",
+                table: "AsciteDegreeEvaluation",
                 column: "EvaluationsId");
 
             migrationBuilder.CreateIndex(
@@ -226,11 +301,19 @@ namespace NutrInfo.Admin.Api.Migrations
                 schema: "nutrinfo");
 
             migrationBuilder.DropTable(
-                name: "amputatedlimbs",
+                name: "amputatedlimb",
                 schema: "nutrinfo");
 
             migrationBuilder.DropTable(
-                name: "amputatedlimb",
+                name: "AsciteDegreeEvaluation",
+                schema: "nutrinfo");
+
+            migrationBuilder.DropTable(
+                name: "amputatedlimbpercentage",
+                schema: "nutrinfo");
+
+            migrationBuilder.DropTable(
+                name: "AsciteDegree",
                 schema: "nutrinfo");
 
             migrationBuilder.DropTable(

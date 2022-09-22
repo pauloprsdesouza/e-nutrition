@@ -1,6 +1,6 @@
-namespace NutrInfo.Admin.Contracts.AmputatedLimbs
+namespace NutrInfo.Admin.Contracts.AmputatedLimbsPercentage
 {
-    public class AmputatedLimbResponse
+    public class AmputatedLimbPercentageResponse
     {
         public int Id { get; set; }
         public string Name { get; set; }

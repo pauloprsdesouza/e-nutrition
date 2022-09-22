@@ -1,5 +1,5 @@
 
-using Nutrinfo.Admin.Domain.Limbs;
+using Nutrinfo.Admin.Domain.AmputatedLimbs;
 using Nutrinfo.Admin.Domain.AsciteDegrees;
 using Nutrinfo.Admin.Domain.Nutritionists;
 using Nutrinfo.Admin.Domain.Patients;
@@ -33,7 +33,7 @@ namespace Nutrinfo.Admin.Domain.Evaluations
 
         public Nutritionist Nutritionist { get; set; }
         public Patient Patient { get; set; }
-        public List<Limb> AmputatedLimbs { get; set; }
+        public List<AmputatedLimb> AmputatedLimbs { get; set; }
         public List<AsciteDegree> Ascites { get; set; }
     }
 }

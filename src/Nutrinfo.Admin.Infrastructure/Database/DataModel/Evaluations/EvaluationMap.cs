@@ -29,8 +29,6 @@ namespace NutrInfo.Admin.Api.Infrastructure.Database.DataModel.Evaluations
 
             builder.Property(p => p.IsWalking);
 
-            builder.Property(p => p.HasAscite);
-
             builder.Property(p => p.LostWeightLastThreeMonths);
 
             builder.Property(p => p.ReducedDietaryIntake);
@@ -62,6 +60,10 @@ namespace NutrInfo.Admin.Api.Infrastructure.Database.DataModel.Evaluations
 
             builder.Property(p => p.UpdatedAt)
                    .IsRequired(false);
+
+            builder.HasMany(p => p.AmputatedLimbs)
+                   .WithOne(p => p.Evaluation)
+                   .HasForeignKey(p => p.EvaluationId);
         }
     }
 }
