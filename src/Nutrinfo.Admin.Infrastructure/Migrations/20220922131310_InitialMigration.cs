@@ -29,7 +29,7 @@ namespace Nutrinfo.Admin.Infrastructure.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "AsciteDegree",
+                name: "ascitedegree",
                 schema: "nutrinfo",
                 columns: table => new
                 {
@@ -41,7 +41,7 @@ namespace Nutrinfo.Admin.Infrastructure.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_AsciteDegree", x => x.Id);
+                    table.PrimaryKey("PK_ascitedegree", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
@@ -146,7 +146,6 @@ namespace Nutrinfo.Admin.Infrastructure.Migrations
                     Imc = table.Column<double>(type: "double precision", nullable: false),
                     IsWalking = table.Column<bool>(type: "boolean", nullable: false),
                     EdemaWeight = table.Column<double>(type: "double precision", nullable: false),
-                    AsciteWeight = table.Column<double>(type: "double precision", nullable: false),
                     NutritionalState = table.Column<string>(type: "text", nullable: false),
                     DiseaseSeverity = table.Column<string>(type: "text", nullable: false),
                     LostWeightLastThreeMonths = table.Column<double>(type: "double precision", nullable: false),
@@ -159,11 +158,18 @@ namespace Nutrinfo.Admin.Infrastructure.Migrations
                     Status = table.Column<string>(type: "text", nullable: false),
                     Step = table.Column<string>(type: "text", nullable: false),
                     CreatedAt = table.Column<DateTimeOffset>(type: "timestamp with time zone", nullable: false),
-                    UpdatedAt = table.Column<DateTimeOffset>(type: "timestamp with time zone", nullable: true)
+                    UpdatedAt = table.Column<DateTimeOffset>(type: "timestamp with time zone", nullable: true),
+                    AsciteDegreeId = table.Column<int>(type: "integer", nullable: true)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_evaluation", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_evaluation_ascitedegree_AsciteDegreeId",
+                        column: x => x.AsciteDegreeId,
+                        principalSchema: "nutrinfo",
+                        principalTable: "ascitedegree",
+                        principalColumn: "Id");
                     table.ForeignKey(
                         name: "FK_evaluation_nutritionist_NutritionistId",
                         column: x => x.NutritionistId,
@@ -217,26 +223,27 @@ namespace Nutrinfo.Admin.Infrastructure.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "AsciteDegreeEvaluation",
+                name: "ascite",
                 schema: "nutrinfo",
                 columns: table => new
                 {
-                    AscitesId = table.Column<int>(type: "integer", nullable: false),
-                    EvaluationsId = table.Column<int>(type: "integer", nullable: false)
+                    EvaluationId = table.Column<int>(type: "integer", nullable: false),
+                    AsciteDegreeId = table.Column<int>(type: "integer", nullable: false),
+                    Reason = table.Column<string>(type: "text", nullable: true)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_AsciteDegreeEvaluation", x => new { x.AscitesId, x.EvaluationsId });
+                    table.PrimaryKey("PK_ascite", x => new { x.AsciteDegreeId, x.EvaluationId });
                     table.ForeignKey(
-                        name: "FK_AsciteDegreeEvaluation_AsciteDegree_AscitesId",
-                        column: x => x.AscitesId,
+                        name: "FK_ascite_ascitedegree_AsciteDegreeId",
+                        column: x => x.AsciteDegreeId,
                         principalSchema: "nutrinfo",
-                        principalTable: "AsciteDegree",
+                        principalTable: "ascitedegree",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
-                        name: "FK_AsciteDegreeEvaluation_evaluation_EvaluationsId",
-                        column: x => x.EvaluationsId,
+                        name: "FK_ascite_evaluation_EvaluationId",
+                        column: x => x.EvaluationId,
                         principalSchema: "nutrinfo",
                         principalTable: "evaluation",
                         principalColumn: "Id",
@@ -262,10 +269,16 @@ namespace Nutrinfo.Admin.Infrastructure.Migrations
                 column: "Reason");
 
             migrationBuilder.CreateIndex(
-                name: "IX_AsciteDegreeEvaluation_EvaluationsId",
+                name: "IX_ascite_EvaluationId",
                 schema: "nutrinfo",
-                table: "AsciteDegreeEvaluation",
-                column: "EvaluationsId");
+                table: "ascite",
+                column: "EvaluationId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_evaluation_AsciteDegreeId",
+                schema: "nutrinfo",
+                table: "evaluation",
+                column: "AsciteDegreeId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_evaluation_NutritionistId",
@@ -305,7 +318,7 @@ namespace Nutrinfo.Admin.Infrastructure.Migrations
                 schema: "nutrinfo");
 
             migrationBuilder.DropTable(
-                name: "AsciteDegreeEvaluation",
+                name: "ascite",
                 schema: "nutrinfo");
 
             migrationBuilder.DropTable(
@@ -313,11 +326,11 @@ namespace Nutrinfo.Admin.Infrastructure.Migrations
                 schema: "nutrinfo");
 
             migrationBuilder.DropTable(
-                name: "AsciteDegree",
+                name: "evaluation",
                 schema: "nutrinfo");
 
             migrationBuilder.DropTable(
-                name: "evaluation",
+                name: "ascitedegree",
                 schema: "nutrinfo");
 
             migrationBuilder.DropTable(

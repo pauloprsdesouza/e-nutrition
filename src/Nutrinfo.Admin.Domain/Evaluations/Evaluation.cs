@@ -1,6 +1,7 @@
 
 using Nutrinfo.Admin.Domain.AmputatedLimbs;
 using Nutrinfo.Admin.Domain.AsciteDegrees;
+using Nutrinfo.Admin.Domain.Ascites;
 using Nutrinfo.Admin.Domain.Nutritionists;
 using Nutrinfo.Admin.Domain.Patients;
 
@@ -16,7 +17,6 @@ namespace Nutrinfo.Admin.Domain.Evaluations
         public double Imc { get; set; }
         public bool IsWalking { get; set; }
         public double EdemaWeight { get; set; }
-        public double AsciteWeight { get; set; }
         public NutritionalStateEnum NutritionalState { get; set; }
         public DiseaseSeverityEnum DiseaseSeverity { get; set; }
         public double LostWeightLastThreeMonths { get; set; }
@@ -34,6 +34,6 @@ namespace Nutrinfo.Admin.Domain.Evaluations
         public Nutritionist Nutritionist { get; set; }
         public Patient Patient { get; set; }
         public List<AmputatedLimb> AmputatedLimbs { get; set; }
-        public List<AsciteDegree> Ascites { get; set; }
+        public List<Ascite> Ascites { get; set; }
     }
 }

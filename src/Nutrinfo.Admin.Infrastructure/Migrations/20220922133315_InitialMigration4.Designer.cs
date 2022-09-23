@@ -2,6 +2,7 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 using NutrInfo.Admin.Api.Infrastructure.Database.DataModel;
@@ -11,9 +12,10 @@ using NutrInfo.Admin.Api.Infrastructure.Database.DataModel;
 namespace Nutrinfo.Admin.Infrastructure.Migrations
 {
     [DbContext(typeof(ApiDbContext))]
-    partial class ApiDbContextModelSnapshot : ModelSnapshot
+    [Migration("20220922133315_InitialMigration4")]
+    partial class InitialMigration4
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -118,9 +120,8 @@ namespace Nutrinfo.Admin.Infrastructure.Migrations
                     b.Property<double>("AsciticWeight")
                         .HasColumnType("double precision");
 
-                    b.Property<string>("Degree")
-                        .IsRequired()
-                        .HasColumnType("text");
+                    b.Property<int>("Degree")
+                        .HasColumnType("integer");
 
                     b.Property<double>("PeripheralEdema")
                         .HasColumnType("double precision");

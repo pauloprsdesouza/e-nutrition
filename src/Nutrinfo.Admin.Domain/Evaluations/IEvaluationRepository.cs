@@ -5,5 +5,6 @@ namespace Nutrinfo.Admin.Domain.Evaluations
         Task<Evaluation> Create(Evaluation evaluation);
         Task<Evaluation> Update(Evaluation evaluation);
         Task<Evaluation> FindById(int evaluationId);
+        Task<List<Evaluation>> FindLastTwoEvaluationsFromPatient(int patientId);
     }
 }

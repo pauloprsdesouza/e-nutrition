@@ -10,9 +10,13 @@ using NutrInfo.Admin.Api.Infrastructure.Database.DataModel.Evaluations;
 using NutrInfo.Admin.Api.Infrastructure.Database.DataModel.Nutritionists;
 using NutrInfo.Admin.Api.Infrastructure.Database.DataModel.Patients;
 using NutrInfo.Admin.Api.Infrastructure.Database.DataModel.Users;
+using Nutrinfo.Admin.Api.Infrastructure.Database.DataModel.Ascites;
+using Nutrinfo.Admin.Api.Infrastructure.Database.DataModel.AsciteDegrees;
 using Nutrinfo.Admin.Infrastructure.Database.DataModel.AmputatedLimbs;
 using Nutrinfo.Admin.Domain.AmputatedLimbsPercentage;
 using Nutrinfo.Admin.Infrastructure.Database.DataModel.AmputatedLimbsPercentage;
+using Nutrinfo.Admin.Domain.AsciteDegrees;
+using Nutrinfo.Admin.Domain.Ascites;
 
 namespace NutrInfo.Admin.Api.Infrastructure.Database.DataModel
 {
@@ -29,6 +33,8 @@ namespace NutrInfo.Admin.Api.Infrastructure.Database.DataModel
         public DbSet<Evaluation> Evaluations { get; set; }
         public DbSet<AmputatedLimb> AmputatedLimbs { get; set; }
         public DbSet<AmputatedLimbPercentage> AmputatedLimbsPercentage { get; set; }
+        public DbSet<Ascite> Ascites { get; set; }
+        public DbSet<AsciteDegree> AsciteDegrees { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -41,6 +47,8 @@ namespace NutrInfo.Admin.Api.Infrastructure.Database.DataModel
             modelBuilder.Entity<Evaluation>().Configure();
             modelBuilder.Entity<AmputatedLimb>().Configure();
             modelBuilder.Entity<AmputatedLimbPercentage>().Configure();
+            modelBuilder.Entity<Ascite>().Configure();
+            modelBuilder.Entity<AsciteDegree>().Configure();
         }
     }
 }

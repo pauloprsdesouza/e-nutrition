@@ -2,6 +2,7 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 using NutrInfo.Admin.Api.Infrastructure.Database.DataModel;
@@ -11,9 +12,10 @@ using NutrInfo.Admin.Api.Infrastructure.Database.DataModel;
 namespace Nutrinfo.Admin.Infrastructure.Migrations
 {
     [DbContext(typeof(ApiDbContext))]
-    partial class ApiDbContextModelSnapshot : ModelSnapshot
+    [Migration("20220922131310_InitialMigration")]
+    partial class InitialMigration
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -118,9 +120,8 @@ namespace Nutrinfo.Admin.Infrastructure.Migrations
                     b.Property<double>("AsciticWeight")
                         .HasColumnType("double precision");
 
-                    b.Property<string>("Degree")
-                        .IsRequired()
-                        .HasColumnType("text");
+                    b.Property<int>("Degree")
+                        .HasColumnType("integer");
 
                     b.Property<double>("PeripheralEdema")
                         .HasColumnType("double precision");
@@ -137,12 +138,6 @@ namespace Nutrinfo.Admin.Infrastructure.Migrations
 
                     b.Property<int>("EvaluationId")
                         .HasColumnType("integer");
-
-                    b.Property<bool>("HasAsciticWeight")
-                        .HasColumnType("boolean");
-
-                    b.Property<bool>("HasPeripheralEdema")
-                        .HasColumnType("boolean");
 
                     b.Property<string>("Reason")
                         .HasColumnType("text");
@@ -167,6 +162,9 @@ namespace Nutrinfo.Admin.Infrastructure.Migrations
 
                     b.Property<double>("ArmMuscleCircumference")
                         .HasColumnType("double precision");
+
+                    b.Property<int?>("AsciteDegreeId")
+                        .HasColumnType("integer");
 
                     b.Property<double>("CalfCircumference")
                         .HasColumnType("double precision");
@@ -227,6 +225,8 @@ namespace Nutrinfo.Admin.Infrastructure.Migrations
                         .HasColumnType("double precision");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("AsciteDegreeId");
 
                     b.HasIndex("NutritionistId");
 
@@ -373,6 +373,10 @@ namespace Nutrinfo.Admin.Infrastructure.Migrations
 
             modelBuilder.Entity("Nutrinfo.Admin.Domain.Evaluations.Evaluation", b =>
                 {
+                    b.HasOne("Nutrinfo.Admin.Domain.AsciteDegrees.AsciteDegree", null)
+                        .WithMany("Evaluations")
+                        .HasForeignKey("AsciteDegreeId");
+
                     b.HasOne("Nutrinfo.Admin.Domain.Nutritionists.Nutritionist", "Nutritionist")
                         .WithMany("Evaluations")
                         .HasForeignKey("NutritionistId")
@@ -420,6 +424,8 @@ namespace Nutrinfo.Admin.Infrastructure.Migrations
             modelBuilder.Entity("Nutrinfo.Admin.Domain.AsciteDegrees.AsciteDegree", b =>
                 {
                     b.Navigation("Ascites");
+
+                    b.Navigation("Evaluations");
                 });
 
             modelBuilder.Entity("Nutrinfo.Admin.Domain.Evaluations.Evaluation", b =>

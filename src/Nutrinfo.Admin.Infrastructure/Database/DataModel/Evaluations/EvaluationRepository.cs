@@ -30,7 +30,21 @@ namespace Nutrinfo.Admin.Infrastructure.Database.DataModel.Evaluations
                                      .ThenInclude(x => x.AmputatedLimbs)
                                      .Include(x => x.Patient)
                                      .ThenInclude(x => x.User)
+                                     .Include(x => x.Ascites)
                                      .SingleOrDefaultAsync();
+        }
+
+        public async Task<List<Evaluation>> FindLastTwoEvaluationsFromPatient(int patientId)
+        {
+            return await _evaluations.Where(x => x.PatientId == patientId)
+                                     .Include(x => x.Patient)
+                                     .ThenInclude(x => x.AmputatedLimbs)
+                                     .Include(x => x.Patient)
+                                     .ThenInclude(x => x.User)
+                                     .Include(x => x.Ascites)
+                                     .OrderByDescending(x => x.CreatedAt)
+                                     .Take(2)
+                                     .ToListAsync();
         }
 
         public async Task<Evaluation> Update(Evaluation evaluation)

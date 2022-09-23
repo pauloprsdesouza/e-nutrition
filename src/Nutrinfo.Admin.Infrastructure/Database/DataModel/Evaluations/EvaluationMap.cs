@@ -13,13 +13,13 @@ namespace NutrInfo.Admin.Api.Infrastructure.Database.DataModel.Evaluations
             builder.HasKey(p => p.Id);
 
             builder.Property(p => p.Id)
-                      .ValueGeneratedOnAdd();
+                    .ValueGeneratedOnAdd();
 
             builder.Property(p => p.NutritionistId)
-                      .ValueGeneratedNever();
+                    .ValueGeneratedNever();
 
             builder.Property(p => p.PatientId)
-                      .ValueGeneratedNever();
+                    .ValueGeneratedNever();
 
             builder.Property(p => p.Weight);
 
@@ -62,6 +62,10 @@ namespace NutrInfo.Admin.Api.Infrastructure.Database.DataModel.Evaluations
                    .IsRequired(false);
 
             builder.HasMany(p => p.AmputatedLimbs)
+                   .WithOne(p => p.Evaluation)
+                   .HasForeignKey(p => p.EvaluationId);
+
+            builder.HasMany(p => p.Ascites)
                    .WithOne(p => p.Evaluation)
                    .HasForeignKey(p => p.EvaluationId);
         }

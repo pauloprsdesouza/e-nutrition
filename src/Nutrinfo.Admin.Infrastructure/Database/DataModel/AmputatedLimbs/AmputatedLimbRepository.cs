@@ -17,7 +17,10 @@ namespace Nutrinfo.Admin.Infrastructure.Database.DataModel.AmputatedLimbs
 
         public async Task<List<AmputatedLimb>> FindByIdsIn(List<int> amputatedLimbsIds, int patientId)
         {
-            return await _amputatedLimbs.Where(x => amputatedLimbsIds.Contains(x.AmputatedLimbPercentageId) && x.PatientId == patientId).ToListAsync();
+            return await _amputatedLimbs.Where(x => amputatedLimbsIds.Contains(x.AmputatedLimbPercentageId) && x.PatientId == patientId)
+                                        .Include(x => x.Patient)
+                                        .Include(x => x.LimbPercentage)
+                                        .ToListAsync();
         }
 
         public async Task<List<AmputatedLimb>> FindByPatientId(int patientId)

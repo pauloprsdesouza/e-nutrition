@@ -1,4 +1,4 @@
-using Nutrinfo.Admin.Domain.Evaluations;
+using Nutrinfo.Admin.Domain.Ascites;
 
 namespace Nutrinfo.Admin.Domain.AsciteDegrees
 {
@@ -8,6 +8,7 @@ namespace Nutrinfo.Admin.Domain.AsciteDegrees
         public AsciteDegreeEnum Degree { get; set; }
         public double AsciticWeight { get; set; }
         public double PeripheralEdema { get; set; }
-        public List<Evaluation> Evaluations { get; set; }
+
+        public List<Ascite> Ascites { get; set; }
     }
 }

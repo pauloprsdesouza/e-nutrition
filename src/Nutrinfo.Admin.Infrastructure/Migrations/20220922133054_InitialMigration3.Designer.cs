@@ -12,8 +12,8 @@ using NutrInfo.Admin.Api.Infrastructure.Database.DataModel;
 namespace Nutrinfo.Admin.Infrastructure.Migrations
 {
     [DbContext(typeof(ApiDbContext))]
-    [Migration("20220922120027_InitialMigration")]
-    partial class InitialMigration
+    [Migration("20220922133054_InitialMigration3")]
+    partial class InitialMigration3
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -24,21 +24,6 @@ namespace Nutrinfo.Admin.Infrastructure.Migrations
                 .HasAnnotation("Relational:MaxIdentifierLength", 63);
 
             NpgsqlModelBuilderExtensions.UseIdentityByDefaultColumns(modelBuilder);
-
-            modelBuilder.Entity("AsciteDegreeEvaluation", b =>
-                {
-                    b.Property<int>("AscitesId")
-                        .HasColumnType("integer");
-
-                    b.Property<int>("EvaluationsId")
-                        .HasColumnType("integer");
-
-                    b.HasKey("AscitesId", "EvaluationsId");
-
-                    b.HasIndex("EvaluationsId");
-
-                    b.ToTable("AsciteDegreeEvaluation", "nutrinfo");
-                });
 
             modelBuilder.Entity("Nutrinfo.Admin.Domain.Addresses.Address", b =>
                 {
@@ -143,7 +128,25 @@ namespace Nutrinfo.Admin.Infrastructure.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("AsciteDegree", "nutrinfo");
+                    b.ToTable("ascitedegree", "nutrinfo");
+                });
+
+            modelBuilder.Entity("Nutrinfo.Admin.Domain.Ascites.Ascite", b =>
+                {
+                    b.Property<int>("AsciteDegreeId")
+                        .HasColumnType("integer");
+
+                    b.Property<int>("EvaluationId")
+                        .HasColumnType("integer");
+
+                    b.Property<string>("Reason")
+                        .HasColumnType("text");
+
+                    b.HasKey("AsciteDegreeId", "EvaluationId");
+
+                    b.HasIndex("EvaluationId");
+
+                    b.ToTable("ascite", "nutrinfo");
                 });
 
             modelBuilder.Entity("Nutrinfo.Admin.Domain.Evaluations.Evaluation", b =>
@@ -158,9 +161,6 @@ namespace Nutrinfo.Admin.Infrastructure.Migrations
                         .HasColumnType("double precision");
 
                     b.Property<double>("ArmMuscleCircumference")
-                        .HasColumnType("double precision");
-
-                    b.Property<double>("AsciteWeight")
                         .HasColumnType("double precision");
 
                     b.Property<double>("CalfCircumference")
@@ -309,21 +309,6 @@ namespace Nutrinfo.Admin.Infrastructure.Migrations
                     b.ToTable("user", "nutrinfo");
                 });
 
-            modelBuilder.Entity("AsciteDegreeEvaluation", b =>
-                {
-                    b.HasOne("Nutrinfo.Admin.Domain.AsciteDegrees.AsciteDegree", null)
-                        .WithMany()
-                        .HasForeignKey("AscitesId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("Nutrinfo.Admin.Domain.Evaluations.Evaluation", null)
-                        .WithMany()
-                        .HasForeignKey("EvaluationsId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-                });
-
             modelBuilder.Entity("Nutrinfo.Admin.Domain.Addresses.Address", b =>
                 {
                     b.HasOne("Nutrinfo.Admin.Domain.Users.User", "User")
@@ -360,6 +345,25 @@ namespace Nutrinfo.Admin.Infrastructure.Migrations
                     b.Navigation("LimbPercentage");
 
                     b.Navigation("Patient");
+                });
+
+            modelBuilder.Entity("Nutrinfo.Admin.Domain.Ascites.Ascite", b =>
+                {
+                    b.HasOne("Nutrinfo.Admin.Domain.AsciteDegrees.AsciteDegree", "AsciteDegree")
+                        .WithMany("Ascites")
+                        .HasForeignKey("AsciteDegreeId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("Nutrinfo.Admin.Domain.Evaluations.Evaluation", "Evaluation")
+                        .WithMany("Ascites")
+                        .HasForeignKey("EvaluationId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("AsciteDegree");
+
+                    b.Navigation("Evaluation");
                 });
 
             modelBuilder.Entity("Nutrinfo.Admin.Domain.Evaluations.Evaluation", b =>
@@ -408,9 +412,16 @@ namespace Nutrinfo.Admin.Infrastructure.Migrations
                     b.Navigation("AmputatedLimbs");
                 });
 
+            modelBuilder.Entity("Nutrinfo.Admin.Domain.AsciteDegrees.AsciteDegree", b =>
+                {
+                    b.Navigation("Ascites");
+                });
+
             modelBuilder.Entity("Nutrinfo.Admin.Domain.Evaluations.Evaluation", b =>
                 {
                     b.Navigation("AmputatedLimbs");
+
+                    b.Navigation("Ascites");
                 });
 
             modelBuilder.Entity("Nutrinfo.Admin.Domain.Nutritionists.Nutritionist", b =>

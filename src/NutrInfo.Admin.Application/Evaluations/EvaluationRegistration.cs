@@ -17,7 +17,7 @@ namespace NutrInfo.Admin.Application.Evaluations
 
         public bool PatientNotFound { get; private set; }
 
-        public async Task<Evaluation> Register(int nutritionistId, Evaluation evaluation)
+        public async Task<List<Evaluation>> Register(int nutritionistId, Evaluation evaluation)
         {
             var patientSearch = new PatientSearch(_patientRepository);
             await patientSearch.Find(evaluation.PatientId);
@@ -31,9 +31,9 @@ namespace NutrInfo.Admin.Application.Evaluations
             evaluation.NutritionistId = nutritionistId;
             evaluation.CreatedAt = System.DateTimeOffset.UtcNow;
 
-            var evaluationContext = await _evaluationRepository.Create(evaluation);
+            await _evaluationRepository.Create(evaluation);
 
-            return await _evaluationRepository.FindById(evaluationContext.Id);
+            return await _evaluationRepository.FindLastTwoEvaluationsFromPatient(evaluation.PatientId);
         }
     }
 }

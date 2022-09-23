@@ -1,8 +1,10 @@
+using System.Linq;
 using System.Net.Mime;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Nutrinfo.Admin.Domain.AmputatedLimbs;
+using Nutrinfo.Admin.Domain.Ascites;
 using Nutrinfo.Admin.Domain.Evaluations;
 using Nutrinfo.Admin.Domain.Patients;
 using NutrInfo.Admin.Application.Evaluations;
@@ -20,12 +22,14 @@ namespace NutrInfo.Admin.Api.Controllers
         private readonly IEvaluationRepository _evaluationRepository;
         private readonly IPatientRepository _patientRepository;
         private readonly IAmputatedLimbRepository _amputatedLimbRepository;
+        private readonly IAsciteRepository _asciteRepository;
 
-        public EvaluationsController(IEvaluationRepository evaluationRepository, IPatientRepository patientRepository, IAmputatedLimbRepository amputatedLimbRepository)
+        public EvaluationsController(IEvaluationRepository evaluationRepository, IPatientRepository patientRepository, IAmputatedLimbRepository amputatedLimbRepository, IAsciteRepository asciteRepository)
         {
             _evaluationRepository = evaluationRepository;
             _patientRepository = patientRepository;
             _amputatedLimbRepository = amputatedLimbRepository;
+            _asciteRepository = asciteRepository;
         }
 
         /// <summary>
@@ -62,14 +66,17 @@ namespace NutrInfo.Admin.Api.Controllers
             var nutritionistId = int.Parse(HttpContext.User.Identity.Name);
 
             var evaluationRegistration = new EvaluationRegistration(_evaluationRepository, _patientRepository);
-            var evaluation = await evaluationRegistration.Register(nutritionistId, request.ToEvaluation());
+            var evaluations = await evaluationRegistration.Register(nutritionistId, request.ToEvaluation());
 
             if (evaluationRegistration.PatientNotFound)
             {
                 return UnprocessableEntity(new ResponseError("PATIENT_NOT_FOUND"));
             }
 
-            return Created($"api/v1/evaluations/{evaluation.Id}", evaluation.MapToResponse());
+            return Created($"api/v1/evaluations", new GetEvaluationResponse()
+            {
+                Evaluations = evaluations.Select(x => x.MapToResponse())
+            });
         }
 
         /// <summary>
@@ -83,7 +90,7 @@ namespace NutrInfo.Admin.Api.Controllers
         [ProducesResponseType(typeof(ResponseError), StatusCodes.Status422UnprocessableEntity)]
         public async Task<IActionResult> InitialEvaluation([FromRoute] int evaluationId, [FromBody] PutInitialEvaluationRequest request)
         {
-            var evaluationRegistration = new InitialEvaluationRegistration(_evaluationRepository, _amputatedLimbRepository);
+            var evaluationRegistration = new InitialEvaluationRegistration(_evaluationRepository, _amputatedLimbRepository, _asciteRepository);
             var evaluation = await evaluationRegistration.Register(evaluationId, request);
 
             if (evaluationRegistration.EvaluationNotFound)
