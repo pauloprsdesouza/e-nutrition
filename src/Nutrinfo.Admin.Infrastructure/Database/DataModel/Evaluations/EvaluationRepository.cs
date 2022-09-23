@@ -23,6 +23,17 @@ namespace Nutrinfo.Admin.Infrastructure.Database.DataModel.Evaluations
             return evaluationContext.Entity;
         }
 
+        public async Task<List<Evaluation>> FindAllMonitoringByNutritionist(int nutritionistId)
+        {
+            return await _evaluations.Where(x => x.NutritionistId == nutritionistId)
+                                     .Include(x => x.Patient)
+                                     .ThenInclude(x => x.AmputatedLimbs)
+                                     .Include(x => x.Patient)
+                                     .ThenInclude(x => x.User)
+                                     .Include(x => x.Ascites)
+                                     .ToListAsync();
+        }
+
         public async Task<Evaluation> FindById(int evaluationId)
         {
             return await _evaluations.Where(x => x.Id == evaluationId)

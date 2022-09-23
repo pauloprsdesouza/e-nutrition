@@ -33,6 +33,24 @@ namespace NutrInfo.Admin.Api.Controllers
         }
 
         /// <summary>
+        /// Find a registered Evaluations from Nutritionist
+        /// </summary>
+        [HttpGet, Route("monitoring")]
+        [Produces(MediaTypeNames.Application.Json)]
+        [ProducesResponseType(typeof(EvaluationResponse), StatusCodes.Status200OK)]
+        public async Task<IActionResult> Monitoring()
+        {
+            var nutritionistId = int.Parse(HttpContext.User.Identity.Name);
+
+            var evaluations = await _evaluationRepository.FindAllMonitoringByNutritionist(nutritionistId);
+
+            return Ok(new GetEvaluationResponse()
+            {
+                Evaluations = evaluations.Select(x => x.MapToResponse())
+            });
+        }
+
+        /// <summary>
         /// Find a registered Evaluation
         /// </summary>
         /// <param name="evaluationId"></param>

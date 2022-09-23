@@ -1,6 +1,4 @@
-
 using Nutrinfo.Admin.Domain.AmputatedLimbs;
-using Nutrinfo.Admin.Domain.AsciteDegrees;
 using Nutrinfo.Admin.Domain.Ascites;
 using Nutrinfo.Admin.Domain.Nutritionists;
 using Nutrinfo.Admin.Domain.Patients;

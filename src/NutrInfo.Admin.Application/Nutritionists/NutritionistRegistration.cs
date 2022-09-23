@@ -28,7 +28,7 @@ namespace NutrInfo.Admin.Application.Nutritionists
             }
 
             nutritionist.Password = BCrypt.Net.BCrypt.HashPassword(nutritionist.Password);
-            nutritionist.User.Status = UserStatusEnum.Active;
+            nutritionist.User.Status = UserStatusEnum.ACTIVE;
             nutritionist.User.CreatedAt = DateTimeOffset.UtcNow;
 
             return await _repository.Create(nutritionist);

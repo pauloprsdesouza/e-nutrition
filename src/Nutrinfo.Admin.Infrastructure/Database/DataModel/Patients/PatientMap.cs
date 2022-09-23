@@ -16,7 +16,10 @@ namespace NutrInfo.Admin.Api.Infrastructure.Database.DataModel.Patients
                    .ValueGeneratedOnAdd();
 
             builder.Property(p => p.Race)
-                   .IsRequired();
+                   .IsRequired()
+                   .HasConversion(
+                        v => v.ToString(),
+                        v => (RaceEnum)Enum.Parse(typeof(RaceEnum), v));
 
             builder.HasMany(p => p.Evaluations)
                    .WithOne(p => p.Patient)

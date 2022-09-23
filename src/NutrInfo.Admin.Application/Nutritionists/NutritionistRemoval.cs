@@ -26,7 +26,7 @@ namespace NutrInfo.Admin.Application.Nutritionists
                 return null;
             }
 
-            nutritionist.User.Status = UserStatusEnum.Archived;
+            nutritionist.User.Status = UserStatusEnum.ARCHIVED;
 
             return await _repository.Update(nutritionist);
         }

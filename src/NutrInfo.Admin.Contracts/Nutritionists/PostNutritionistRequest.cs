@@ -27,13 +27,16 @@ namespace NutrInfo.Admin.Contracts.Nutritionists
         [Required]
         public int Crn { get; set; }
 
+        public GenderEnum Gender { get; set; }
+
         public Nutritionist ToNutritionist()
         {
             var user = new User()
             {
                 Name = Name,
                 Email = Email,
-                Cpf = Cpf
+                Cpf = Cpf,
+                Gender = Gender
             };
 
             return new Nutritionist()

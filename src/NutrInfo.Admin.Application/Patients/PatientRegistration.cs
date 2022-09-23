@@ -17,7 +17,7 @@ namespace NutrInfo.Admin.Application.Patients
         public async Task<Patient> Register(Patient patient)
         {
             patient.User.CreatedAt = DateTimeOffset.UtcNow;
-            patient.User.Status = UserStatusEnum.Active;
+            patient.User.Status = UserStatusEnum.ACTIVE;
 
             return await _repository.Create(patient);
         }

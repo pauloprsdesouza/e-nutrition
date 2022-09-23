@@ -26,7 +26,7 @@ namespace NutrInfo.Admin.Application.Patients
                 return null;
             }
 
-            patient.User.Status = UserStatusEnum.Archived;
+            patient.User.Status = UserStatusEnum.ARCHIVED;
 
             return await _repository.Update(patient);
         }
