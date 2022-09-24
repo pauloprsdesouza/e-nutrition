@@ -35,16 +35,16 @@ namespace NutrInfo.Admin.Api
            });
 
             services.AddControllers(options =>
-           {
-               var policy = new AuthorizationPolicyBuilder()
-                   .RequireAuthenticatedUser()
-                   .Build();
+            {
+                var policy = new AuthorizationPolicyBuilder()
+                    .RequireAuthenticatedUser()
+                    .Build();
 
-               options.Filters.Add(new AuthorizeFilter(policy));
-               options.Filters.Add(typeof(ExceptionFilter));
-               options.Filters.Add(typeof(RequestValidationFilter));
-           })
-           .AddJsonOptions(options => options.JsonSerializerOptions.Default());
+                options.Filters.Add(new AuthorizeFilter(policy));
+                options.Filters.Add(typeof(ExceptionFilter));
+                options.Filters.Add(typeof(RequestValidationFilter));
+            })
+            .AddJsonOptions(options => options.JsonSerializerOptions.Default());
 
             services.AddSwaggerDocumentation();
             services.AddCFNAuthentication();

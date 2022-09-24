@@ -1,14 +1,15 @@
+using System.Linq;
 using System.Net.Mime;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using Nutrinfo.Admin.Domain.Nutritionists;
-using Microsoft.AspNetCore.Authorization;
-using NutrInfo.Admin.Api.Authorization;
 using Microsoft.Extensions.Options;
+using Nutrinfo.Admin.Domain.Nutritionists;
+using NutrInfo.Admin.Api.Authorization;
 using NutrInfo.Admin.Application.Nutritionists;
-using NutrInfo.Admin.Contracts.Nutritionists;
 using NutrInfo.Admin.Contracts;
+using NutrInfo.Admin.Contracts.Nutritionists;
 
 namespace NutrInfo.Admin.Api.Controllers
 {
@@ -16,7 +17,7 @@ namespace NutrInfo.Admin.Api.Controllers
     public class NutritionistsController : Controller
     {
         private readonly INutritionistRepository _nutritionistRepository;
-            private readonly IOptions<JwtOptions> _jwtOptions;
+        private readonly IOptions<JwtOptions> _jwtOptions;
 
         public NutritionistsController(INutritionistRepository nutritionistRepository, IOptions<JwtOptions> jwtOptions)
         {
@@ -34,8 +35,12 @@ namespace NutrInfo.Admin.Api.Controllers
         [ProducesResponseType(typeof(GetNutritionistResponse), StatusCodes.Status200OK)]
         public async Task<IActionResult> List([FromQuery] GetNutritionistsQuery queryString)
         {
+            var nutritionists = await _nutritionistRepository.FindAll();
 
-            return Ok();
+            return Ok(new GetNutritionistResponse()
+            {
+                Nutritionists = nutritionists.Select(x => x.MapToResponse())
+            });
         }
 
         /// <summary>
@@ -64,7 +69,7 @@ namespace NutrInfo.Admin.Api.Controllers
         /// Create a new Nutritionist
         /// </summary>
         /// <param name="nutritionistRequest"></param>
-        [HttpPost, AllowAnonymous]
+        [HttpPost]
         [Produces(MediaTypeNames.Application.Json)]
         [ProducesResponseType(typeof(NutritionistResponse), StatusCodes.Status201Created)]
         [ProducesResponseType(typeof(ResponseError), StatusCodes.Status422UnprocessableEntity)]

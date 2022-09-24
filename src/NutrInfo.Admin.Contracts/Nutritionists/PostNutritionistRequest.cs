@@ -27,7 +27,11 @@ namespace NutrInfo.Admin.Contracts.Nutritionists
         [Required]
         public int Crn { get; set; }
 
+        [Required]
         public GenderEnum Gender { get; set; }
+
+        [Required]
+        public DateTime BirthDate { get; set; }
 
         public Nutritionist ToNutritionist()
         {
@@ -36,7 +40,8 @@ namespace NutrInfo.Admin.Contracts.Nutritionists
                 Name = Name,
                 Email = Email,
                 Cpf = Cpf,
-                Gender = Gender
+                Gender = Gender,
+                BirthDate = BirthDate
             };
 
             return new Nutritionist()

@@ -23,6 +23,11 @@ namespace Nutrinfo.Admin.Infrastructure.Database.DataModel.Nutritionists
             return nutritionist;
         }
 
+        public async Task<List<Nutritionist>> FindAll()
+        {
+            return await _nutritionists.Include(x => x.User).ToListAsync();
+        }
+
         public async Task<Nutritionist> FindByCrn(int crn)
         {
             return await _nutritionists.Where(x => x.Crn == crn)

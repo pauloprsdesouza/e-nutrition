@@ -6,5 +6,6 @@ namespace Nutrinfo.Admin.Domain.Nutritionists
         Task<Nutritionist> FindByCrn(int crn);
         Task<Nutritionist> Update(Nutritionist nutritionist);
         Task<Nutritionist> Create(Nutritionist nutritionist);
+        Task<List<Nutritionist>> FindAll();
     }
 }

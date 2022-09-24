@@ -8,10 +8,12 @@ namespace NutrInfo.Admin.Contracts.Nutritionists
         {
             return new NutritionistResponse()
             {
+                Id = nutritionist.UserId,
                 Crn = nutritionist.Crn,
                 Name = nutritionist.User.Name.ToUpperInvariant(),
                 Email = nutritionist.User.Email,
                 Status = nutritionist.User.Status,
+                BirthDate = nutritionist.User.BirthDate,
                 CreatedAt = nutritionist.User.CreatedAt,
                 UpdatedAt = nutritionist.User.UpdatedAt
             };
