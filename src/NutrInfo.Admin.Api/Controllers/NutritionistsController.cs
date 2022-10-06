@@ -6,10 +6,12 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Options;
 using Nutrinfo.Admin.Domain.Nutritionists;
+using Nutrinfo.Admin.Domain.Pagination;
 using NutrInfo.Admin.Api.Authorization;
 using NutrInfo.Admin.Application.Nutritionists;
 using NutrInfo.Admin.Contracts;
 using NutrInfo.Admin.Contracts.Nutritionists;
+using NutrInfo.Admin.Contracts.Paginations;
 
 namespace NutrInfo.Admin.Api.Controllers
 {
@@ -35,27 +37,28 @@ namespace NutrInfo.Admin.Api.Controllers
         [ProducesResponseType(typeof(GetNutritionistResponse), StatusCodes.Status200OK)]
         public async Task<IActionResult> List([FromQuery] GetNutritionistsQuery queryString)
         {
-            var nutritionists = await _nutritionistRepository.FindAll();
+            PagedList<Nutritionist> nutritionists = await _nutritionistRepository.FindPaged(queryString.Page);
 
             return Ok(new GetNutritionistResponse()
             {
-                Nutritionists = nutritionists.Select(x => x.MapToResponse())
+                Nutritionists = nutritionists.Select(x => x.MapToResponse()),
+                Pagination = new PaginationResponseMap<Nutritionist>().MapToResponse(nutritionists)
             });
         }
 
         /// <summary>
         /// Find a registered nutritionist
         /// </summary>
-        /// <param name="crn"></param>
+        /// <param name="nutritionistId"></param>
         /// <returns></returns>
-        [HttpGet, Route("{crn}")]
+        [HttpGet, Route("{nutritionistId}")]
         [Produces(MediaTypeNames.Application.Json)]
         [ProducesResponseType(typeof(NutritionistResponse), StatusCodes.Status200OK)]
         [ProducesResponseType(typeof(NutritionistResponse), StatusCodes.Status404NotFound)]
-        public async Task<IActionResult> Get([FromRoute] int crn)
+        public async Task<IActionResult> Get([FromRoute] int nutritionistId)
         {
             var nutritionistSearch = new NutritionistSearch(_nutritionistRepository);
-            var nutritionist = await nutritionistSearch.Find(crn);
+            var nutritionist = await nutritionistSearch.Find(nutritionistId);
 
             if (nutritionistSearch.NutritionistNotFound)
             {

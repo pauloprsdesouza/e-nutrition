@@ -14,9 +14,18 @@ namespace NutrInfo.Admin.Application.Nutritionists
 
         public bool NutritionistNotFound { get; private set; }
 
-        public async Task<Nutritionist> Find(int crn)
+        public async Task<Nutritionist> Find(int userId)
         {
-            var nutritionist = await _repository.FindByCrn(crn);
+            var nutritionist = await _repository.FindById(userId);
+
+            NutritionistNotFound = nutritionist == null;
+
+            return nutritionist;
+        }
+
+        public async Task<Nutritionist> Find(string cpf)
+        {
+            var nutritionist = await _repository.FindByCpf(cpf);
 
             NutritionistNotFound = nutritionist == null;
 

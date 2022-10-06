@@ -16,5 +16,7 @@ namespace NutrInfo.Admin.Contracts.Nutritionists
         /// Crn
         /// </summary>
         public int Crn { get; set; }
+
+        public int Page { get; set; }
     }
 }

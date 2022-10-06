@@ -1,5 +1,6 @@
 using Microsoft.EntityFrameworkCore;
 using Nutrinfo.Admin.Domain.Nutritionists;
+using Nutrinfo.Admin.Domain.Pagination;
 using NutrInfo.Admin.Api.Infrastructure.Database.DataModel;
 
 namespace Nutrinfo.Admin.Infrastructure.Database.DataModel.Nutritionists
@@ -28,11 +29,32 @@ namespace Nutrinfo.Admin.Infrastructure.Database.DataModel.Nutritionists
             return await _nutritionists.Include(x => x.User).ToListAsync();
         }
 
+        public async Task<PagedList<Nutritionist>> FindPaged(int page)
+        {
+            var query = _nutritionists.AsQueryable().Include(x => x.User);
+
+            return await PagedList<Nutritionist>.CreateAsync(query, page);
+        }
+
+        public async Task<Nutritionist> FindByCpf(string cpf)
+        {
+            return await _nutritionists.Where(x => x.User.Cpf == cpf)
+                                       .Include(x => x.User)
+                                       .SingleOrDefaultAsync();
+        }
+
         public async Task<Nutritionist> FindByCrn(int crn)
         {
             return await _nutritionists.Where(x => x.Crn == crn)
                                        .Include(x => x.User)
                                        .SingleOrDefaultAsync();
+        }
+
+        public async Task<Nutritionist> FindById(int nutritionistId)
+        {
+            return await _nutritionists.Where(x => x.UserId == nutritionistId)
+                                     .Include(x => x.User)
+                                     .SingleOrDefaultAsync();
         }
 
         public async Task<Nutritionist> FindByName(string name)

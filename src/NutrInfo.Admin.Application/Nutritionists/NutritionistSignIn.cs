@@ -17,7 +17,7 @@ namespace NutrInfo.Admin.Application.Nutritionists
         public async Task<Nutritionist> Validate(Nutritionist nutritionist)
         {
             var nutritionistSearch = new NutritionistSearch(_repository);
-            var nutritionistContext = await nutritionistSearch.Find(nutritionist.UserId);
+            var nutritionistContext = await nutritionistSearch.Find(nutritionist.User.Cpf);
 
             if (nutritionistSearch.NutritionistNotFound)
             {
@@ -25,9 +25,7 @@ namespace NutrInfo.Admin.Application.Nutritionists
                 return null;
             }
 
-            var password = BCrypt.Net.BCrypt.HashPassword(nutritionist.Password);
-
-            var isValid = !BCrypt.Net.BCrypt.Verify(password, nutritionistContext.Password);
+            var isValid = BCrypt.Net.BCrypt.Verify(nutritionist.Password, nutritionistContext.Password);
 
             if (!isValid)
             {

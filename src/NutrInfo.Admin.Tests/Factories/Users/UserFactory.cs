@@ -14,7 +14,7 @@ namespace NutrInfo.Admin.Tests.Factories.Users
             .RuleFor(p => p.BirthDate, f => f.Person.DateOfBirth)
             .RuleFor(p => p.Email, f => f.Person.Email)
             .RuleFor(p => p.Gender, f => f.PickRandom<GenderEnum>())
-            .RuleFor(p => p.Status, f => UserStatusEnum.Active)
+            .RuleFor(p => p.Status, f => UserStatusEnum.ACTIVE)
             .RuleFor(p => p.CreatedAt, f => System.DateTimeOffset.UtcNow);
 
             return userFaker.Generate();
