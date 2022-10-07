@@ -27,12 +27,12 @@ namespace NutrInfo.Admin.Contracts.Nutritionists
         public int Crn { get; set; }
 
         [Required]
+        public DateTime BirthDate { get; set; }
+
         public string Street { get; set; }
 
-        [Required]
         public string City { get; set; }
 
-        [Required]
         public string State { get; set; }
 
         public string Neighborhood { get; set; }
@@ -41,7 +41,6 @@ namespace NutrInfo.Admin.Contracts.Nutritionists
 
         public string ZipCode { get; set; }
 
-        [Required]
         public int Number { get; set; }
 
         public void MapTo(Nutritionist nutritionist)
@@ -51,13 +50,18 @@ namespace NutrInfo.Admin.Contracts.Nutritionists
             nutritionist.User.Email = Email;
             nutritionist.User.Cpf = Cpf;
             nutritionist.Password = Password;
-            nutritionist.User.Address.City = City;
-            nutritionist.User.Address.Complement = Complement;
-            nutritionist.User.Address.Neighborhood = Neighborhood;
-            nutritionist.User.Address.Number = Number;
-            nutritionist.User.Address.State = State;
-            nutritionist.User.Address.Street = Street;
-            nutritionist.User.Address.ZipCode = ZipCode;
+            nutritionist.User.BirthDate = BirthDate;
+
+            if (nutritionist.User.Address is not null)
+            {
+                nutritionist.User.Address.City = City;
+                nutritionist.User.Address.Complement = Complement;
+                nutritionist.User.Address.Neighborhood = Neighborhood;
+                nutritionist.User.Address.Number = Number;
+                nutritionist.User.Address.State = State;
+                nutritionist.User.Address.Street = Street;
+                nutritionist.User.Address.ZipCode = ZipCode;
+            }
         }
     }
 }

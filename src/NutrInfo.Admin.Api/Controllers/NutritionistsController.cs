@@ -6,7 +6,6 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Options;
 using Nutrinfo.Admin.Domain.Nutritionists;
-using Nutrinfo.Admin.Domain.Pagination;
 using NutrInfo.Admin.Api.Authorization;
 using NutrInfo.Admin.Application.Nutritionists;
 using NutrInfo.Admin.Contracts;
@@ -37,7 +36,7 @@ namespace NutrInfo.Admin.Api.Controllers
         [ProducesResponseType(typeof(GetNutritionistResponse), StatusCodes.Status200OK)]
         public async Task<IActionResult> List([FromQuery] GetNutritionistsQuery queryString)
         {
-            PagedList<Nutritionist> nutritionists = await _nutritionistRepository.FindPaged(queryString.Page);
+            var nutritionists = await _nutritionistRepository.FindPaged(queryString.Name, queryString.Page);
 
             return Ok(new GetNutritionistResponse()
             {
@@ -92,16 +91,16 @@ namespace NutrInfo.Admin.Api.Controllers
         /// <summary>
         /// Update a registered nutritionist
         /// </summary>
-        /// <param name="crn"></param>
+        /// <param name="nutritionistId"></param>
         /// <param name="nutritionistRequest"></param>
         /// <returns></returns>
-        [HttpPut, Route("{crn}")]
+        [HttpPut, Route("{nutritionistId}")]
         [Produces(MediaTypeNames.Application.Json)]
         [ProducesResponseType(typeof(NutritionistResponse), StatusCodes.Status200OK)]
-        public async Task<IActionResult> Update([FromRoute] int crn, [FromBody] PutNutritionistRequest nutritionistRequest)
+        public async Task<IActionResult> Update([FromRoute] int nutritionistId, [FromBody] PutNutritionistRequest nutritionistRequest)
         {
             var nutritionistUpdate = new NutritionistUpdate(_nutritionistRepository);
-            var nutritionist = await nutritionistUpdate.Update(crn, nutritionistRequest);
+            var nutritionist = await nutritionistUpdate.Update(nutritionistId, nutritionistRequest);
 
             if (nutritionistUpdate.NutritionistNotFound)
             {
@@ -112,20 +111,42 @@ namespace NutrInfo.Admin.Api.Controllers
         }
 
         /// <summary>
-        /// Delete a registered nutritionist
+        /// Activate a registered nutritionist
         /// </summary>
-        /// <param name="crn"></param>
+        /// <param name="nutritionistId"></param>
         /// <returns></returns>
-        [HttpDelete, Route("{crn}")]
+        [HttpPut, Route("{nutritionistId}/activate")]
         [Produces(MediaTypeNames.Application.Json)]
         [ProducesResponseType(typeof(NutritionistResponse), StatusCodes.Status200OK)]
         [ProducesResponseType(typeof(ResponseError), StatusCodes.Status404NotFound)]
-        public async Task<IActionResult> Delete([FromRoute] int crn)
+        public async Task<IActionResult> Activate([FromRoute] int nutritionistId)
         {
-            var nutritionistRemoval = new NutritionistRemoval(_nutritionistRepository);
-            var nutritionist = await nutritionistRemoval.Delete(crn);
+            var nutritionistActivation = new NutritionistActivation(_nutritionistRepository);
+            var nutritionist = await nutritionistActivation.Activate(nutritionistId);
 
-            if (nutritionistRemoval.NutritionistNotFound)
+            if (nutritionistActivation.NutritionistNotFound)
+            {
+                return NotFound(new ResponseError("NUTRITIONIST_NOT_FOUND"));
+            }
+
+            return Ok(nutritionist.MapToResponse());
+        }
+
+        /// <summary>
+        /// Deactivate a registered nutritionist
+        /// </summary>
+        /// <param name="nutritionistId"></param>
+        /// <returns></returns>
+        [HttpPut, Route("{nutritionistId}/deactivate")]
+        [Produces(MediaTypeNames.Application.Json)]
+        [ProducesResponseType(typeof(NutritionistResponse), StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(ResponseError), StatusCodes.Status404NotFound)]
+        public async Task<IActionResult> Deactivate([FromRoute] int nutritionistId)
+        {
+            var nutritionistDeactivation = new NutritionistDeactivation(_nutritionistRepository);
+            var nutritionist = await nutritionistDeactivation.Deactivate(nutritionistId);
+
+            if (nutritionistDeactivation.NutritionistNotFound)
             {
                 return NotFound(new ResponseError("NUTRITIONIST_NOT_FOUND"));
             }

@@ -11,6 +11,6 @@ namespace Nutrinfo.Admin.Domain.Nutritionists
         Task<Nutritionist> Update(Nutritionist nutritionist);
         Task<Nutritionist> Create(Nutritionist nutritionist);
         Task<List<Nutritionist>> FindAll();
-        Task<PagedList<Nutritionist>> FindPaged(int page);
+        Task<PagedList<Nutritionist>> FindPaged(string name, int page);
     }
 }

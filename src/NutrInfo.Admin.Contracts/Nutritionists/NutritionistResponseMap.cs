@@ -10,6 +10,8 @@ namespace NutrInfo.Admin.Contracts.Nutritionists
             {
                 Id = nutritionist.UserId,
                 Crn = nutritionist.Crn,
+                Cpf = nutritionist.User.Cpf,
+                Gender = nutritionist.User.Gender,
                 Name = nutritionist.User.Name.ToUpperInvariant(),
                 Email = nutritionist.User.Email,
                 Status = nutritionist.User.Status,

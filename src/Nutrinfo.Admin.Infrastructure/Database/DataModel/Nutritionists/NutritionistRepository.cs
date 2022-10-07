@@ -29,13 +29,6 @@ namespace Nutrinfo.Admin.Infrastructure.Database.DataModel.Nutritionists
             return await _nutritionists.Include(x => x.User).ToListAsync();
         }
 
-        public async Task<PagedList<Nutritionist>> FindPaged(int page)
-        {
-            var query = _nutritionists.AsQueryable().Include(x => x.User);
-
-            return await PagedList<Nutritionist>.CreateAsync(query, page);
-        }
-
         public async Task<Nutritionist> FindByCpf(string cpf)
         {
             return await _nutritionists.Where(x => x.User.Cpf == cpf)
@@ -53,8 +46,8 @@ namespace Nutrinfo.Admin.Infrastructure.Database.DataModel.Nutritionists
         public async Task<Nutritionist> FindById(int nutritionistId)
         {
             return await _nutritionists.Where(x => x.UserId == nutritionistId)
-                                     .Include(x => x.User)
-                                     .SingleOrDefaultAsync();
+                                       .Include(x => x.User)
+                                       .SingleOrDefaultAsync();
         }
 
         public async Task<Nutritionist> FindByName(string name)
@@ -68,6 +61,17 @@ namespace Nutrinfo.Admin.Infrastructure.Database.DataModel.Nutritionists
             await _dbContext.SaveChangesAsync();
 
             return nutritionist;
+        }
+
+        public async Task<PagedList<Nutritionist>> FindPaged(string name, int page)
+        {
+            IQueryable<Nutritionist> query = _nutritionists.Include(x => x.User);
+
+            if(name is not null) {
+                query = query.Where(x => x.User.Name.ToLower().Contains(name.ToLower())).AsQueryable();
+            }
+
+            return await PagedList<Nutritionist>.CreateAsync(query, page);
         }
     }
 }
