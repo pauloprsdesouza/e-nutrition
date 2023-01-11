@@ -115,7 +115,7 @@ namespace NutrInfo.Admin.Api.Controllers
         /// </summary>
         /// <param name="nutritionistId"></param>
         /// <returns></returns>
-        [HttpPut, Route("{nutritionistId}/activate")]
+        [HttpPut, Route("{nutritionistId}/activated")]
         [Produces(MediaTypeNames.Application.Json)]
         [ProducesResponseType(typeof(NutritionistResponse), StatusCodes.Status200OK)]
         [ProducesResponseType(typeof(ResponseError), StatusCodes.Status404NotFound)]
@@ -137,7 +137,7 @@ namespace NutrInfo.Admin.Api.Controllers
         /// </summary>
         /// <param name="nutritionistId"></param>
         /// <returns></returns>
-        [HttpPut, Route("{nutritionistId}/deactivate")]
+        [HttpPut, Route("{nutritionistId}/deactivated")]
         [Produces(MediaTypeNames.Application.Json)]
         [ProducesResponseType(typeof(NutritionistResponse), StatusCodes.Status200OK)]
         [ProducesResponseType(typeof(ResponseError), StatusCodes.Status404NotFound)]

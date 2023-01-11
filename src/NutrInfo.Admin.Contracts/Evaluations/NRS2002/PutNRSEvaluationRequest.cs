@@ -15,7 +15,7 @@ namespace NutrInfo.Admin.Contracts.Evaluations.NRS2002
         public bool SeriouslyIllPatient { get; set; }
 
         [Required]
-        public NutritionalStateEnum NutritionalState { get; set; }
+        public NutritionalStateSeverityEnum NutritionalStateSeverity { get; set; }
 
         [Required]
         public DiseaseSeverityEnum DiseaseSeverity { get; set; }
@@ -23,7 +23,7 @@ namespace NutrInfo.Admin.Contracts.Evaluations.NRS2002
         public void MapTo(Evaluation evaluation)
         {
             evaluation.DiseaseSeverity = DiseaseSeverity;
-            evaluation.NutritionalState = NutritionalState;
+            evaluation.NutritionalStateServerity = NutritionalStateSeverity;
             evaluation.ReducedDietaryIntake = ReducedDietaryIntake;
             evaluation.LostWeightLastThreeMonths = LostWeightLastThreeMonths;
             evaluation.Step = EvaluationStepsEnum.NRS_2002;

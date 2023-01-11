@@ -1,3 +1,4 @@
+using System.Linq;
 using System.Net.Mime;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
@@ -5,6 +6,7 @@ using Microsoft.AspNetCore.Mvc;
 using Nutrinfo.Admin.Domain.Patients;
 using NutrInfo.Admin.Application.Patients;
 using NutrInfo.Admin.Contracts;
+using NutrInfo.Admin.Contracts.Paginations;
 using NutrInfo.Admin.Contracts.Patients;
 
 namespace NutrInfo.Admin.Api.Controllers
@@ -29,7 +31,13 @@ namespace NutrInfo.Admin.Api.Controllers
         [ProducesResponseType(typeof(GetPatientResponse), StatusCodes.Status200OK)]
         public async Task<IActionResult> List([FromQuery] GetPatientsQuery queryString)
         {
-            return Ok();
+            var patients = await _patientRepository.FindPaged(queryString.Name, queryString.Page);
+
+            return Ok(new GetPatientResponse()
+            {
+                Patients = patients.Select(x => x.MapToResponse()),
+                Pagination = new PaginationResponseMap<Patient>().MapToResponse(patients)
+            });
         }
 
         /// <summary>

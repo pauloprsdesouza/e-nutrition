@@ -1,4 +1,5 @@
 using Nutrinfo.Admin.Domain.Nutritionists;
+using Nutrinfo.Admin.Domain.Users;
 
 namespace NutrInfo.Admin.Contracts.Nutritionists
 {
@@ -14,7 +15,7 @@ namespace NutrInfo.Admin.Contracts.Nutritionists
                 Gender = nutritionist.User.Gender,
                 Name = nutritionist.User.Name.ToUpperInvariant(),
                 Email = nutritionist.User.Email,
-                Status = nutritionist.User.Status,
+                IsActive = nutritionist.User.Status == UserStatusEnum.ACTIVE,
                 BirthDate = nutritionist.User.BirthDate,
                 CreatedAt = nutritionist.User.CreatedAt,
                 UpdatedAt = nutritionist.User.UpdatedAt

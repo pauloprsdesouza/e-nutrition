@@ -12,7 +12,7 @@ namespace NutrInfo.Admin.Contracts.Nutritionists
         public string Email { get; set; }
         public GenderEnum Gender { get; set; }
         public DateTime BirthDate { get; set; }
-        public UserStatusEnum Status { get; set; }
+        public bool IsActive { get; set; }
         public DateTimeOffset CreatedAt { get; set; }
         public DateTimeOffset UpdatedAt { get; set; }
     }
