@@ -23,7 +23,7 @@ namespace NutrInfo.Admin.Contracts.Evaluations.NRS2002
         public void MapTo(Evaluation evaluation)
         {
             evaluation.DiseaseSeverity = DiseaseSeverity;
-            evaluation.NutritionalStateServerity = NutritionalStateSeverity;
+            evaluation.NutritionalStateSeverity = NutritionalStateSeverity;
             evaluation.ReducedDietaryIntake = ReducedDietaryIntake;
             evaluation.LostWeightLastThreeMonths = LostWeightLastThreeMonths;
             evaluation.Step = EvaluationStepsEnum.NRS_2002;

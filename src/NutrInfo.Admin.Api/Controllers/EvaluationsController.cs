@@ -135,7 +135,12 @@ namespace NutrInfo.Admin.Api.Controllers
 
             if (nrsEvaluationRegistration.EvaluationNotFound)
             {
-                return UnprocessableEntity(new ResponseError("EVALUATION_NOT_FOUND"));
+                return NotFound(new ResponseError("EVALUATION_NOT_FOUND"));
+            }
+
+            if (nrsEvaluationRegistration.ValidationErros.Any())
+            {
+                return UnprocessableEntity(new ResponseError(nrsEvaluationRegistration.ValidationErros));
             }
 
             return Ok(evaluation.MapToNRSResponse());

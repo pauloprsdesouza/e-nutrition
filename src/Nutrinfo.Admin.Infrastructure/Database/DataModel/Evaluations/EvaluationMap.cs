@@ -40,7 +40,7 @@ namespace NutrInfo.Admin.Api.Infrastructure.Database.DataModel.Evaluations
                         v => v.ToString(),
                         v => (NutritionalStateEnum)Enum.Parse(typeof(NutritionalStateEnum), v));
 
-            builder.Property(p => p.NutritionalStateServerity)
+            builder.Property(p => p.NutritionalStateSeverity)
                    .HasConversion(
                         v => v.ToString(),
                         v => (NutritionalStateSeverityEnum)Enum.Parse(typeof(NutritionalStateSeverityEnum), v));
