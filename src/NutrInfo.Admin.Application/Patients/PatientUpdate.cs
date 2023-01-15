@@ -1,3 +1,4 @@
+using Nutrinfo.Admin.Domain.Addresses;
 using Nutrinfo.Admin.Domain.Patients;
 using NutrInfo.Admin.Contracts.Patients;
 
@@ -23,6 +24,11 @@ namespace NutrInfo.Admin.Application.Patients
             {
                 PatientNotFound = true;
                 return null;
+            }
+
+            if (patientRequest.Street is not null)
+            {
+                patient.User.Address = new();
             }
 
             patientRequest.MapTo(patient);

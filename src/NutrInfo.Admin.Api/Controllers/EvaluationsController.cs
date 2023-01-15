@@ -38,10 +38,26 @@ namespace NutrInfo.Admin.Api.Controllers
         [HttpGet, Route("monitoring")]
         [Produces(MediaTypeNames.Application.Json)]
         [ProducesResponseType(typeof(EvaluationResponse), StatusCodes.Status200OK)]
-        public async Task<IActionResult> Monitoring()
+        public async Task<IActionResult> MonitoringByLoggedNutritionist()
         {
             var nutritionistId = int.Parse(HttpContext.User.Identity.Name);
 
+            var evaluations = await _evaluationRepository.FindAllMonitoringByNutritionist(nutritionistId);
+
+            return Ok(new GetEvaluationResponse()
+            {
+                Evaluations = evaluations.Select(x => x.MapToResponse())
+            });
+        }
+
+        /// <summary>
+        /// Find a registered Evaluations from Nutritionist
+        /// </summary>
+        [HttpGet, Route("monitoring/{nutritionistId}")]
+        [Produces(MediaTypeNames.Application.Json)]
+        [ProducesResponseType(typeof(EvaluationResponse), StatusCodes.Status200OK)]
+        public async Task<IActionResult> MonitoringByNutritionist([FromRoute] int nutritionistId)
+        {
             var evaluations = await _evaluationRepository.FindAllMonitoringByNutritionist(nutritionistId);
 
             return Ok(new GetEvaluationResponse()
@@ -84,17 +100,14 @@ namespace NutrInfo.Admin.Api.Controllers
             var nutritionistId = int.Parse(HttpContext.User.Identity.Name);
 
             var evaluationRegistration = new EvaluationRegistration(_evaluationRepository, _patientRepository);
-            var evaluations = await evaluationRegistration.Register(nutritionistId, request.ToEvaluation());
+            var evaluation = await evaluationRegistration.Register(nutritionistId, request.ToEvaluation());
 
             if (evaluationRegistration.PatientNotFound)
             {
                 return UnprocessableEntity(new ResponseError("PATIENT_NOT_FOUND"));
             }
 
-            return Created($"api/v1/evaluations", new GetEvaluationResponse()
-            {
-                Evaluations = evaluations.Select(x => x.MapToResponse())
-            });
+            return Created($"api/v1/evaluations", evaluation.MapToResponse());
         }
 
         /// <summary>

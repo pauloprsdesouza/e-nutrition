@@ -16,13 +16,10 @@ namespace NutrInfo.Admin.Contracts.Patients
         [Required]
         public string Cpf { get; set; }
 
-        [Required]
         public string Street { get; set; }
 
-        [Required]
         public string City { get; set; }
 
-        [Required]
         public string State { get; set; }
 
         public string Neighborhood { get; set; }
@@ -31,7 +28,6 @@ namespace NutrInfo.Admin.Contracts.Patients
 
         public string ZipCode { get; set; }
 
-        [Required]
         public int Number { get; set; }
 
         public void MapTo(Patient patient)

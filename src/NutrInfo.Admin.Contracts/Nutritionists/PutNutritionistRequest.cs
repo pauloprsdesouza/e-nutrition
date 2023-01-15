@@ -51,17 +51,13 @@ namespace NutrInfo.Admin.Contracts.Nutritionists
             nutritionist.User.Cpf = Cpf;
             nutritionist.Password = Password;
             nutritionist.User.BirthDate = BirthDate;
-
-            if (nutritionist.User.Address is not null)
-            {
-                nutritionist.User.Address.City = City;
-                nutritionist.User.Address.Complement = Complement;
-                nutritionist.User.Address.Neighborhood = Neighborhood;
-                nutritionist.User.Address.Number = Number;
-                nutritionist.User.Address.State = State;
-                nutritionist.User.Address.Street = Street;
-                nutritionist.User.Address.ZipCode = ZipCode;
-            }
+            nutritionist.User.Address.City = City;
+            nutritionist.User.Address.Complement = Complement;
+            nutritionist.User.Address.Neighborhood = Neighborhood;
+            nutritionist.User.Address.Number = Number;
+            nutritionist.User.Address.State = State;
+            nutritionist.User.Address.Street = Street;
+            nutritionist.User.Address.ZipCode = ZipCode;
         }
     }
 }

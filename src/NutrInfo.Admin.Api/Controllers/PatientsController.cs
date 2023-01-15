@@ -121,5 +121,27 @@ namespace NutrInfo.Admin.Api.Controllers
 
             return Ok(patient.MapToResponse());
         }
+
+         /// <summary>
+        /// Delete a registered patient
+        /// </summary>
+        /// <param name="evaluationId"></param>
+        /// <returns></returns>
+        [HttpGet, Route("{evaluationId}/lastevaluation")]
+        [Produces(MediaTypeNames.Application.Json)]
+        [ProducesResponseType(typeof(PatientResponse), StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(ResponseError), StatusCodes.Status404NotFound)]
+        public async Task<IActionResult> FindByEvaluationId([FromRoute] int evaluationId)
+        {
+            var patientSearch = new PatientSearch(_patientRepository);
+            var patient = await patientSearch.FindByEvaluation(evaluationId);
+
+            if (patientSearch.PatientNotFound)
+            {
+                return NotFound(new ResponseError("PATIENT_NOT_FOUND"));
+            }
+
+            return Ok(patient.MapToResponse());
+        }
     }
 }

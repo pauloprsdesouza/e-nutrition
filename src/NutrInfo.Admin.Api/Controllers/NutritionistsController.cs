@@ -80,9 +80,9 @@ namespace NutrInfo.Admin.Api.Controllers
             var nutritionistRegistration = new NutritionistRegistration(_nutritionistRepository);
             var nutritionist = await nutritionistRegistration.Register(nutritionistRequest.ToNutritionist());
 
-            if (nutritionistRegistration.NutritionistAlreadyExists)
+            if (nutritionistRegistration.ValidationErrors.Any())
             {
-                return UnprocessableEntity(new ResponseError("NUTRITIONIST_ALREADY_EXISTS"));
+                return UnprocessableEntity(new ResponseError(nutritionistRegistration.ValidationErrors));
             }
 
             return Created($"api/v1/nutritionists/{nutritionist.UserId}", nutritionist.MapToResponse());
@@ -101,6 +101,27 @@ namespace NutrInfo.Admin.Api.Controllers
         {
             var nutritionistUpdate = new NutritionistUpdate(_nutritionistRepository);
             var nutritionist = await nutritionistUpdate.Update(nutritionistId, nutritionistRequest);
+
+            if (nutritionistUpdate.NutritionistNotFound)
+            {
+                return NotFound(new ResponseError("NUTRITIONIST_NOT_FOUND"));
+            }
+
+            return Ok(nutritionist.MapToResponse());
+        }
+
+        /// <summary>
+        /// Archive a registered nutritionist
+        /// </summary>
+        /// <param name="nutritionistId"></param>
+        /// <returns></returns>
+        [HttpDelete, Route("{nutritionistId}")]
+        [Produces(MediaTypeNames.Application.Json)]
+        [ProducesResponseType(typeof(NutritionistResponse), StatusCodes.Status200OK)]
+        public async Task<IActionResult> Remove([FromRoute] int nutritionistId)
+        {
+            var nutritionistUpdate = new NutritionistArchivement(_nutritionistRepository);
+            var nutritionist = await nutritionistUpdate.Archive(nutritionistId);
 
             if (nutritionistUpdate.NutritionistNotFound)
             {

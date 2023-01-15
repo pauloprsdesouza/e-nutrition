@@ -1,36 +1,38 @@
 using System;
+using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using Nutrinfo.Admin.Domain.Nutritionists;
 using Nutrinfo.Admin.Domain.Users;
 
 namespace NutrInfo.Admin.Application.Nutritionists
 {
-    public class NutritionistRegistration
+    public class NutritionistArchivement
     {
         private readonly INutritionistRepository _repository;
 
         public List<string> ValidationErrors { get; private set; }
 
-        public NutritionistRegistration(INutritionistRepository repository)
+        public NutritionistArchivement(INutritionistRepository repository)
         {
             _repository = repository;
             ValidationErrors = new();
         }
 
-        public async Task<Nutritionist> Register(Nutritionist nutritionist)
+        public bool NutritionistNotFound { get; private set; }
+
+        public async Task<Nutritionist> Archive(int nutritionistId)
         {
             var nutritionistSearch = new NutritionistSearch(_repository);
-            var nutritionistContext = await nutritionistSearch.Find(nutritionist.User.Cpf);
+            var nutritionist = await nutritionistSearch.Find(nutritionistId);
 
-            if (nutritionistContext != null)
+            if (nutritionist != null)
             {
-                ValidationErrors.Add("NUTRITIONIST_ALREADY_EXISTS");
+                NutritionistNotFound = true;
                 return null;
             }
 
-            nutritionist.Password = BCrypt.Net.BCrypt.HashPassword(nutritionist.Password);
-            nutritionist.User.Status = UserStatusEnum.ACTIVE;
-            nutritionist.User.CreatedAt = DateTimeOffset.UtcNow;
+            nutritionist.User.Status = UserStatusEnum.ARCHIVED;
 
             return await _repository.Create(nutritionist);
         }

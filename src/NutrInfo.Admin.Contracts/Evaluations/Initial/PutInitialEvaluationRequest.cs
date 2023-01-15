@@ -8,13 +8,12 @@ namespace NutrInfo.Admin.Contracts.Evaluations.Initial
         [Required]
         public bool IsWalking { get; set; }
 
-        [Required, Range(50, 200)]
+        [Required]
         public double Weight { get; set; }
 
-        [Required, Range(0.5, 2.5)]
+        [Required]
         public double Height { get; set; }
 
-        [Range(0, 12)]
         public double EdemaWeight { get; set; }
 
         public List<AsciteItemRequest> Ascites { get; set; }
@@ -27,7 +26,7 @@ namespace NutrInfo.Admin.Contracts.Evaluations.Initial
             evaluation.Height = Height;
             evaluation.IsWalking = IsWalking;
             evaluation.EdemaWeight = EdemaWeight;
-            evaluation.Imc = Weight / Math.Pow(Height, 2);
+            evaluation.Imc = Math.Round(Weight / Math.Pow(Height, 2));
             evaluation.Step = EvaluationStepsEnum.INITIAL;
         }
     }

@@ -21,5 +21,23 @@ namespace NutrInfo.Admin.Application.Patients
 
             return patient;
         }
+
+        public async Task<Patient> FindByCpf(string cpf)
+        {
+            var patient = await _patientRepository.FindByCpf(cpf);
+
+            PatientNotFound = patient == null;
+
+            return patient;
+        }
+
+         public async Task<Patient> FindByEvaluation(int evaluationId)
+        {
+            var patient = await _patientRepository.FindByEvaluation(evaluationId);
+
+            PatientNotFound = patient == null;
+
+            return patient;
+        }
     }
 }

@@ -25,6 +25,11 @@ namespace NutrInfo.Admin.Application.Nutritionists
                 return null;
             }
 
+            if (nutritionistRequest.Street is not null)
+            {
+                nutritionist.User.Address = new();
+            }
+
             nutritionistRequest.MapTo(nutritionist);
 
             nutritionist.User.UpdatedAt = DateTimeOffset.UtcNow;

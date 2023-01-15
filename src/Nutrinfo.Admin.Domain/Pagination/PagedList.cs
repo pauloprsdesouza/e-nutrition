@@ -4,7 +4,7 @@ namespace Nutrinfo.Admin.Domain.Pagination
 {
     public class PagedList<T> : List<T>
     {
-        private const int PAGE_SIZE = 2;
+        private const int PAGE_SIZE = 10;
         public PagedList(IEnumerable<T> currentPage, int count, int pageNumber)
         {
             CurrentPage = pageNumber;

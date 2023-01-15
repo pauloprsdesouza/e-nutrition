@@ -24,16 +24,32 @@ namespace Nutrinfo.Admin.Infrastructure.Database.DataModel.Patients
             return patient;
         }
 
+        public async Task<Patient> FindByCpf(string cpf)
+        {
+            return await _patients.Where(x => x.User.Cpf == cpf).SingleOrDefaultAsync();
+        }
+
+        public async Task<Patient> FindByEvaluation(int evaluationId)
+        {
+            return await _patients.Where(x => x.Evaluations.Any(y => y.Id == evaluationId))
+                                  .Include(x => x.Evaluations)
+                                  .Include(x => x.User)
+                                  .FirstAsync();
+        }
+
         public async Task<Patient> FindById(int id)
         {
-            return await _patients.Where(x => x.UserId == id).SingleOrDefaultAsync();
+            return await _patients.Where(x => x.UserId == id)
+                                  .Include(x => x.Evaluations)
+                                  .SingleOrDefaultAsync();
         }
 
         public async Task<PagedList<Patient>> FindPaged(string name, int page)
         {
-             IQueryable<Patient> query = _patients.Include(x => x.User);
+            IQueryable<Patient> query = _patients.Include(x => x.User);
 
-            if(name is not null) {
+            if (name is not null)
+            {
                 query = query.Where(x => x.User.Name.ToLower().Contains(name.ToLower())).AsQueryable();
             }
 

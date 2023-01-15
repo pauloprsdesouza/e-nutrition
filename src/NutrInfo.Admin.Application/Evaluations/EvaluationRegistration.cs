@@ -17,7 +17,7 @@ namespace NutrInfo.Admin.Application.Evaluations
 
         public bool PatientNotFound { get; private set; }
 
-        public async Task<List<Evaluation>> Register(int nutritionistId, Evaluation evaluation)
+        public async Task<Evaluation> Register(int nutritionistId, Evaluation evaluation)
         {
             var patientSearch = new PatientSearch(_patientRepository);
             await patientSearch.Find(evaluation.PatientId);
@@ -33,7 +33,7 @@ namespace NutrInfo.Admin.Application.Evaluations
 
             await _evaluationRepository.Create(evaluation);
 
-            return await _evaluationRepository.FindLastTwoEvaluationsFromPatient(evaluation.PatientId);
+            return evaluation;
         }
     }
 }
