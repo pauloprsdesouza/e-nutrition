@@ -7,7 +7,7 @@ namespace NutrInfo.Admin.Contracts.Evaluations
     public class EvaluationResponse
     {
         public int Id { get; set; }
-        public int PatientId { get; set; }
+        public string PatientName { get; set; }
         public double Weight { get; set; }
         public double Height { get; set; }
         public double Imc { get; set; }

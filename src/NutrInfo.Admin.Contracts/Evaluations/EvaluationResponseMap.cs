@@ -1,5 +1,4 @@
 using Nutrinfo.Admin.Domain.Evaluations;
-using NutrInfo.Admin.Contracts.Patients;
 
 namespace NutrInfo.Admin.Contracts.Evaluations
 {
@@ -10,8 +9,8 @@ namespace NutrInfo.Admin.Contracts.Evaluations
             return new EvaluationResponse()
             {
                 Id = evaluation.Id,
-                PatientId = evaluation.PatientId,
                 Imc = evaluation.Imc,
+                PatientName = evaluation.Patient?.User?.Name,
                 Weight = evaluation.Weight,
                 Height = evaluation.Height,
                 IsWalking = evaluation.IsWalking,
