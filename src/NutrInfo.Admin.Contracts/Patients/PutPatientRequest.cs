@@ -1,5 +1,6 @@
 using System.ComponentModel.DataAnnotations;
 using Nutrinfo.Admin.Domain.Patients;
+using Nutrinfo.Admin.Domain.Users;
 
 namespace NutrInfo.Admin.Contracts.Patients
 {
@@ -16,32 +17,36 @@ namespace NutrInfo.Admin.Contracts.Patients
         [Required]
         public string Cpf { get; set; }
 
-        public string Street { get; set; }
+        [Required]
+        public DateTime BirthDate { get; set; }
 
-        public string City { get; set; }
+        [Required]
+        public RaceEnum Race { get; set; }
 
-        public string State { get; set; }
+        [Required]
+        public GenderEnum Gender { get; set; }
 
-        public string Neighborhood { get; set; }
+        [Required]
+        public UserStatusEnum Status { get; set; }
 
-        public string Complement { get; set; }
 
-        public string ZipCode { get; set; }
-
-        public int Number { get; set; }
-
-        public void MapTo(Patient patient)
+        public Patient ToPatient()
         {
-            patient.User.Name = Name;
-            patient.User.Email = Email;
-            patient.User.Cpf = Cpf;
-            patient.User.Address.City = City;
-            patient.User.Address.Complement = Complement;
-            patient.User.Address.Neighborhood = Neighborhood;
-            patient.User.Address.Number = Number;
-            patient.User.Address.State = State;
-            patient.User.Address.Street = Street;
-            patient.User.Address.ZipCode = ZipCode;
+            var user = new User()
+            {
+                Name = Name,
+                Email = Email,
+                Cpf = Cpf,
+                BirthDate = BirthDate,
+                Gender = Gender,
+                Status = Status
+            };
+
+            return new Patient()
+            {
+                User = user,
+                Race = Race
+            };
         }
     }
 }

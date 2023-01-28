@@ -1,6 +1,4 @@
-using Nutrinfo.Admin.Domain.Addresses;
 using Nutrinfo.Admin.Domain.Patients;
-using NutrInfo.Admin.Contracts.Patients;
 
 namespace NutrInfo.Admin.Application.Patients
 {
@@ -15,10 +13,10 @@ namespace NutrInfo.Admin.Application.Patients
 
         public bool PatientNotFound { get; private set; }
 
-        public async Task<Patient> Update(int patientId, PutPatientRequest patientRequest)
+        public async Task<Patient> Update(int patientId, Patient patient)
         {
             var patientSearch = new PatientSearch(_repository);
-            var patient = await patientSearch.Find(patientId);
+            var patientContext = await patientSearch.Find(patientId);
 
             if (patientSearch.PatientNotFound)
             {
@@ -26,16 +24,11 @@ namespace NutrInfo.Admin.Application.Patients
                 return null;
             }
 
-            if (patientRequest.Street is not null)
-            {
-                patient.User.Address = new();
-            }
+            patientContext.MapTo(patient);
 
-            patientRequest.MapTo(patient);
+            patientContext.User.UpdatedAt = DateTimeOffset.UtcNow;
 
-            patient.User.UpdatedAt = DateTimeOffset.UtcNow;
-
-            return await _repository.Update(patient);
+            return await _repository.Update(patientContext);
         }
     }
 }

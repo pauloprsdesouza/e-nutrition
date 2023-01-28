@@ -72,6 +72,7 @@ namespace NutrInfo.Admin.Api.Controllers
         /// </summary>
         /// <param name="nutritionistRequest"></param>
         [HttpPost]
+        [AllowAnonymous]
         [Produces(MediaTypeNames.Application.Json)]
         [ProducesResponseType(typeof(NutritionistResponse), StatusCodes.Status201Created)]
         [ProducesResponseType(typeof(ResponseError), StatusCodes.Status422UnprocessableEntity)]

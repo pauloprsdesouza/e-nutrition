@@ -1,6 +1,7 @@
 <Project Sdk="Microsoft.NET.Sdk.Web">
 	<PropertyGroup>
 		<TargetFramework>net6.0</TargetFramework>
+		<AWSProjectType>Lambda</AWSProjectType>
 		<CopyLocalLockFileAssemblies>true</CopyLocalLockFileAssemblies>
 		<GenerateRuntimeConfigurationFiles>true</GenerateRuntimeConfigurationFiles>
 		<GenerateDocumentationFile>true</GenerateDocumentationFile>
@@ -12,7 +13,14 @@
 		  <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
 		  <PrivateAssets>all</PrivateAssets>
 		</PackageReference>
-
+    <PackageReference Include="AWSSDK.Core" Version="3.7.103.24" />
+		<PackageReference Include="AWSSDK.Extensions.NETCore.Setup" Version="3.7.2" />
+		<PackageReference Include="AWSSDK.Lambda" Version="3.7.104.3" />
+		<PackageReference Include="Amazon.Lambda.AspNetCoreServer" Version="7.3.0" />
+		<PackageReference Include="Amazon.Lambda.Core" Version="2.1.0" />
+		<PackageReference Include="Amazon.Lambda.Logging.AspNetCore" Version="3.1.0" />
+		<PackageReference Include="Amazon.Lambda.Serialization.SystemTextJson" Version="2.3.0" />
+		<PackageReference Include="AWSSDK.SecurityToken" Version="3.7.100.62" />
 		<PackageReference Include="NUlid" Version="1.7.1" />
 		<PackageReference Include="Swashbuckle.AspNetCore" Version="6.4.0" />
 		<PackageReference Include="Swashbuckle.AspNetCore.ReDoc" Version="6.4.0" />

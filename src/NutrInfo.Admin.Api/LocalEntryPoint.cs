@@ -9,7 +9,7 @@ using Microsoft.Extensions.Logging;
 
 namespace NutrInfo.Admin.Api
 {
-    public class Program
+    public class LocalEntryPoint
     {
         public static void Main(string[] args)
         {

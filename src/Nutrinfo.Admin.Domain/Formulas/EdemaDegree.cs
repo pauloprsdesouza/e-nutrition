@@ -1,4 +1,4 @@
-namespace NutrInfo.Admin.Api.Infrastructure.Formulas
+namespace Nutrinfo.Admin.Domain.Formulas
 {
     public enum EdemaDegree
     {

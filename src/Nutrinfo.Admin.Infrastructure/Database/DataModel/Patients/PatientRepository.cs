@@ -26,7 +26,10 @@ namespace Nutrinfo.Admin.Infrastructure.Database.DataModel.Patients
 
         public async Task<Patient> FindByCpf(string cpf)
         {
-            return await _patients.Where(x => x.User.Cpf == cpf).SingleOrDefaultAsync();
+            return await _patients.Where(x => x.User.Cpf == cpf)
+                                  .Include(x => x.Evaluations)
+                                  .Include(x => x.User)
+                                  .SingleOrDefaultAsync();
         }
 
         public async Task<Patient> FindByEvaluation(int evaluationId)
@@ -41,6 +44,7 @@ namespace Nutrinfo.Admin.Infrastructure.Database.DataModel.Patients
         {
             return await _patients.Where(x => x.UserId == id)
                                   .Include(x => x.Evaluations)
+                                  .Include(x => x.User)
                                   .SingleOrDefaultAsync();
         }
 

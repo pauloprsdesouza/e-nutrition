@@ -16,11 +16,11 @@ dotnet publish -c release -o $basedir/dist
 aws cloudformation package \
   --template-file $basedir/dist/CloudFormation.yaml \
   --output-template-file $basedir/dist/deploy.yaml \
-  --s3-bucket improve-cursos \
-  --s3-prefix cloud-formation/admin-api
+  --s3-bucket pauloprsdesouza-dev \
+  --s3-prefix cloud-formation/nutrinfo-api
 
 aws cloudformation deploy \
-  --stack-name admin-api \
+  --stack-name nutrinfo-api \
   --template-file $basedir/dist/deploy.yaml \
   --parameter-overrides Environment=Development JwtSecret=87c10446-aa6a-4df3-8615-d4302cd205fb \
   --capabilities CAPABILITY_IAM \

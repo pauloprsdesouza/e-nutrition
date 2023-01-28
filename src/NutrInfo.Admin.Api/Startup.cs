@@ -26,9 +26,11 @@ namespace NutrInfo.Admin.Api
 
         public void ConfigureServices(IServiceCollection services)
         {
+            services.AddDefaultAWSOptions(_configuration.GetAWSOptions());
+
             services.AddDbContext<ApiDbContext>(options =>
            {
-               options.UseNpgsql("server=localhost;Port=5440;database=postgres;user id=postgres;password=mysecretpassword", pgsql =>
+               options.UseNpgsql("server=nutrinfo-api-rdspostgresenutrition-dgc0kyuh7dly.caiaaeba47js.us-east-1.rds.amazonaws.com;Port=5432;database=postgres;user id=postgres;password=P4ul!nh0r2", pgsql =>
                {
                    pgsql.MigrationsHistoryTable(tableName: "__migration_history", schema: ApiDbContext.Schema);
                });

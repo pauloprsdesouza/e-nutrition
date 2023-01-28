@@ -1,5 +1,4 @@
 using System.ComponentModel.DataAnnotations;
-using Nutrinfo.Admin.Domain.Addresses;
 using Nutrinfo.Admin.Domain.Patients;
 using Nutrinfo.Admin.Domain.Users;
 
@@ -21,6 +20,12 @@ namespace NutrInfo.Admin.Contracts.Patients
         [Required]
         public DateTime BirthDate { get; set; }
 
+        [Required]
+        public RaceEnum Race { get; set; }
+
+        [Required]
+        public GenderEnum Gender { get; set; }
+
         public Patient ToPatient()
         {
             var user = new User()
@@ -28,12 +33,14 @@ namespace NutrInfo.Admin.Contracts.Patients
                 Name = Name,
                 Email = Email,
                 Cpf = Cpf,
-                BirthDate = BirthDate
+                BirthDate = BirthDate,
+                Gender = Gender
             };
 
             return new Patient()
             {
                 User = user,
+                Race = Race
             };
         }
     }

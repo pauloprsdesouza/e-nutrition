@@ -20,5 +20,14 @@ namespace Nutrinfo.Admin.Domain.Users
         public Nutritionist Nutritionist { get; set; }
         public Patient Patient { get; set; }
         public Address Address { get; set; }
+
+        public int GetAge()
+        {
+            var today = DateTime.Now;
+            var age = today.Year - BirthDate.Year;
+            if (BirthDate.Date > today.AddYears(-age)) age--;
+
+            return age;
+        }
     }
 }

@@ -8,6 +8,7 @@ using NutrInfo.Admin.Application.Patients;
 using NutrInfo.Admin.Contracts;
 using NutrInfo.Admin.Contracts.Paginations;
 using NutrInfo.Admin.Contracts.Patients;
+using NutrInfo.Admin.Contracts.Patients.WeightHeightEstimation;
 
 namespace NutrInfo.Admin.Api.Controllers
 {
@@ -19,6 +20,25 @@ namespace NutrInfo.Admin.Api.Controllers
         public PatientsController(IPatientRepository patientRepository)
         {
             _patientRepository = patientRepository;
+        }
+
+        /// <summary>
+        /// Estimates a Weight and Height from a patient
+        /// </summary>
+        [HttpGet, Route("{patientId}/estimates-weight-height")]
+        [Produces(MediaTypeNames.Application.Json)]
+        [ProducesResponseType(typeof(WeightHeightEstimationResponse), StatusCodes.Status200OK)]
+        public async Task<IActionResult> EstimatesWeightAndHeight([FromRoute] int patientId, [FromQuery] GetWeightHeightEstimationQuery queryString)
+        {
+            var weightHeightEstimation = new PatientWeightHeightEstimation(_patientRepository);
+            var estimation = await weightHeightEstimation.Estimates(patientId, queryString.KneeHeight, queryString.ArmCircunference);
+
+            if (weightHeightEstimation.ValidationErrors.Any())
+            {
+                return UnprocessableEntity(new ResponseError(weightHeightEstimation.ValidationErrors));
+            }
+
+            return Ok(estimation);
         }
 
         /// <summary>
@@ -90,7 +110,7 @@ namespace NutrInfo.Admin.Api.Controllers
         public async Task<IActionResult> Update([FromRoute] int patientId, [FromBody] PutPatientRequest patientRequest)
         {
             var patientUpdate = new PatientUpdate(_patientRepository);
-            var patient = await patientUpdate.Update(patientId, patientRequest);
+            var patient = await patientUpdate.Update(patientId, patientRequest.ToPatient());
 
             if (patientUpdate.PatientNotFound)
             {
@@ -122,7 +142,7 @@ namespace NutrInfo.Admin.Api.Controllers
             return Ok(patient.MapToResponse());
         }
 
-         /// <summary>
+        /// <summary>
         /// Delete a registered patient
         /// </summary>
         /// <param name="evaluationId"></param>

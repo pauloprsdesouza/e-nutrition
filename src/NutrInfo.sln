@@ -11,6 +11,10 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Nutrinfo.Admin.Domain", "Nu
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Nutrinfo.Admin.Infrastructure", "Nutrinfo.Admin.Infrastructure\Nutrinfo.Admin.Infrastructure.csproj", "{C0E477C5-750E-4F4E-B973-3B44C2E25AC0}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NutrInfo.Admin.Application", "NutrInfo.Admin.Application\NutrInfo.Admin.Application.csproj", "{B3405567-FD47-4A3C-BF1B-81AD5C4D8490}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NutrInfo.Admin.Contracts", "NutrInfo.Admin.Contracts\NutrInfo.Admin.Contracts.csproj", "{FEA6252F-B978-4FE3-A81F-297B7D210899}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -36,5 +40,13 @@ Global
 		{C0E477C5-750E-4F4E-B973-3B44C2E25AC0}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{C0E477C5-750E-4F4E-B973-3B44C2E25AC0}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{C0E477C5-750E-4F4E-B973-3B44C2E25AC0}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B3405567-FD47-4A3C-BF1B-81AD5C4D8490}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B3405567-FD47-4A3C-BF1B-81AD5C4D8490}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B3405567-FD47-4A3C-BF1B-81AD5C4D8490}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B3405567-FD47-4A3C-BF1B-81AD5C4D8490}.Release|Any CPU.Build.0 = Release|Any CPU
+		{FEA6252F-B978-4FE3-A81F-297B7D210899}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{FEA6252F-B978-4FE3-A81F-297B7D210899}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{FEA6252F-B978-4FE3-A81F-297B7D210899}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{FEA6252F-B978-4FE3-A81F-297B7D210899}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal

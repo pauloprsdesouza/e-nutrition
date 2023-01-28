@@ -1,11 +1,9 @@
-using System;
-using System.Threading.Tasks;
 using Nutrinfo.Admin.Domain.AmputatedLimbs;
+using Nutrinfo.Admin.Domain.AsciteDegrees;
 using Nutrinfo.Admin.Domain.Ascites;
 using Nutrinfo.Admin.Domain.Evaluations;
 using NutrInfo.Admin.Application.AmputatedLimbs;
 using NutrInfo.Admin.Application.Ascites;
-using NutrInfo.Admin.Contracts.Evaluations;
 using NutrInfo.Admin.Contracts.Evaluations.Initial;
 
 namespace NutrInfo.Admin.Application.Evaluations
@@ -15,12 +13,14 @@ namespace NutrInfo.Admin.Application.Evaluations
         private readonly IEvaluationRepository _evaluationRepository;
         private readonly IAmputatedLimbRepository _amputatedLimbRepository;
         private readonly IAsciteRepository _asciteRepository;
+        private readonly IAsciteDegreeRepository _asciteDegreeRepository;
 
-        public InitialEvaluationRegistration(IEvaluationRepository evaluationRepository, IAmputatedLimbRepository amputatedLimbRepository, IAsciteRepository asciteRepository)
+        public InitialEvaluationRegistration(IEvaluationRepository evaluationRepository, IAmputatedLimbRepository amputatedLimbRepository, IAsciteRepository asciteRepository, IAsciteDegreeRepository asciteDegreeRepository)
         {
             _evaluationRepository = evaluationRepository;
             _amputatedLimbRepository = amputatedLimbRepository;
             _asciteRepository = asciteRepository;
+            _asciteDegreeRepository = asciteDegreeRepository;
         }
 
         public bool EvaluationNotFound { get; private set; }
@@ -87,7 +87,8 @@ namespace NutrInfo.Admin.Application.Evaluations
                 evaluation.Ascites.Clear();
 
                 var asciteSearch = new AsciteSearch(_asciteRepository);
-                var ascites = await asciteSearch.Find(request.Ascites.Select(x => x.AsciteDegreeId).ToList());
+                var ids = request.Ascites.Select(x => x.AsciteDegreeId).ToList();
+                var ascites = await asciteSearch.Find(ids);
 
                 if (ascites.Count == 0)
                 {
@@ -104,8 +105,25 @@ namespace NutrInfo.Admin.Application.Evaluations
                     }
                 }
 
-                var peripheralEdemaSum = evaluation.Ascites.Where(x => x.HasPeripheralEdema).Sum(x => x.AsciteDegree.PeripheralEdema);
-                var asciticWeightSum = evaluation.Ascites.Where(x => x.HasAsciticWeight).Sum(x => x.AsciteDegree.AsciticWeight);
+                var asciteDegrees = await _asciteDegreeRepository.FindByIds(ids);
+
+                var peripheralEdemaSum = 0d;
+                var asciticWeightSum = 0d;
+
+                foreach (var ascite in evaluation.Ascites)
+                {
+                    var asciteDegree = asciteDegrees.Where(x => x.Id == ascite.AsciteDegreeId).SingleOrDefault();
+
+                    if (ascite.HasPeripheralEdema)
+                    {
+                        peripheralEdemaSum += asciteDegree.PeripheralEdema;
+                    }
+
+                    if (ascite.HasAsciticWeight)
+                    {
+                        peripheralEdemaSum += asciteDegree.AsciticWeight;
+                    }
+                }
 
                 return request.Weight - (peripheralEdemaSum + asciticWeightSum);
             }

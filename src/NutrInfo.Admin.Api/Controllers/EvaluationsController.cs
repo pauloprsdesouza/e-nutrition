@@ -4,6 +4,7 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Nutrinfo.Admin.Domain.AmputatedLimbs;
+using Nutrinfo.Admin.Domain.AsciteDegrees;
 using Nutrinfo.Admin.Domain.Ascites;
 using Nutrinfo.Admin.Domain.Evaluations;
 using Nutrinfo.Admin.Domain.Patients;
@@ -23,13 +24,15 @@ namespace NutrInfo.Admin.Api.Controllers
         private readonly IPatientRepository _patientRepository;
         private readonly IAmputatedLimbRepository _amputatedLimbRepository;
         private readonly IAsciteRepository _asciteRepository;
+        private readonly IAsciteDegreeRepository _asciteDegreeRepository;
 
-        public EvaluationsController(IEvaluationRepository evaluationRepository, IPatientRepository patientRepository, IAmputatedLimbRepository amputatedLimbRepository, IAsciteRepository asciteRepository)
+        public EvaluationsController(IEvaluationRepository evaluationRepository, IPatientRepository patientRepository, IAmputatedLimbRepository amputatedLimbRepository, IAsciteRepository asciteRepository, IAsciteDegreeRepository asciteDegreeRepository)
         {
             _evaluationRepository = evaluationRepository;
             _patientRepository = patientRepository;
             _amputatedLimbRepository = amputatedLimbRepository;
             _asciteRepository = asciteRepository;
+            _asciteDegreeRepository = asciteDegreeRepository;
         }
 
         /// <summary>
@@ -121,7 +124,7 @@ namespace NutrInfo.Admin.Api.Controllers
         [ProducesResponseType(typeof(ResponseError), StatusCodes.Status422UnprocessableEntity)]
         public async Task<IActionResult> InitialEvaluation([FromRoute] int evaluationId, [FromBody] PutInitialEvaluationRequest request)
         {
-            var evaluationRegistration = new InitialEvaluationRegistration(_evaluationRepository, _amputatedLimbRepository, _asciteRepository);
+            var evaluationRegistration = new InitialEvaluationRegistration(_evaluationRepository, _amputatedLimbRepository, _asciteRepository, _asciteDegreeRepository);
             var evaluation = await evaluationRegistration.Register(evaluationId, request);
 
             if (evaluationRegistration.EvaluationNotFound)

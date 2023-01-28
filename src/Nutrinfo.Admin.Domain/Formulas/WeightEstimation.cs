@@ -1,7 +1,7 @@
 using Nutrinfo.Admin.Domain.Patients;
 using Nutrinfo.Admin.Domain.Users;
 
-namespace NutrInfo.Admin.Api.Infrastructure.Formulas
+namespace Nutrinfo.Admin.Domain.Formulas
 {
     public class WeightEstimation
     {

@@ -9,9 +9,11 @@ namespace NutrInfo.Admin.Contracts.Evaluations.Initial
         public bool IsWalking { get; set; }
 
         [Required]
+        [Range(5, 300)]
         public double Weight { get; set; }
 
         [Required]
+        [Range(1, 3)]
         public double Height { get; set; }
 
         public double EdemaWeight { get; set; }
