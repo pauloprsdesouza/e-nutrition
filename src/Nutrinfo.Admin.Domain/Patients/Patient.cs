@@ -6,6 +6,12 @@ namespace Nutrinfo.Admin.Domain.Patients
 {
     public class Patient
     {
+        public Patient()
+        {
+            Evaluations = new();
+            AmputatedLimbs = new();
+        }
+
         public int UserId { get; set; }
         public RaceEnum Race { get; set; }
 

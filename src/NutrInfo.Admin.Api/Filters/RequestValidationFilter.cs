@@ -2,6 +2,7 @@ using System.Linq;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Filters;
+using NutrInfo.Admin.Contracts;
 
 namespace NutrInfo.Admin.Api.Filters
 {
@@ -16,7 +17,7 @@ namespace NutrInfo.Admin.Api.Filters
                         .Select(modelError => modelError.ErrorMessage)
                         .ToList());
 
-                context.Result = new JsonResult(new { errors })
+                context.Result = new JsonResult(new ResponseError(errors.SelectMany(x => x.Value).ToList()))
                 {
                     StatusCode = StatusCodes.Status400BadRequest
                 };

@@ -194,7 +194,10 @@ namespace NutrInfo.Admin.Api.Controllers
         [ProducesResponseType(typeof(ResponseError), StatusCodes.Status422UnprocessableEntity)]
         public async Task<IActionResult> Diagnosis([FromRoute] int evaluationId)
         {
-            return Ok();
+            var diagnosisEvaluationRegistration = new DiagnosisEvaluationRegistration(_evaluationRepository);
+            var evaluation = await diagnosisEvaluationRegistration.Register(evaluationId);
+
+            return Ok(evaluation.MapToResponse());
         }
     }
 }

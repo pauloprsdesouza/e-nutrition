@@ -19,7 +19,9 @@ namespace NutrInfo.Admin.Contracts.Evaluations
                 Status = evaluation.Status,
                 Step = evaluation.Step,
                 CreatedAt = evaluation.CreatedAt,
-                UpdatedAt = evaluation.UpdatedAt
+                UpdatedAt = evaluation.UpdatedAt,
+                IsNextEvaluation = evaluation.NextEvaluation?.Date == DateTime.UtcNow.Date,
+                NextEvaluation = evaluation.NextEvaluation
             };
         }
     }

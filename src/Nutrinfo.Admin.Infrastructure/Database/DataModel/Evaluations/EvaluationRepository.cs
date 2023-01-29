@@ -31,6 +31,7 @@ namespace Nutrinfo.Admin.Infrastructure.Database.DataModel.Evaluations
                                      .Include(x => x.Patient)
                                      .ThenInclude(x => x.User)
                                      .Include(x => x.Ascites)
+                                     .OrderBy(x => x.NextEvaluation)
                                      .ToListAsync();
         }
 

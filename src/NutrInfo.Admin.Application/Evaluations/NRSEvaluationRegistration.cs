@@ -29,17 +29,14 @@ namespace NutrInfo.Admin.Application.Evaluations
 
             var imc = evaluation.Weight / Math.Pow(evaluation.Height, 2);
 
-            var validationData = request.LostWeightLastThreeMonths > 0 || request.ReducedDietaryIntake || request.SeriouslyIllPatient || imc < 20.5;
+            var hasNutritionalRisk = request.LostWeightLastThreeMonths > 0 || request.ReducedDietaryIntake || request.SeriouslyIllPatient || imc < 20.5;
 
-            if (!validationData)
+            if (!hasNutritionalRisk)
             {
-                ValidationErros.Add("PATIENT_DOES_NOT_HAVE_NUTRITIONAL_RISK");
-                return null;
-            }
-
-            if ((int)request.NutritionalStateSeverity + (int)request.DiseaseSeverity < 3)
-            {
-                evaluation.NextEvaluation = DateTime.UtcNow.AddDays(7);
+                if ((int)request.NutritionalStateSeverity + (int)request.DiseaseSeverity < 3)
+                {
+                    evaluation.NextEvaluation = DateTime.UtcNow.AddDays(7);
+                }
             }
 
             request.MapTo(evaluation);

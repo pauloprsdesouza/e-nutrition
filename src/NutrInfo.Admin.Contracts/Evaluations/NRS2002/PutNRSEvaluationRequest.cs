@@ -26,7 +26,7 @@ namespace NutrInfo.Admin.Contracts.Evaluations.NRS2002
             evaluation.NutritionalStateSeverity = NutritionalStateSeverity;
             evaluation.ReducedDietaryIntake = ReducedDietaryIntake;
             evaluation.LostWeightLastThreeMonths = LostWeightLastThreeMonths;
-            evaluation.Step = EvaluationStepsEnum.NRS_2002;
+            evaluation.Step = EvaluationStepsEnum.ANTHROPOMETRY;
         }
     }
 }

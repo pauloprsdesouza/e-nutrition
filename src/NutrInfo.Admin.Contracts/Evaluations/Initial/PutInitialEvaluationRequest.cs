@@ -29,7 +29,7 @@ namespace NutrInfo.Admin.Contracts.Evaluations.Initial
             evaluation.IsWalking = IsWalking;
             evaluation.EdemaWeight = EdemaWeight;
             evaluation.Imc = Math.Round(Weight / Math.Pow(Height, 2));
-            evaluation.Step = EvaluationStepsEnum.INITIAL;
+            evaluation.Step = EvaluationStepsEnum.NRS_2002;
         }
     }
 }

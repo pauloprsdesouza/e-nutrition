@@ -10,8 +10,6 @@ namespace NutrInfo.Admin.Contracts.Patients
         [MaxLength(100)]
         public string Name { get; set; }
 
-        [Required]
-        [EmailAddress]
         public string Email { get; set; }
 
         [Required]

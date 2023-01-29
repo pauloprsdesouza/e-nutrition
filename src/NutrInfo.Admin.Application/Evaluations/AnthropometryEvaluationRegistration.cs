@@ -33,7 +33,10 @@ namespace NutrInfo.Admin.Application.Evaluations
             request.MapTo(evaluation);
 
             evaluation.UpdatedAt = DateTimeOffset.UtcNow;
-            _evaluationRepository.Update(evaluation);
+            evaluation.Status = EvaluationStatusEnum.COMPLETED;
+            evaluation.NextEvaluation = DateTimeOffset.UtcNow.AddDays(7);
+
+            await _evaluationRepository.Update(evaluation);
 
             return evaluation;
         }

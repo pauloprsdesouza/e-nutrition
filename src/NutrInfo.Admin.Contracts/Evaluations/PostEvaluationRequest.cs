@@ -14,7 +14,7 @@ namespace NutrInfo.Admin.Contracts.Evaluations
             {
                 PatientId = PatientId,
                 Status = EvaluationStatusEnum.PROCESSING,
-                Step = EvaluationStepsEnum.CREATED
+                Step = EvaluationStepsEnum.INITIAL
             };
         }
     }

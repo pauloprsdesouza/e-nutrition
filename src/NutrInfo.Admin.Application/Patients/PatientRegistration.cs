@@ -22,6 +22,18 @@ namespace NutrInfo.Admin.Application.Patients
             if (patientContext is not null)
             {
                 ValidationErrors.Add("PATIENT_ALREADY_EXISTS");
+                return null;
+            }
+
+            if (patient.User.Email is not null)
+            {
+                patientContext = await patientSearch.FindByEmail(patient.User.Email);
+
+                if (patientContext is not null)
+                {
+                    ValidationErrors.Add("PATIENT_ALREADY_EXISTS");
+                    return null;
+                }
             }
 
             patient.User.CreatedAt = DateTimeOffset.UtcNow;

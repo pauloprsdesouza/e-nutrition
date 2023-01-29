@@ -5,16 +5,16 @@ namespace NutrInfo.Admin.Contracts.Evaluations.Anthropometry
 {
     public class PutAnthropometryEvaluationRequest
     {
-        [Required, Range(0.1, 1)]
+        [Required]
         public double ArmCircumference { get; set; }
 
-        [Required, Range(0.1, 1)]
+        [Required]
         public double TricepsPleat { get; set; }
 
-        [Required, Range(0.1, 1)]
+        [Required]
         public double CalfCircumference { get; set; }
 
-        [Required, Range(0.1, 1)]
+        [Required]
         public double ArmMuscleCircumference { get; set; }
 
         public void MapTo(Evaluation evaluation)
@@ -23,7 +23,7 @@ namespace NutrInfo.Admin.Contracts.Evaluations.Anthropometry
             evaluation.TricepsPleat = TricepsPleat;
             evaluation.CalfCircumference = CalfCircumference;
             evaluation.ArmMuscleCircumference = ArmMuscleCircumference;
-            evaluation.Step = EvaluationStepsEnum.ANTHROPOMETRY;
+            evaluation.Step = EvaluationStepsEnum.DIAGNOSIS;
         }
     }
 }

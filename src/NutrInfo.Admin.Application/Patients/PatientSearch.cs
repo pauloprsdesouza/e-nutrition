@@ -31,6 +31,15 @@ namespace NutrInfo.Admin.Application.Patients
             return patient;
         }
 
+        public async Task<Patient> FindByEmail(string email)
+        {
+            var patient = await _patientRepository.FindByEmail(email);
+
+            PatientNotFound = patient == null;
+
+            return patient;
+        }
+
          public async Task<Patient> FindByEvaluation(int evaluationId)
         {
             var patient = await _patientRepository.FindByEvaluation(evaluationId);
