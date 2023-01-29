@@ -16,6 +16,9 @@ namespace NutrInfo.Admin.Contracts.Patients
         public string Cpf { get; set; }
 
         [Required]
+        public int MedicalRecord { get; set; }
+
+        [Required]
         public DateTime BirthDate { get; set; }
 
         [Required]
@@ -38,7 +41,8 @@ namespace NutrInfo.Admin.Contracts.Patients
             return new Patient()
             {
                 User = user,
-                Race = Race
+                Race = Race,
+                MedicalRecord = MedicalRecord
             };
         }
     }

@@ -30,6 +30,7 @@ namespace NutrInfo.Admin.Contracts.Evaluations.Initial
             evaluation.EdemaWeight = EdemaWeight;
             evaluation.Imc = Math.Round(Weight / Math.Pow(Height, 2));
             evaluation.Step = EvaluationStepsEnum.NRS_2002;
+            evaluation.NutritionalState = evaluation.getNutritionalState();
         }
     }
 }

@@ -14,6 +14,7 @@ namespace Nutrinfo.Admin.Domain.Patients
 
         public int UserId { get; set; }
         public RaceEnum Race { get; set; }
+        public int MedicalRecord { get; set; }
 
         public User User { get; set; }
         public List<Evaluation> Evaluations { get; set; }

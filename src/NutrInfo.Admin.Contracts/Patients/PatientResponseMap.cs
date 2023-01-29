@@ -8,8 +8,8 @@ namespace NutrInfo.Admin.Contracts.Patients
     {
         public static PatientResponse MapToResponse(this Patient patient)
         {
-            var lastCompletedEvaluation = patient.Evaluations.Where(x => x.Status == EvaluationStatusEnum.COMPLETED).Any() ? patient.Evaluations.Where(x => x.Status == EvaluationStatusEnum.COMPLETED).OrderBy(x => x.CreatedAt).First() : null;
-            var processingEvaluation = patient.Evaluations.Where(x => x.Status == EvaluationStatusEnum.PROCESSING).Any() ? patient.Evaluations.Where(x => x.Status == EvaluationStatusEnum.PROCESSING).OrderBy(x => x.CreatedAt).First() : null;
+            var lastCompletedEvaluation = patient.Evaluations.Where(x => x.Status == EvaluationStatusEnum.COMPLETED).Any() ? patient.Evaluations.Where(x => x.Status == EvaluationStatusEnum.COMPLETED).OrderByDescending(x => x.CreatedAt).First() : null;
+            var processingEvaluation = patient.Evaluations.Where(x => x.Status == EvaluationStatusEnum.PROCESSING).Any() ? patient.Evaluations.Where(x => x.Status == EvaluationStatusEnum.PROCESSING).OrderByDescending(x => x.CreatedAt).First() : null;
 
             return new PatientResponse()
             {
@@ -21,6 +21,7 @@ namespace NutrInfo.Admin.Contracts.Patients
                 Race = patient.Race,
                 Gender = patient.User.Gender,
                 Email = patient.User.Email,
+                MedicalRecord = patient.MedicalRecord,
                 Status = patient.User.Status,
                 LastEvaluation = lastCompletedEvaluation?.MapToResponse(),
                 ProcessingEvaluation = processingEvaluation?.MapToResponse(),

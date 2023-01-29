@@ -35,5 +35,26 @@ namespace Nutrinfo.Admin.Domain.Evaluations
         public Patient Patient { get; set; }
         public List<AmputatedLimb> AmputatedLimbs { get; set; }
         public List<Ascite> Ascites { get; set; }
+
+        public NutritionalStateEnum getNutritionalState()
+        {
+            const double IDEAL_IMC = 21.7;
+
+            var idealWeight = IDEAL_IMC * Math.Pow(Height, 2);
+            var percentualIdealWeight = Weight / idealWeight * 100;
+
+            if (percentualIdealWeight <= 70)
+                return NutritionalStateEnum.SEVERE_MALNUTRITION;
+            else if (percentualIdealWeight > 80 && percentualIdealWeight <= 80)
+                return NutritionalStateEnum.MODERATE_MALNUTRITION;
+            else if (percentualIdealWeight > 80 && percentualIdealWeight <= 90)
+                return NutritionalStateEnum.LIGHT_MALNUTRITION;
+            else if (percentualIdealWeight > 90 && percentualIdealWeight <= 110)
+                return NutritionalStateEnum.EUTROPHY;
+            else if (percentualIdealWeight > 110 && percentualIdealWeight <= 120)
+                return NutritionalStateEnum.OVERWEIGHT;
+            else
+                return NutritionalStateEnum.OBESITY;
+        }
     }
 }

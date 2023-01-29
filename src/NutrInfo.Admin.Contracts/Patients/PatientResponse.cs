@@ -10,6 +10,7 @@ namespace NutrInfo.Admin.Contracts.Patients
         public string Cpf { get; set; }
         public string Name { get; set; }
         public string Email { get; set; }
+        public int MedicalRecord { get; set; }
         public DateTime BirthDate { get; set; }
         public GenderEnum Gender { get; set; }
         public RaceEnum Race { get; set; }
