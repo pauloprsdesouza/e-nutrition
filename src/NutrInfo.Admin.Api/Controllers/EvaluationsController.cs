@@ -6,12 +6,14 @@ using Microsoft.AspNetCore.Mvc;
 using Nutrinfo.Admin.Domain.AmputatedLimbs;
 using Nutrinfo.Admin.Domain.AsciteDegrees;
 using Nutrinfo.Admin.Domain.Ascites;
+using Nutrinfo.Admin.Domain.CircumferencePercentils;
 using Nutrinfo.Admin.Domain.Evaluations;
 using Nutrinfo.Admin.Domain.Patients;
 using NutrInfo.Admin.Application.Evaluations;
 using NutrInfo.Admin.Contracts;
 using NutrInfo.Admin.Contracts.Evaluations;
 using NutrInfo.Admin.Contracts.Evaluations.Anthropometry;
+using NutrInfo.Admin.Contracts.Evaluations.Diagnosis;
 using NutrInfo.Admin.Contracts.Evaluations.Initial;
 using NutrInfo.Admin.Contracts.Evaluations.NRS2002;
 
@@ -25,14 +27,16 @@ namespace NutrInfo.Admin.Api.Controllers
         private readonly IAmputatedLimbRepository _amputatedLimbRepository;
         private readonly IAsciteRepository _asciteRepository;
         private readonly IAsciteDegreeRepository _asciteDegreeRepository;
+        private readonly IArmCircumferencePercentilRepository _armPercentil;
 
-        public EvaluationsController(IEvaluationRepository evaluationRepository, IPatientRepository patientRepository, IAmputatedLimbRepository amputatedLimbRepository, IAsciteRepository asciteRepository, IAsciteDegreeRepository asciteDegreeRepository)
+        public EvaluationsController(IEvaluationRepository evaluationRepository, IPatientRepository patientRepository, IAmputatedLimbRepository amputatedLimbRepository, IAsciteRepository asciteRepository, IAsciteDegreeRepository asciteDegreeRepository, IArmCircumferencePercentilRepository armPercentil)
         {
             _evaluationRepository = evaluationRepository;
             _patientRepository = patientRepository;
             _amputatedLimbRepository = amputatedLimbRepository;
             _asciteRepository = asciteRepository;
             _asciteDegreeRepository = asciteDegreeRepository;
+            _armPercentil = armPercentil;
         }
 
         /// <summary>
@@ -190,14 +194,14 @@ namespace NutrInfo.Admin.Api.Controllers
         /// <param name="evaluationId"></param>
         [HttpGet, Route("{evaluationId}/diagnosis")]
         [Produces(MediaTypeNames.Application.Json)]
-        [ProducesResponseType(typeof(EvaluationResponse), StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(DiagnosisResponse), StatusCodes.Status200OK)]
         [ProducesResponseType(typeof(ResponseError), StatusCodes.Status422UnprocessableEntity)]
         public async Task<IActionResult> Diagnosis([FromRoute] int evaluationId)
         {
-            var diagnosisEvaluationRegistration = new DiagnosisEvaluationRegistration(_evaluationRepository);
-            var evaluation = await diagnosisEvaluationRegistration.Register(evaluationId);
+            var diagnosisEvaluationRegistration = new DiagnosisEvaluationRegistration(_evaluationRepository, _armPercentil);
+            var diagnosis = await diagnosisEvaluationRegistration.Register(evaluationId);
 
-            return Ok(evaluation.MapToResponse());
+            return Ok(diagnosis);
         }
     }
 }

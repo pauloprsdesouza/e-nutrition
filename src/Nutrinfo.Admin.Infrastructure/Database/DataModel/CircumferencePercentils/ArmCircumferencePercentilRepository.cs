@@ -18,7 +18,7 @@ namespace Nutrinfo.Admin.Infrastructure.Database.DataModel.CircumferencePercenti
 
         public async Task<ArmCircumferencePercentil> FindByGenderAndAge(GenderEnum gender, int age)
         {
-            return await _percentils.Where(x => x.Gender == gender && x.StartAge >= age && x.EndAge <= age).SingleOrDefaultAsync();
+            return await _percentils.Where(x => x.Gender == gender && x.StartAge <= age && x.EndAge >= age).SingleOrDefaultAsync();
         }
     }
 }

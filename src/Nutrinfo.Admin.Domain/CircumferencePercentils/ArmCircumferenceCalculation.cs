@@ -1,3 +1,4 @@
+using Nutrinfo.Admin.Domain.Evaluations;
 using Nutrinfo.Admin.Domain.Patients;
 
 namespace Nutrinfo.Admin.Domain.CircumferencePercentils
@@ -10,31 +11,31 @@ namespace Nutrinfo.Admin.Domain.CircumferencePercentils
         {
             _percentils = percentils;
         }
-        public async Task<ArmCircumferenceClassificationEnum> GetArmCircumferenceClassification(Patient patient, double armCircumference)
+        public async Task<ArmCircumferenceClassificationEnum> GetArmCircumferenceClassification(Evaluation evaluation)
         {
-            var age = patient.User.GetAge();
-            var percentil = await _percentils.FindByGenderAndAge(patient.User.Gender, age);
+            var age = evaluation.Patient.User.GetAge();
+            var percentil = await _percentils.FindByGenderAndAge(evaluation.Patient.User.Gender, age);
 
             if (age > 60)
             {
-                if (armCircumference < percentil.P5)
+                if (evaluation.ArmCircumference < percentil.P5)
                     return ArmCircumferenceClassificationEnum.MALNUTRITION;
-                else if (armCircumference >= percentil.P5 && armCircumference < percentil.P10)
+                else if (evaluation.ArmCircumference >= percentil.P5 && evaluation.ArmCircumference < percentil.P10)
                     return ArmCircumferenceClassificationEnum.MALNUTRITION_RISK;
-                else if (armCircumference >= percentil.P10 && armCircumference < percentil.P90)
+                else if (evaluation.ArmCircumference >= percentil.P10 && evaluation.ArmCircumference < percentil.P90)
                     return ArmCircumferenceClassificationEnum.EUTROPHY;
                 else
                     return ArmCircumferenceClassificationEnum.OBESITY;
             }
             else
             {
-                if (armCircumference < percentil.P5)
+                if (evaluation.ArmCircumference < percentil.P5)
                     return ArmCircumferenceClassificationEnum.MALNUTRITION;
-                else if (armCircumference >= percentil.P5 && armCircumference < percentil.P15)
+                else if (evaluation.ArmCircumference >= percentil.P5 && evaluation.ArmCircumference < percentil.P15)
                     return ArmCircumferenceClassificationEnum.MALNUTRITION_RISK;
-                else if (armCircumference >= percentil.P15 && armCircumference < percentil.P85)
+                else if (evaluation.ArmCircumference >= percentil.P15 && evaluation.ArmCircumference < percentil.P85)
                     return ArmCircumferenceClassificationEnum.EUTROPHY;
-                if (armCircumference >= percentil.P85 && armCircumference < percentil.P95)
+                if (evaluation.ArmCircumference >= percentil.P85 && evaluation.ArmCircumference < percentil.P95)
                     return ArmCircumferenceClassificationEnum.OVERWEIGHT;
                 else
                     return ArmCircumferenceClassificationEnum.OBESITY;
