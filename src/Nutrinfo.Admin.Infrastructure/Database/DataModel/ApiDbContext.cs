@@ -15,8 +15,10 @@ using Nutrinfo.Admin.Api.Infrastructure.Database.DataModel.AsciteDegrees;
 using Nutrinfo.Admin.Infrastructure.Database.DataModel.AmputatedLimbs;
 using Nutrinfo.Admin.Domain.AmputatedLimbsPercentage;
 using Nutrinfo.Admin.Infrastructure.Database.DataModel.AmputatedLimbsPercentage;
+using Nutrinfo.Admin.Infrastructure.Database.DataModel.CircumferencePercentils;
 using Nutrinfo.Admin.Domain.AsciteDegrees;
 using Nutrinfo.Admin.Domain.Ascites;
+using Nutrinfo.Admin.Domain.CircumferencePercentils;
 
 namespace NutrInfo.Admin.Api.Infrastructure.Database.DataModel
 {
@@ -35,6 +37,7 @@ namespace NutrInfo.Admin.Api.Infrastructure.Database.DataModel
         public DbSet<AmputatedLimbPercentage> AmputatedLimbsPercentage { get; set; }
         public DbSet<Ascite> Ascites { get; set; }
         public DbSet<AsciteDegree> AsciteDegrees { get; set; }
+        public DbSet<ArmCircumferencePercentil> ArmCircunferences { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -49,6 +52,7 @@ namespace NutrInfo.Admin.Api.Infrastructure.Database.DataModel
             modelBuilder.Entity<AmputatedLimbPercentage>().Configure();
             modelBuilder.Entity<Ascite>().Configure();
             modelBuilder.Entity<AsciteDegree>().Configure();
+            modelBuilder.Entity<ArmCircumferencePercentil>().Configure();
         }
     }
 }

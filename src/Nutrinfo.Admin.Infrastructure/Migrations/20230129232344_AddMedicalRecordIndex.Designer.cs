@@ -2,6 +2,7 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 using NutrInfo.Admin.Api.Infrastructure.Database.DataModel;
@@ -11,9 +12,10 @@ using NutrInfo.Admin.Api.Infrastructure.Database.DataModel;
 namespace Nutrinfo.Admin.Infrastructure.Migrations
 {
     [DbContext(typeof(ApiDbContext))]
-    partial class ApiDbContextModelSnapshot : ModelSnapshot
+    [Migration("20230129232344_AddMedicalRecordIndex")]
+    partial class AddMedicalRecordIndex
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -152,56 +154,6 @@ namespace Nutrinfo.Admin.Infrastructure.Migrations
                     b.HasIndex("EvaluationId");
 
                     b.ToTable("ascite", "nutrinfo");
-                });
-
-            modelBuilder.Entity("Nutrinfo.Admin.Domain.CircumferencePercentils.ArmCircumferencePercentil", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("integer");
-
-                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
-
-                    b.Property<int>("EndAge")
-                        .HasColumnType("integer");
-
-                    b.Property<string>("Gender")
-                        .IsRequired()
-                        .HasColumnType("text");
-
-                    b.Property<decimal>("P10")
-                        .HasColumnType("numeric");
-
-                    b.Property<decimal>("P15")
-                        .HasColumnType("numeric");
-
-                    b.Property<decimal>("P25")
-                        .HasColumnType("numeric");
-
-                    b.Property<decimal>("P5")
-                        .HasColumnType("numeric");
-
-                    b.Property<decimal>("P50")
-                        .HasColumnType("numeric");
-
-                    b.Property<decimal>("P75")
-                        .HasColumnType("numeric");
-
-                    b.Property<decimal>("P85")
-                        .HasColumnType("numeric");
-
-                    b.Property<decimal>("P90")
-                        .HasColumnType("numeric");
-
-                    b.Property<decimal>("P95")
-                        .HasColumnType("numeric");
-
-                    b.Property<int>("StartAge")
-                        .HasColumnType("integer");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("armCircumferencePercentil", "nutrinfo");
                 });
 
             modelBuilder.Entity("Nutrinfo.Admin.Domain.Evaluations.Evaluation", b =>

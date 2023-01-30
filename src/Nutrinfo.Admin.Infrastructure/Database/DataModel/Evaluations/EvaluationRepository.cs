@@ -25,7 +25,7 @@ namespace Nutrinfo.Admin.Infrastructure.Database.DataModel.Evaluations
 
         public async Task<List<Evaluation>> FindAllMonitoringByNutritionist(int nutritionistId)
         {
-            return await _evaluations.Where(x => x.NutritionistId == nutritionistId)
+            return await _evaluations.Where(x => x.NutritionistId == nutritionistId && x.Status == EvaluationStatusEnum.COMPLETED && x.NextEvaluation != null)
                                      .Include(x => x.Patient)
                                      .ThenInclude(x => x.AmputatedLimbs)
                                      .Include(x => x.Patient)
@@ -45,6 +45,18 @@ namespace Nutrinfo.Admin.Infrastructure.Database.DataModel.Evaluations
                                      .Include(x => x.Ascites)
                                      .ThenInclude(x => x.AsciteDegree)
                                      .SingleOrDefaultAsync();
+        }
+
+        public async Task<Evaluation> FindLastEvaluationsFromPatient(int patientId)
+        {
+               return await _evaluations.Where(x => x.PatientId == patientId && x.Status == EvaluationStatusEnum.COMPLETED)
+                                     .Include(x => x.Patient)
+                                     .ThenInclude(x => x.AmputatedLimbs)
+                                     .Include(x => x.Patient)
+                                     .ThenInclude(x => x.User)
+                                     .Include(x => x.Ascites)
+                                     .OrderByDescending(x => x.CreatedAt)
+                                     .FirstOrDefaultAsync();
         }
 
         public async Task<List<Evaluation>> FindLastTwoEvaluationsFromPatient(int patientId)
