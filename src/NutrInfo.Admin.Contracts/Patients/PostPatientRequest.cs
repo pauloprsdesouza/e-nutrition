@@ -10,12 +10,13 @@ namespace NutrInfo.Admin.Contracts.Patients
         [MaxLength(100)]
         public string Name { get; set; }
 
-        [Required]
-        [EmailAddress]
         public string Email { get; set; }
 
         [Required]
         public string Cpf { get; set; }
+
+        [Required]
+        public int MedicalRecord { get; set; }
 
         [Required]
         public DateTime BirthDate { get; set; }
@@ -40,7 +41,8 @@ namespace NutrInfo.Admin.Contracts.Patients
             return new Patient()
             {
                 User = user,
-                Race = Race
+                Race = Race,
+                MedicalRecord = MedicalRecord
             };
         }
     }

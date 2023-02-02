@@ -15,6 +15,11 @@ namespace NutrInfo.Admin.Api.Infrastructure.Database.DataModel.Patients
             builder.Property(p => p.UserId)
                    .ValueGeneratedOnAdd();
 
+            builder.Property(x => x.MedicalRecord)
+                   .IsRequired();
+
+            builder.HasIndex(x => x.MedicalRecord);
+
             builder.Property(p => p.Race)
                    .IsRequired()
                    .HasConversion(

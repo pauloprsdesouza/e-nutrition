@@ -89,10 +89,16 @@ namespace NutrInfo.Admin.Api.Controllers
         [HttpPost]
         [Produces(MediaTypeNames.Application.Json)]
         [ProducesResponseType(typeof(PatientResponse), StatusCodes.Status201Created)]
+        [ProducesResponseType(typeof(ResponseError), StatusCodes.Status422UnprocessableEntity)]
         public async Task<IActionResult> Create([FromBody] PostPatientRequest patientRequest)
         {
             var createPatient = new PatientRegistration(_patientRepository);
             var patient = await createPatient.Register(patientRequest.ToPatient());
+
+            if (createPatient.ValidationErrors.Any())
+            {
+                return UnprocessableEntity(new ResponseError(createPatient.ValidationErrors));
+            }
 
             return Created($"api/v1/patients/{patient}", patient.MapToResponse());
         }
@@ -107,6 +113,7 @@ namespace NutrInfo.Admin.Api.Controllers
         [Produces(MediaTypeNames.Application.Json)]
         [ProducesResponseType(typeof(PatientResponse), StatusCodes.Status200OK)]
         [ProducesResponseType(typeof(ResponseError), StatusCodes.Status404NotFound)]
+        [ProducesResponseType(typeof(ResponseError), StatusCodes.Status422UnprocessableEntity)]
         public async Task<IActionResult> Update([FromRoute] int patientId, [FromBody] PutPatientRequest patientRequest)
         {
             var patientUpdate = new PatientUpdate(_patientRepository);
@@ -115,6 +122,11 @@ namespace NutrInfo.Admin.Api.Controllers
             if (patientUpdate.PatientNotFound)
             {
                 return NotFound(new ResponseError("PATIENT_NOT_FOUND"));
+            }
+
+            if (patientUpdate.ValidationErrors.Any())
+            {
+                return UnprocessableEntity(new ResponseError(patientUpdate.ValidationErrors));
             }
 
             return Ok(patient.MapToResponse());

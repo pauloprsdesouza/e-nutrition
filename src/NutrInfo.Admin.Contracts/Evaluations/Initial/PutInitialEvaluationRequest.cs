@@ -1,5 +1,6 @@
 using System.ComponentModel.DataAnnotations;
 using Nutrinfo.Admin.Domain.Evaluations;
+using Nutrinfo.Admin.Domain.Evaluations.WeightMetrics;
 
 namespace NutrInfo.Admin.Contracts.Evaluations.Initial
 {
@@ -29,7 +30,8 @@ namespace NutrInfo.Admin.Contracts.Evaluations.Initial
             evaluation.IsWalking = IsWalking;
             evaluation.EdemaWeight = EdemaWeight;
             evaluation.Imc = Math.Round(Weight / Math.Pow(Height, 2));
-            evaluation.Step = EvaluationStepsEnum.INITIAL;
+            evaluation.Step = EvaluationStepsEnum.NRS_2002;
+            evaluation.NutritionalState = evaluation.GetNutritionalState();
         }
     }
 }

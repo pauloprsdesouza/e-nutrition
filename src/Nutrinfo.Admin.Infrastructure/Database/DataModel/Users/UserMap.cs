@@ -30,10 +30,7 @@ namespace NutrInfo.Admin.Api.Infrastructure.Database.DataModel.Users
 
             builder.Property(p => p.Email)
                 .HasMaxLength(200)
-                .IsRequired();
-
-            builder.HasIndex(p => p.Email)
-                .IsUnique();
+                .IsRequired(false);
 
             builder.Property(p => p.BirthDate)
                    .IsRequired();

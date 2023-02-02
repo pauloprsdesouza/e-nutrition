@@ -11,6 +11,8 @@ namespace NutrInfo.Admin.Contracts.Evaluations
                 Id = evaluation.Id,
                 Imc = evaluation.Imc,
                 PatientName = evaluation.Patient?.User?.Name,
+                PatientId = evaluation.Patient?.User?.Id,
+                MedicalRecord = evaluation.Patient?.MedicalRecord,
                 Weight = evaluation.Weight,
                 Height = evaluation.Height,
                 IsWalking = evaluation.IsWalking,
@@ -19,7 +21,9 @@ namespace NutrInfo.Admin.Contracts.Evaluations
                 Status = evaluation.Status,
                 Step = evaluation.Step,
                 CreatedAt = evaluation.CreatedAt,
-                UpdatedAt = evaluation.UpdatedAt
+                UpdatedAt = evaluation.UpdatedAt,
+                IsNextEvaluation = evaluation.NextEvaluation?.Date == DateTime.UtcNow.Date,
+                NextEvaluation = evaluation.NextEvaluation
             };
         }
     }

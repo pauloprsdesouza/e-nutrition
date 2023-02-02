@@ -8,6 +8,8 @@ namespace NutrInfo.Admin.Contracts.Evaluations
     {
         public int Id { get; set; }
         public string PatientName { get; set; }
+        public int? PatientId { get; set; }
+        public int? MedicalRecord { get; set; }
         public double Weight { get; set; }
         public double Height { get; set; }
         public double Imc { get; set; }
@@ -18,7 +20,9 @@ namespace NutrInfo.Admin.Contracts.Evaluations
         public DiseaseSeverityEnum DiseaseSeverity { get; set; }
         public EvaluationStatusEnum Status { get; set; }
         public EvaluationStepsEnum Step { get; set; }
+        public Boolean IsNextEvaluation { get; set; }
         public DateTimeOffset CreatedAt { get; set; }
         public DateTimeOffset? UpdatedAt { get; set; }
+        public DateTimeOffset? NextEvaluation { get; set; }
     }
 }

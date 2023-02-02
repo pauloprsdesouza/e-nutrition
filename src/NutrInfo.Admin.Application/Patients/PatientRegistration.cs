@@ -22,6 +22,7 @@ namespace NutrInfo.Admin.Application.Patients
             if (patientContext is not null)
             {
                 ValidationErrors.Add("PATIENT_ALREADY_EXISTS");
+                return null;
             }
 
             patient.User.CreatedAt = DateTimeOffset.UtcNow;

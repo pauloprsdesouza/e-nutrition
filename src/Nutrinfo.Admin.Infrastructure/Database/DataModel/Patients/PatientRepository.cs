@@ -1,6 +1,7 @@
 using Microsoft.EntityFrameworkCore;
 using Nutrinfo.Admin.Domain.Pagination;
 using Nutrinfo.Admin.Domain.Patients;
+using Nutrinfo.Admin.Domain.Users;
 using NutrInfo.Admin.Api.Infrastructure.Database.DataModel;
 
 namespace Nutrinfo.Admin.Infrastructure.Database.DataModel.Patients
@@ -32,6 +33,14 @@ namespace Nutrinfo.Admin.Infrastructure.Database.DataModel.Patients
                                   .SingleOrDefaultAsync();
         }
 
+        public async Task<Patient> FindByEmail(string email)
+        {
+            return await _patients.Where(x => x.User.Email == email)
+                                 .Include(x => x.Evaluations)
+                                 .Include(x => x.User)
+                                 .SingleOrDefaultAsync();
+        }
+
         public async Task<Patient> FindByEvaluation(int evaluationId)
         {
             return await _patients.Where(x => x.Evaluations.Any(y => y.Id == evaluationId))
@@ -50,7 +59,7 @@ namespace Nutrinfo.Admin.Infrastructure.Database.DataModel.Patients
 
         public async Task<PagedList<Patient>> FindPaged(string name, int page)
         {
-            IQueryable<Patient> query = _patients.Include(x => x.User);
+            IQueryable<Patient> query = _patients.Where(x => x.User.Status == UserStatusEnum.ACTIVE).Include(x => x.User);
 
             if (name is not null)
             {
