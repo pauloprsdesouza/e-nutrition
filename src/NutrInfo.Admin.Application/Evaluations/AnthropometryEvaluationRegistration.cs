@@ -33,7 +33,7 @@ namespace NutrInfo.Admin.Application.Evaluations
             request.MapTo(evaluation);
 
             evaluation.UpdatedAt = DateTimeOffset.UtcNow;
-            _evaluationRepository.Update(evaluation);
+            await _evaluationRepository.Update(evaluation);
 
             return evaluation;
         }
