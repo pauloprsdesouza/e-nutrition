@@ -4,11 +4,13 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Nutrinfo.Admin.Domain.AmputatedLimbs;
+using Nutrinfo.Admin.Domain.AmputatedLimbsPercentage;
 using Nutrinfo.Admin.Domain.AsciteDegrees;
 using Nutrinfo.Admin.Domain.Ascites;
 using Nutrinfo.Admin.Domain.CircumferencePercentils;
 using Nutrinfo.Admin.Domain.Evaluations;
 using Nutrinfo.Admin.Domain.Patients;
+using NutrInfo.Admin.Api.Authorization;
 using NutrInfo.Admin.Application.Evaluations;
 using NutrInfo.Admin.Contracts;
 using NutrInfo.Admin.Contracts.Evaluations;
@@ -28,8 +30,12 @@ namespace NutrInfo.Admin.Api.Controllers
         private readonly IAsciteRepository _asciteRepository;
         private readonly IAsciteDegreeRepository _asciteDegreeRepository;
         private readonly IArmCircumferencePercentilRepository _armPercentil;
+         private readonly IAmputatedLimbPercentageRepository _amputatedLimbPercentage;
 
-        public EvaluationsController(IEvaluationRepository evaluationRepository, IPatientRepository patientRepository, IAmputatedLimbRepository amputatedLimbRepository, IAsciteRepository asciteRepository, IAsciteDegreeRepository asciteDegreeRepository, IArmCircumferencePercentilRepository armPercentil)
+        public EvaluationsController(IEvaluationRepository evaluationRepository, IPatientRepository patientRepository,
+                                     IAmputatedLimbRepository amputatedLimbRepository, IAsciteRepository asciteRepository,
+                                     IAsciteDegreeRepository asciteDegreeRepository, IArmCircumferencePercentilRepository armPercentil,
+                                     IAmputatedLimbPercentageRepository amputatedLimbPercentage)
         {
             _evaluationRepository = evaluationRepository;
             _patientRepository = patientRepository;
@@ -37,6 +43,7 @@ namespace NutrInfo.Admin.Api.Controllers
             _asciteRepository = asciteRepository;
             _asciteDegreeRepository = asciteDegreeRepository;
             _armPercentil = armPercentil;
+            _amputatedLimbPercentage = amputatedLimbPercentage;
         }
 
         /// <summary>
@@ -47,9 +54,7 @@ namespace NutrInfo.Admin.Api.Controllers
         [ProducesResponseType(typeof(EvaluationResponse), StatusCodes.Status200OK)]
         public async Task<IActionResult> MonitoringByLoggedNutritionist()
         {
-            var nutritionistId = int.Parse(HttpContext.User.Identity.Name);
-
-            var evaluations = await _evaluationRepository.FindAllMonitoringByNutritionist(nutritionistId);
+            var evaluations = await _evaluationRepository.FindAllMonitoringByNutritionist(User.GetId());
 
             return Ok(new GetEvaluationResponse()
             {
@@ -105,10 +110,8 @@ namespace NutrInfo.Admin.Api.Controllers
         [ProducesResponseType(typeof(ResponseError), StatusCodes.Status422UnprocessableEntity)]
         public async Task<IActionResult> Create([FromBody] PostEvaluationRequest request)
         {
-            var nutritionistId = int.Parse(HttpContext.User.Identity.Name);
-
             var evaluationRegistration = new EvaluationRegistration(_evaluationRepository, _patientRepository);
-            var evaluation = await evaluationRegistration.Register(nutritionistId, request.ToEvaluation());
+            var evaluation = await evaluationRegistration.Register(User.GetId(), request.ToEvaluation());
 
             if (evaluationRegistration.PatientNotFound)
             {
@@ -129,7 +132,7 @@ namespace NutrInfo.Admin.Api.Controllers
         [ProducesResponseType(typeof(ResponseError), StatusCodes.Status422UnprocessableEntity)]
         public async Task<IActionResult> InitialEvaluation([FromRoute] int evaluationId, [FromBody] PutInitialEvaluationRequest request)
         {
-            var evaluationRegistration = new InitialEvaluationRegistration(_evaluationRepository, _amputatedLimbRepository, _asciteRepository, _asciteDegreeRepository);
+            var evaluationRegistration = new InitialEvaluationRegistration(_evaluationRepository, _amputatedLimbRepository, _asciteRepository, _asciteDegreeRepository, _amputatedLimbPercentage);
             var evaluation = await evaluationRegistration.Register(evaluationId, request);
 
             if (evaluationRegistration.EvaluationNotFound)

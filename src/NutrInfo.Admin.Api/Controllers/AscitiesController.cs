@@ -4,7 +4,6 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Nutrinfo.Admin.Domain.AsciteDegrees;
-using NutrInfo.Admin.Contracts;
 using NutrInfo.Admin.Contracts.AmputatedLimbsPercentage;
 using NutrInfo.Admin.Contracts.Ascities;
 

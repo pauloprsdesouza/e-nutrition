@@ -5,7 +5,6 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Filters;
 using Microsoft.Extensions.Logging;
 using Nutrinfo.Admin.Infrastructure.Serialization;
-using NutrInfo.Admin.Api.Configuration;
 
 namespace NutrInfo.Admin.Api.Filters
 {
