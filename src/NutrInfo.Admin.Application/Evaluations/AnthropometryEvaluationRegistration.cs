@@ -33,9 +33,13 @@ namespace NutrInfo.Admin.Application.Evaluations
             request.MapTo(evaluation);
 
             var lastCompletedEvaluation = await _evaluationRepository.FindLastEvaluationsFromPatient(evaluation.PatientId);
-            lastCompletedEvaluation.NextEvaluation = null;
-            lastCompletedEvaluation.UpdatedAt = DateTimeOffset.UtcNow;
-            await _evaluationRepository.Update(lastCompletedEvaluation);
+
+            if (lastCompletedEvaluation is not null)
+            {
+                lastCompletedEvaluation.NextEvaluation = null;
+                lastCompletedEvaluation.UpdatedAt = DateTimeOffset.UtcNow;
+                await _evaluationRepository.Update(lastCompletedEvaluation);
+            }
 
             evaluation.UpdatedAt = DateTimeOffset.UtcNow;
             evaluation.Status = EvaluationStatusEnum.COMPLETED;

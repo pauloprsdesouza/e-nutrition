@@ -23,6 +23,8 @@ namespace NutrInfo.Admin.Api.Infrastructure.Database.DataModel.Evaluations
 
             builder.Property(p => p.Weight);
 
+            builder.Property(p => p.DiscountedWeight);
+
             builder.Property(p => p.Height);
 
             builder.Property(p => p.Imc);
@@ -76,6 +78,18 @@ namespace NutrInfo.Admin.Api.Infrastructure.Database.DataModel.Evaluations
             builder.HasMany(p => p.Ascites)
                    .WithOne(p => p.Evaluation)
                    .HasForeignKey(p => p.EvaluationId);
+
+            builder.HasMany(x => x.Semiologies)
+                   .WithMany(x => x.Evaluations)
+                   .UsingEntity("evaluationSemiologies");
+
+            builder.HasMany(x => x.ClinicalChanges)
+                   .WithMany(x => x.Evaluations)
+                   .UsingEntity("clinicalChanges");
+
+            builder.HasMany(x => x.BiochemistryExams)
+                   .WithMany(x => x.Evaluations)
+                   .UsingEntity("biochemistryExams");
         }
     }
 }

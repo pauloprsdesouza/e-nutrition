@@ -125,7 +125,7 @@ namespace NutrInfo.Admin.Application.Evaluations
                     }
                 }
 
-                return request.Weight - (peripheralEdemaSum + asciticWeightSum);
+                return peripheralEdemaSum + asciticWeightSum;
             }
 
             return 0;

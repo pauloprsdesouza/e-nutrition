@@ -9,16 +9,12 @@ namespace NutrInfo.Admin.Contracts.Evaluations.Anthropometry
         [Range(1, double.MaxValue)]
         public double ArmCircumference { get; set; }
 
-        [Required]
-        [Range(1, double.MaxValue)]
         public double TricepsPleat { get; set; }
 
         [Required]
         [Range(1, double.MaxValue)]
         public double CalfCircumference { get; set; }
 
-        [Required]
-        [Range(1, double.MaxValue)]
         public double ArmMuscleCircumference { get; set; }
 
         public void MapTo(Evaluation evaluation)

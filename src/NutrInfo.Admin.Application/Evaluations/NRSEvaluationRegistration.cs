@@ -36,6 +36,7 @@ namespace NutrInfo.Admin.Application.Evaluations
                 if ((int)request.NutritionalStateSeverity + (int)request.DiseaseSeverity < 3)
                 {
                     evaluation.NextEvaluation = DateTime.UtcNow.AddDays(7);
+                    evaluation.Status = EvaluationStatusEnum.COMPLETED;
                 }
             }
 

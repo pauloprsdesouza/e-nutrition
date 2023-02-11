@@ -2,6 +2,7 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 using NutrInfo.Admin.Api.Infrastructure.Database.DataModel;
@@ -11,9 +12,10 @@ using NutrInfo.Admin.Api.Infrastructure.Database.DataModel;
 namespace Nutrinfo.Admin.Infrastructure.Migrations
 {
     [DbContext(typeof(ApiDbContext))]
-    partial class ApiDbContextModelSnapshot : ModelSnapshot
+    [Migration("20230211213118_AddSemiology")]
+    partial class AddSemiology
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -22,36 +24,6 @@ namespace Nutrinfo.Admin.Infrastructure.Migrations
                 .HasAnnotation("Relational:MaxIdentifierLength", 63);
 
             NpgsqlModelBuilderExtensions.UseIdentityByDefaultColumns(modelBuilder);
-
-            modelBuilder.Entity("biochemistryExams", b =>
-                {
-                    b.Property<int>("BiochemistryExamsId")
-                        .HasColumnType("integer");
-
-                    b.Property<int>("EvaluationsId")
-                        .HasColumnType("integer");
-
-                    b.HasKey("BiochemistryExamsId", "EvaluationsId");
-
-                    b.HasIndex("EvaluationsId");
-
-                    b.ToTable("biochemistryExams", "nutrinfo");
-                });
-
-            modelBuilder.Entity("clinicalChanges", b =>
-                {
-                    b.Property<int>("ClinicalChangesId")
-                        .HasColumnType("integer");
-
-                    b.Property<int>("EvaluationsId")
-                        .HasColumnType("integer");
-
-                    b.HasKey("ClinicalChangesId", "EvaluationsId");
-
-                    b.HasIndex("EvaluationsId");
-
-                    b.ToTable("clinicalChanges", "nutrinfo");
-                });
 
             modelBuilder.Entity("evaluationSemiologies", b =>
                 {
@@ -199,31 +171,6 @@ namespace Nutrinfo.Admin.Infrastructure.Migrations
                     b.ToTable("ascite", "nutrinfo");
                 });
 
-            modelBuilder.Entity("Nutrinfo.Admin.Domain.Biochemistries.Biochemistry", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("integer");
-
-                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
-
-                    b.Property<string>("HealthExam")
-                        .HasColumnType("text");
-
-                    b.Property<double>("MaximumThreshold")
-                        .HasColumnType("double precision");
-
-                    b.Property<double>("MinimumThreshold")
-                        .HasColumnType("double precision");
-
-                    b.Property<string>("PossibleMeanings")
-                        .HasColumnType("text");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("Biochemistry", "nutrinfo");
-                });
-
             modelBuilder.Entity("Nutrinfo.Admin.Domain.CircumferencePercentils.ArmCircumferencePercentil", b =>
                 {
                     b.Property<int>("Id")
@@ -272,28 +219,6 @@ namespace Nutrinfo.Admin.Infrastructure.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("armCircumferencePercentil", "nutrinfo");
-                });
-
-            modelBuilder.Entity("Nutrinfo.Admin.Domain.ClinicalChanges.ClinicalChange", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("integer");
-
-                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
-
-                    b.Property<string>("BodyRegion")
-                        .HasColumnType("text");
-
-                    b.Property<string>("PossibleMeaning")
-                        .HasColumnType("text");
-
-                    b.Property<string>("SignsAndSymptoms")
-                        .HasColumnType("text");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("clinicalChange", "nutrinfo");
                 });
 
             modelBuilder.Entity("Nutrinfo.Admin.Domain.Evaluations.Evaluation", b =>
@@ -398,9 +323,8 @@ namespace Nutrinfo.Admin.Infrastructure.Migrations
                     b.Property<string>("Description")
                         .HasColumnType("text");
 
-                    b.Property<string>("NutritionalState")
-                        .IsRequired()
-                        .HasColumnType("text");
+                    b.Property<int>("NutritionalState")
+                        .HasColumnType("integer");
 
                     b.Property<int>("SemiologyId")
                         .HasColumnType("integer");
@@ -409,7 +333,7 @@ namespace Nutrinfo.Admin.Infrastructure.Migrations
 
                     b.HasIndex("SemiologyId");
 
-                    b.ToTable("nutritionalStateSemiology", "nutrinfo");
+                    b.ToTable("NutritionalStateSemiology", "nutrinfo");
                 });
 
             modelBuilder.Entity("Nutrinfo.Admin.Domain.Nutritionists.Nutritionist", b =>
@@ -460,16 +384,15 @@ namespace Nutrinfo.Admin.Infrastructure.Migrations
 
                     NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
 
-                    b.Property<string>("Group")
-                        .IsRequired()
-                        .HasColumnType("text");
+                    b.Property<int>("Group")
+                        .HasColumnType("integer");
 
                     b.Property<string>("Hint")
                         .HasColumnType("text");
 
                     b.HasKey("Id");
 
-                    b.ToTable("semiology", "nutrinfo");
+                    b.ToTable("Semiology", "nutrinfo");
                 });
 
             modelBuilder.Entity("Nutrinfo.Admin.Domain.Users.User", b =>
@@ -516,36 +439,6 @@ namespace Nutrinfo.Admin.Infrastructure.Migrations
                         .IsUnique();
 
                     b.ToTable("user", "nutrinfo");
-                });
-
-            modelBuilder.Entity("biochemistryExams", b =>
-                {
-                    b.HasOne("Nutrinfo.Admin.Domain.Biochemistries.Biochemistry", null)
-                        .WithMany()
-                        .HasForeignKey("BiochemistryExamsId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("Nutrinfo.Admin.Domain.Evaluations.Evaluation", null)
-                        .WithMany()
-                        .HasForeignKey("EvaluationsId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-                });
-
-            modelBuilder.Entity("clinicalChanges", b =>
-                {
-                    b.HasOne("Nutrinfo.Admin.Domain.ClinicalChanges.ClinicalChange", null)
-                        .WithMany()
-                        .HasForeignKey("ClinicalChangesId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("Nutrinfo.Admin.Domain.Evaluations.Evaluation", null)
-                        .WithMany()
-                        .HasForeignKey("EvaluationsId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
                 });
 
             modelBuilder.Entity("evaluationSemiologies", b =>

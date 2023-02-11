@@ -132,7 +132,7 @@ namespace NutrInfo.Admin.Api.Controllers
         [ProducesResponseType(typeof(ResponseError), StatusCodes.Status422UnprocessableEntity)]
         public async Task<IActionResult> InitialEvaluation([FromRoute] int evaluationId, [FromBody] PutInitialEvaluationRequest request)
         {
-            var evaluationRegistration = new InitialEvaluationRegistration(_evaluationRepository, _amputatedLimbRepository, _asciteRepository, _asciteDegreeRepository, _amputatedLimbPercentage);
+            var evaluationRegistration = new InitialEvaluationRegistration(_evaluationRepository, _amputatedLimbRepository, _asciteRepository, _asciteDegreeRepository);
             var evaluation = await evaluationRegistration.Register(evaluationId, request);
 
             if (evaluationRegistration.EvaluationNotFound)
