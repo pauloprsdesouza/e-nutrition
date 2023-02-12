@@ -1,7 +1,6 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using Nutrinfo.Admin.Domain.ClinicalChanges;
-using Nutrinfo.Admin.Domain.Evaluations;
 
 namespace Nutrinfo.Admin.Infrastructure.Database.DataModel.ClinicalChanges
 {
@@ -18,9 +17,9 @@ namespace Nutrinfo.Admin.Infrastructure.Database.DataModel.ClinicalChanges
 
             builder.Property(x => x.BodyRegion);
 
-            builder.Property(x => x.SignsAndSymptoms);
-
-            builder.Property(x => x.PossibleMeaning);
+            builder.HasMany(x => x.SignsAndSymptoms)
+                   .WithOne(x => x.ClinicalChange)
+                   .HasForeignKey(x => x.ClinicalChangeId);
         }
     }
 }

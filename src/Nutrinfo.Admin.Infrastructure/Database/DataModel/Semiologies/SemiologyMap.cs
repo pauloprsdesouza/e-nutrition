@@ -23,6 +23,8 @@ namespace Nutrinfo.Admin.Infrastructure.Database.DataModel.Semiologies
 
             builder.Property(p => p.Hint);
 
+            builder.Property(p => p.BodyRegion);
+
             builder.HasMany(x => x.NutritionalStates)
                    .WithOne(x => x.Semiology)
                    .HasForeignKey(x => x.SemiologyId);

@@ -6,6 +6,7 @@ namespace Nutrinfo.Admin.Domain.Semiologies
     {
         public int Id { get; set; }
         public string Hint { get; set; }
+        public string BodyRegion { get; set; }
         public SemiologyGroupEnum Group { get; set; }
 
         public List<NutritionalStateSemiology> NutritionalStates { get; set; }
