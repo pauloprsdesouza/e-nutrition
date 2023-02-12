@@ -1,12 +1,7 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-
 namespace Nutrinfo.Admin.Domain.Semiologies
 {
     public interface ISemiologyRepository
     {
-        
+        Task<List<Semiology>> FindAll();
     }
 }
