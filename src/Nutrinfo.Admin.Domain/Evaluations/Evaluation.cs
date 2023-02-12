@@ -10,6 +10,15 @@ namespace Nutrinfo.Admin.Domain.Evaluations
 {
     public class Evaluation
     {
+        public Evaluation()
+        {
+            AmputatedLimbs = new();
+            Ascites = new();
+            Semiologies = new();
+            ClinicalChanges = new();
+            BiochemistryExams = new();
+        }
+
         public int Id { get; set; }
         public int PatientId { get; set; }
         public int NutritionistId { get; set; }

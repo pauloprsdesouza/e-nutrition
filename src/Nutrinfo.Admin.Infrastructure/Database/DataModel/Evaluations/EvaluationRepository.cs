@@ -44,6 +44,9 @@ namespace Nutrinfo.Admin.Infrastructure.Database.DataModel.Evaluations
                                      .ThenInclude(x => x.User)
                                      .Include(x => x.Ascites)
                                      .ThenInclude(x => x.AsciteDegree)
+                                     .Include(x => x.Semiologies)
+                                     .Include(x => x.ClinicalChanges)
+                                     .Include(x => x.BiochemistryExams)
                                      .SingleOrDefaultAsync();
         }
 

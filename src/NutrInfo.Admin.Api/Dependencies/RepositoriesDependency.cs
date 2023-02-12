@@ -8,6 +8,7 @@ using Nutrinfo.Admin.Domain.Biochemistries;
 using Nutrinfo.Admin.Domain.CircumferencePercentils;
 using Nutrinfo.Admin.Domain.ClinicalChanges;
 using Nutrinfo.Admin.Domain.Evaluations;
+using Nutrinfo.Admin.Domain.NutritionalStatesSemiology;
 using Nutrinfo.Admin.Domain.Nutritionists;
 using Nutrinfo.Admin.Domain.Patients;
 using Nutrinfo.Admin.Domain.Semiologies;
@@ -18,6 +19,7 @@ using Nutrinfo.Admin.Infrastructure.Database.DataModel.Biochemistries;
 using Nutrinfo.Admin.Infrastructure.Database.DataModel.CircumferencePercentils;
 using Nutrinfo.Admin.Infrastructure.Database.DataModel.ClinicalChanges;
 using Nutrinfo.Admin.Infrastructure.Database.DataModel.Evaluations;
+using Nutrinfo.Admin.Infrastructure.Database.DataModel.NutritionalStatesSemiology;
 using Nutrinfo.Admin.Infrastructure.Database.DataModel.Nutritionists;
 using Nutrinfo.Admin.Infrastructure.Database.DataModel.Patients;
 using Nutrinfo.Admin.Infrastructure.Database.DataModel.Semiologies;
@@ -38,6 +40,8 @@ namespace NutrInfo.Admin.Api.Dependencies
             services.AddScoped<IClinicalChangeRepository, ClinicalChangeRepository>();
             services.AddScoped<ISemiologyRepository, SemiologyRepository>();
             services.AddScoped<IBiochemistryRepository, BiochemistryRepository>();
+            services.AddScoped<IArmCircumferencePercentilRepository, ArmCircumferencePercentilRepository>();
+            services.AddScoped<INutritionalStateSemiologyRepository, NutritionalStateSemiologyRepository>();
         }
     }
 }
