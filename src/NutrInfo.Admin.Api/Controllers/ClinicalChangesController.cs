@@ -8,7 +8,7 @@ using NutrInfo.Admin.Contracts.ClinicalChanges;
 
 namespace NutrInfo.Admin.Api.Controllers
 {
-    [Route("api/v1/clinicalChanges")]
+    [Route("api/v1/clinical-changes")]
     public class ClinicalChangesController : Controller
     {
         private readonly IClinicalChangeRepository _repository;

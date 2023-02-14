@@ -11,7 +11,7 @@ namespace NutrInfo.Admin.Contracts.Evaluations.Initial
                 EdemaWeight = evaluation.EdemaWeight,
                 Height = evaluation.Height,
                 IsWalking = evaluation.IsWalking,
-                Weight = evaluation.Weight
+                Weight = evaluation.Ascites.Any() || evaluation.AmputatedLimbs.Any() || evaluation.EdemaWeight > 0 ? evaluation.Weight - evaluation.DiscountedWeight : evaluation.Weight
             };
         }
     }

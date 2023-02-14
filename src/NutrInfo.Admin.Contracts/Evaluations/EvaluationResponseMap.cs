@@ -13,7 +13,7 @@ namespace NutrInfo.Admin.Contracts.Evaluations
                 PatientName = evaluation.Patient?.User?.Name,
                 PatientId = evaluation.Patient?.User?.Id,
                 MedicalRecord = evaluation.Patient?.MedicalRecord,
-                Weight = evaluation.Weight,
+                Weight =  evaluation.Ascites.Any() || evaluation.AmputatedLimbs.Any() || evaluation.EdemaWeight > 0 ? evaluation.Weight - evaluation.DiscountedWeight : evaluation.Weight,
                 Height = evaluation.Height,
                 IsWalking = evaluation.IsWalking,
                 NutritionState = evaluation.NutritionalState,

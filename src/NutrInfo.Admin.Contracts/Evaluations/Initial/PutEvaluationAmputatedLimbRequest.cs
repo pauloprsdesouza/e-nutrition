@@ -3,7 +3,7 @@ using Nutrinfo.Admin.Domain.AmputatedLimbs;
 
 namespace NutrInfo.Admin.Contracts.Evaluations.Initial
 {
-    public class AmputatedLimbItemRequest
+    public class PutEvaluationAmputatedLimbRequest
     {
         public int AmputatedLimbPercentageId { get; set; }
 

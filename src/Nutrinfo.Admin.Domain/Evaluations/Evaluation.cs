@@ -1,6 +1,7 @@
 using Nutrinfo.Admin.Domain.AmputatedLimbs;
 using Nutrinfo.Admin.Domain.Ascites;
 using Nutrinfo.Admin.Domain.Biochemistries;
+using Nutrinfo.Admin.Domain.BiochemistryResults;
 using Nutrinfo.Admin.Domain.ClinicalChanges;
 using Nutrinfo.Admin.Domain.NutritionalStatesSemiology;
 using Nutrinfo.Admin.Domain.Nutritionists;
@@ -16,7 +17,7 @@ namespace Nutrinfo.Admin.Domain.Evaluations
             Ascites = new();
             Semiologies = new();
             ClinicalChanges = new();
-            BiochemistryExams = new();
+            BiochemistryResults = new();
         }
 
         public int Id { get; set; }
@@ -50,6 +51,6 @@ namespace Nutrinfo.Admin.Domain.Evaluations
         public List<Ascite> Ascites { get; set; }
         public List<NutritionalStateSemiology> Semiologies { get; set; }
         public List<ClinicalChange> ClinicalChanges { get; set; }
-        public List<Biochemistry> BiochemistryExams { get; set; }
+        public List<BiochemistryResult> BiochemistryResults { get; set; }
     }
 }

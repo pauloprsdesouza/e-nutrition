@@ -1,7 +1,3 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 using Nutrinfo.Admin.Domain.Semiologies;
 using NutrInfo.Admin.Api.Infrastructure.Database.DataModel;
@@ -19,9 +15,22 @@ namespace Nutrinfo.Admin.Infrastructure.Database.DataModel.Semiologies
             _semiologies = dbContext.Set<Semiology>();
         }
 
-        public async Task<List<Semiology>> FindAll()
+        public async Task<Dictionary<string, List<Semiology>>> FindAllGrouped()
         {
-            return await _semiologies.ToListAsync();
+            var semiologiesGrouped = new Dictionary<string, List<Semiology>>();
+
+            var subcutaneousFatSemiologies = await _semiologies.Where(x => x.Group == SemiologyGroupEnum.SUBCUTANEOUS_FAT)
+                                                               .Include(x => x.NutritionalStates)
+                                                               .ToListAsync();
+
+            var muscleMassSemiologies = await _semiologies.Where(x => x.Group == SemiologyGroupEnum.MUSCLE_MASS)
+                                                          .Include(x => x.NutritionalStates)
+                                                          .ToListAsync();
+
+            semiologiesGrouped.Add("Gordura Subcutânea", subcutaneousFatSemiologies);
+            semiologiesGrouped.Add("Massa Muscular", muscleMassSemiologies);
+
+            return semiologiesGrouped;
         }
     }
 }

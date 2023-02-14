@@ -26,10 +26,11 @@ namespace NutrInfo.Admin.Api.Controllers
         [ProducesResponseType(typeof(GetSemiologyResponse), StatusCodes.Status200OK)]
         public async Task<IActionResult> List()
         {
-            var semiologies = await _repository.FindAll();
+            var semiologies = await _repository.FindAllGrouped();
+
             return Ok(new GetSemiologyResponse()
             {
-                Semiologies = semiologies.Select(x => x.MapToResponse())
+                Semiologies = semiologies.Select(x => x.MapToResponse()).ToList()
             });
         }
     }

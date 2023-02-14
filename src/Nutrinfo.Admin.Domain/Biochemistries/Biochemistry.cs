@@ -1,3 +1,4 @@
+using Nutrinfo.Admin.Domain.BiochemistryResults;
 using Nutrinfo.Admin.Domain.Evaluations;
 
 namespace Nutrinfo.Admin.Domain.Biochemistries
@@ -11,5 +12,6 @@ namespace Nutrinfo.Admin.Domain.Biochemistries
         public string PossibleMeanings { get; set; }
 
         public List<Evaluation> Evaluations { get; set; }
+        public List<BiochemistryResult> BiochemistryResults { get; set; }
     }
 }

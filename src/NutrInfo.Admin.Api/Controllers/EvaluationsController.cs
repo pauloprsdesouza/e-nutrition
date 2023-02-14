@@ -7,7 +7,10 @@ using Nutrinfo.Admin.Domain.AmputatedLimbs;
 using Nutrinfo.Admin.Domain.AmputatedLimbsPercentage;
 using Nutrinfo.Admin.Domain.AsciteDegrees;
 using Nutrinfo.Admin.Domain.Ascites;
+using Nutrinfo.Admin.Domain.Biochemistries;
+using Nutrinfo.Admin.Domain.BiochemistryResults;
 using Nutrinfo.Admin.Domain.CircumferencePercentils;
+using Nutrinfo.Admin.Domain.ClinicalChanges;
 using Nutrinfo.Admin.Domain.Evaluations;
 using Nutrinfo.Admin.Domain.NutritionalStatesSemiology;
 using Nutrinfo.Admin.Domain.Patients;
@@ -33,11 +36,13 @@ namespace NutrInfo.Admin.Api.Controllers
         private readonly IArmCircumferencePercentilRepository _armPercentil;
         private readonly IAmputatedLimbPercentageRepository _amputatedLimbPercentage;
         private readonly INutritionalStateSemiologyRepository _nutritionalStateRepository;
+        public readonly IClinicalChangeRepository _clinicalChangeRepository;
 
         public EvaluationsController(IEvaluationRepository evaluationRepository, IPatientRepository patientRepository,
                                      IAmputatedLimbRepository amputatedLimbRepository, IAsciteRepository asciteRepository,
                                      IAsciteDegreeRepository asciteDegreeRepository, IArmCircumferencePercentilRepository armPercentil,
-                                     IAmputatedLimbPercentageRepository amputatedLimbPercentage, INutritionalStateSemiologyRepository nutritionalStateRepository)
+                                     IAmputatedLimbPercentageRepository amputatedLimbPercentage, INutritionalStateSemiologyRepository nutritionalStateRepository,
+                                     IClinicalChangeRepository clinicalChangeRepository)
         {
             _evaluationRepository = evaluationRepository;
             _patientRepository = patientRepository;
@@ -47,6 +52,7 @@ namespace NutrInfo.Admin.Api.Controllers
             _armPercentil = armPercentil;
             _amputatedLimbPercentage = amputatedLimbPercentage;
             _nutritionalStateRepository = nutritionalStateRepository;
+            _clinicalChangeRepository = clinicalChangeRepository;
         }
 
         /// <summary>
@@ -220,10 +226,10 @@ namespace NutrInfo.Admin.Api.Controllers
         [Produces(MediaTypeNames.Application.Json)]
         [ProducesResponseType(typeof(DiagnosisResponse), StatusCodes.Status200OK)]
         [ProducesResponseType(typeof(ResponseError), StatusCodes.Status422UnprocessableEntity)]
-        public async Task<IActionResult> UpdateAmputatedLimb([FromRoute] int evaluationId, [FromBody] AmputatedLimbItemRequest request)
+        public async Task<IActionResult> UpdateAmputatedLimb([FromRoute] int evaluationId, [FromBody] PutEvaluationAmputatedLimbRequest request)
         {
-            var diagnosisEvaluationRegistration = new EvaluationAmputatedLimbUpdate(_evaluationRepository);
-            var evaluation = await diagnosisEvaluationRegistration.Update(request.ToAmputatedLimb(evaluationId));
+            var evaluationAmputatedLimbUpdate = new EvaluationAmputatedLimbUpdate(_evaluationRepository);
+            var evaluation = await evaluationAmputatedLimbUpdate.Update(request.ToAmputatedLimb(evaluationId));
 
             return Ok(evaluation.MapToResponse());
         }
@@ -233,14 +239,14 @@ namespace NutrInfo.Admin.Api.Controllers
         /// </summary>
         /// <param name="evaluationId"></param>
         /// <param name="request"></param>
-        [HttpDelete, Route("{evaluationId}/ascite")]
+        [HttpPut, Route("{evaluationId}/ascite")]
         [Produces(MediaTypeNames.Application.Json)]
         [ProducesResponseType(typeof(EvaluationResponse), StatusCodes.Status200OK)]
         [ProducesResponseType(typeof(ResponseError), StatusCodes.Status422UnprocessableEntity)]
         public async Task<IActionResult> UpdateAscite([FromRoute] int evaluationId, [FromBody] AsciteItemRequest request)
         {
-            var diagnosisEvaluationRegistration = new EvaluationAsciteUpdate(_evaluationRepository);
-            var evaluation = await diagnosisEvaluationRegistration.Update(request.ToAscite(evaluationId));
+            var evaluationAsciteUpdate = new EvaluationAsciteUpdate(_evaluationRepository);
+            var evaluation = await evaluationAsciteUpdate.Update(request.ToAscite(evaluationId));
 
             return Ok(evaluation.MapToResponse());
         }
@@ -256,8 +262,42 @@ namespace NutrInfo.Admin.Api.Controllers
         [ProducesResponseType(typeof(ResponseError), StatusCodes.Status422UnprocessableEntity)]
         public async Task<IActionResult> UpdateNutritionalStateSemiology([FromRoute] int evaluationId, [FromRoute] int nutritionalStateSemiologyId)
         {
-            var diagnosisEvaluationRegistration = new EvaluationSemiologyUpdate(_evaluationRepository, _nutritionalStateRepository);
-            var ealuation = await diagnosisEvaluationRegistration.Update(evaluationId, nutritionalStateSemiologyId);
+            var evaluationSemiologyUpdate = new EvaluationSemiologyUpdate(_evaluationRepository, _nutritionalStateRepository);
+            var ealuation = await evaluationSemiologyUpdate.Update(evaluationId, nutritionalStateSemiologyId);
+
+            return Ok(ealuation.MapToResponse());
+        }
+
+        /// <summary>
+        /// Generate a diagnosis from a registered evaluation
+        /// </summary>
+        /// <param name="evaluationId"></param>
+        /// <param name="clinicalChangeId"></param>
+        [HttpPut, Route("{evaluationId}/clinical-change/{clinicalChangeId}")]
+        [Produces(MediaTypeNames.Application.Json)]
+        [ProducesResponseType(typeof(EvaluationResponse), StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(ResponseError), StatusCodes.Status422UnprocessableEntity)]
+        public async Task<IActionResult> UpdateClinicalChange([FromRoute] int evaluationId, [FromRoute] int clinicalChangeId)
+        {
+            var clinicalChangeUpdate = new EvaluationClinicalChangeUpdate(_evaluationRepository, _clinicalChangeRepository);
+            var ealuation = await clinicalChangeUpdate.Update(evaluationId, clinicalChangeId);
+
+            return Ok(ealuation.MapToResponse());
+        }
+
+        /// <summary>
+        /// Generate a diagnosis from a registered evaluation
+        /// </summary>
+        /// <param name="evaluationId"></param>
+        /// <param name="request"></param>
+        [HttpPut, Route("{evaluationId}/biochemistry")]
+        [Produces(MediaTypeNames.Application.Json)]
+        [ProducesResponseType(typeof(EvaluationResponse), StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(ResponseError), StatusCodes.Status422UnprocessableEntity)]
+        public async Task<IActionResult> UpdateBiochemistry([FromRoute] int evaluationId, [FromBody] PutEvaluationBiochemistryRequest request)
+        {
+            var evaluationBiochemistryUpdate = new EvaluationBiochemistryUpdate(_evaluationRepository);
+            var ealuation = await evaluationBiochemistryUpdate.Update(request.ToBiochemistryResult(evaluationId));
 
             return Ok(ealuation.MapToResponse());
         }

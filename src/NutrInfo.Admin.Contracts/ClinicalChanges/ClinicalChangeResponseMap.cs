@@ -1,4 +1,5 @@
 using Nutrinfo.Admin.Domain.ClinicalChanges;
+using NutrInfo.Admin.Contracts.SignsAndSymptoms;
 
 namespace NutrInfo.Admin.Contracts.ClinicalChanges
 {
@@ -9,7 +10,8 @@ namespace NutrInfo.Admin.Contracts.ClinicalChanges
             return new ClinicalChangeResponse()
             {
                 Id = clinicalChange.Id,
-                BodyRegion = clinicalChange.BodyRegion
+                BodyRegion = clinicalChange.BodyRegion,
+                SignsAndSymptoms = clinicalChange.SignsAndSymptoms.Select(x => x.MapToResponse()).ToList()
             };
         }
     }

@@ -16,6 +16,7 @@ using Nutrinfo.Admin.Infrastructure.Database.DataModel.AmputatedLimbs;
 using Nutrinfo.Admin.Domain.AmputatedLimbsPercentage;
 using Nutrinfo.Admin.Infrastructure.Database.DataModel.AmputatedLimbsPercentage;
 using Nutrinfo.Admin.Infrastructure.Database.DataModel.CircumferencePercentils;
+using Nutrinfo.Admin.Infrastructure.Database.DataModel.BiochemistryResults;
 using Nutrinfo.Admin.Infrastructure.Database.DataModel.SignsAndSymptoms;
 using Nutrinfo.Admin.Infrastructure.Database.DataModel.Semiologies;
 using Nutrinfo.Admin.Infrastructure.Database.DataModel.NutritionalStatesSemiology;
@@ -27,6 +28,7 @@ using Nutrinfo.Admin.Domain.ClinicalChanges;
 using Nutrinfo.Admin.Domain.Semiologies;
 using Nutrinfo.Admin.Domain.NutritionalStatesSemiology;
 using Nutrinfo.Admin.Domain.SignsAndSymptoms;
+using Nutrinfo.Admin.Domain.BiochemistryResults;
 
 namespace NutrInfo.Admin.Api.Infrastructure.Database.DataModel
 {
@@ -50,6 +52,7 @@ namespace NutrInfo.Admin.Api.Infrastructure.Database.DataModel
         public DbSet<Semiology> Semiologies { get; set; }
         public DbSet<NutritionalStateSemiology> NutritionalStatesSemiology { get; set; }
         public DbSet<SignAndSymptom> SignsAndSymptoms { get; set; }
+        public DbSet<BiochemistryResult> BiochemistryResults { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -69,6 +72,7 @@ namespace NutrInfo.Admin.Api.Infrastructure.Database.DataModel
             modelBuilder.Entity<Semiology>().Configure();
             modelBuilder.Entity<NutritionalStateSemiology>().Configure();
             modelBuilder.Entity<SignAndSymptom>().Configure();
+            modelBuilder.Entity<BiochemistryResult>().Configure();
         }
     }
 }

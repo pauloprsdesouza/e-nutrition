@@ -1,4 +1,5 @@
 using Nutrinfo.Admin.Domain.Semiologies;
+using NutrInfo.Admin.Contracts.NutritionalStatesSemiology;
 
 namespace NutrInfo.Admin.Contracts.Semiologies
 {
@@ -10,7 +11,8 @@ namespace NutrInfo.Admin.Contracts.Semiologies
             {
                 Id = semiology.Id,
                 Hint = semiology.Hint,
-                BodyRegion = semiology.BodyRegion
+                BodyRegion = semiology.BodyRegion,
+                NutritionalStates = semiology.NutritionalStates.Select(x => x.MapToResponse()).ToList()
             };
         }
     }

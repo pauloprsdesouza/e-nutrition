@@ -1,7 +1,3 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using Nutrinfo.Admin.Domain.Biochemistries;
@@ -26,6 +22,10 @@ namespace Nutrinfo.Admin.Infrastructure.Database.DataModel.Biochemistries
             builder.Property(x => x.MaximumThreshold);
 
             builder.Property(x => x.PossibleMeanings);
+
+            builder.HasMany(x => x.BiochemistryResults)
+                  .WithOne(x => x.Biochemistry)
+                  .HasForeignKey(x => x.BiochemistryId);
         }
     }
 }

@@ -2,8 +2,6 @@ using Nutrinfo.Admin.Domain.AmputatedLimbs;
 using Nutrinfo.Admin.Domain.AsciteDegrees;
 using Nutrinfo.Admin.Domain.Ascites;
 using Nutrinfo.Admin.Domain.Evaluations;
-using NutrInfo.Admin.Application.AmputatedLimbs;
-using NutrInfo.Admin.Application.Ascites;
 using NutrInfo.Admin.Contracts.Evaluations.Initial;
 
 namespace NutrInfo.Admin.Application.Evaluations
@@ -36,100 +34,26 @@ namespace NutrInfo.Admin.Application.Evaluations
                 return null;
             }
 
+            var discountedWeight = 0d;
+            discountedWeight += request.Weight * evaluation.AmputatedLimbs.Sum(x => x.LimbPercentage.Percentage) / 100;
+            discountedWeight -= evaluation.Ascites.Sum(x => x.AsciteDegree.AsciticWeight + x.AsciteDegree.PeripheralEdema);
+            discountedWeight -= request.EdemaWeight;
 
-            var netWeight = await CreateOrUpdateAmputatedLimbs(request, evaluation);
-            netWeight += await CreateOrUpdateAscites(request, evaluation);
+            evaluation.DiscountedWeight =  Math.Sqrt(Math.Pow(discountedWeight, 2));
 
-            request.Weight -= netWeight;
+            if (evaluation.AmputatedLimbs.Any() || evaluation.Ascites.Any() || request.EdemaWeight > 0)
+            {
+                evaluation.Imc = (request.Weight - evaluation.DiscountedWeight) / Math.Pow(request.Height, 2);
+            }
+            else
+            {
+                evaluation.Imc = (request.Weight) / Math.Pow(request.Height, 2);
+            }
 
             request.MapTo(evaluation);
             evaluation.UpdatedAt = DateTimeOffset.UtcNow;
 
             return await _evaluationRepository.Update(evaluation);
-        }
-
-        private async Task<double> CreateOrUpdateAmputatedLimbs(PutInitialEvaluationRequest request, Evaluation evaluation)
-        {
-            if (request.AmputatedLimbs != null && request.AmputatedLimbs.Count > 0)
-            {
-                evaluation.Patient.AmputatedLimbs.Clear();
-
-                var amputatedLimbSearch = new AmputatedLimbSearch(_amputatedLimbRepository);
-                var amputatedLimbs = await amputatedLimbSearch.Find(request.AmputatedLimbs.Select(x => x.AmputatedLimbPercentageId).ToList(), evaluation.PatientId);
-
-                if (amputatedLimbs.Count == 0)
-                {
-                    foreach (var amputatedLimb in request.AmputatedLimbs)
-                    {
-                        amputatedLimbs.Add(new AmputatedLimb()
-                        {
-                            EvaluationId = evaluation.Id,
-                            PatientId = evaluation.PatientId,
-                            AmputatedLimbPercentageId = amputatedLimb.AmputatedLimbPercentageId,
-                            Reason = amputatedLimb.Reason
-                        });
-                    }
-
-                    evaluation.AmputatedLimbs = amputatedLimbs;
-                }
-
-                var percentil = evaluation.Patient.AmputatedLimbs.Sum(x => x.LimbPercentage.Percentage);
-
-                return request.Weight * percentil / 100;
-            }
-
-            return 0;
-        }
-
-        private async Task<double> CreateOrUpdateAscites(PutInitialEvaluationRequest request, Evaluation evaluation)
-        {
-            if (request.Ascites.Count > 0)
-            {
-                evaluation.Ascites.Clear();
-
-                var asciteSearch = new AsciteSearch(_asciteRepository);
-                var ids = request.Ascites.Select(x => x.AsciteDegreeId).ToList();
-                var ascites = await asciteSearch.Find(ids);
-
-                if (ascites.Count == 0)
-                {
-                    foreach (var ascite in request.Ascites)
-                    {
-                        evaluation.Ascites.Add(new Ascite()
-                        {
-                            AsciteDegreeId = ascite.AsciteDegreeId,
-                            EvaluationId = evaluation.Id,
-                            Reason = ascite.Reason,
-                            HasAsciticWeight = ascite.HasAsciticWeight,
-                            HasPeripheralEdema = ascite.HasPeripheralEdema
-                        });
-                    }
-                }
-
-                var asciteDegrees = await _asciteDegreeRepository.FindByIds(ids);
-
-                var peripheralEdemaSum = 0d;
-                var asciticWeightSum = 0d;
-
-                foreach (var ascite in evaluation.Ascites)
-                {
-                    var asciteDegree = asciteDegrees.Where(x => x.Id == ascite.AsciteDegreeId).SingleOrDefault();
-
-                    if (ascite.HasPeripheralEdema)
-                    {
-                        peripheralEdemaSum += asciteDegree.PeripheralEdema;
-                    }
-
-                    if (ascite.HasAsciticWeight)
-                    {
-                        peripheralEdemaSum += asciteDegree.AsciticWeight;
-                    }
-                }
-
-                return peripheralEdemaSum + asciticWeightSum;
-            }
-
-            return 0;
         }
     }
 }

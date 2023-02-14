@@ -18,17 +18,12 @@ namespace NutrInfo.Admin.Contracts.Evaluations.Initial
 
         public double EdemaWeight { get; set; }
 
-        public List<AsciteItemRequest> Ascites { get; set; }
-
-        public List<AmputatedLimbItemRequest> AmputatedLimbs { get; set; }
-
         public void MapTo(Evaluation evaluation)
         {
-            evaluation.Weight = Weight - EdemaWeight;
-            evaluation.Height = Height/100;
+            evaluation.Weight = Weight;
+            evaluation.Height = Height;
             evaluation.IsWalking = IsWalking;
             evaluation.EdemaWeight = EdemaWeight;
-            evaluation.Imc = Math.Round(Weight / Math.Pow(Height/100, 2));
             evaluation.Step = EvaluationStepsEnum.NRS_2002;
             evaluation.NutritionalState = evaluation.GetNutritionalState();
         }

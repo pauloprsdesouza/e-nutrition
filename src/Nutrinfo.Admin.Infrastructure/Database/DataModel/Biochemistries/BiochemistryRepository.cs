@@ -19,5 +19,10 @@ namespace Nutrinfo.Admin.Infrastructure.Database.DataModel.Biochemistries
         {
             return await _biochemistries.ToListAsync();
         }
+
+        public async Task<Biochemistry> FindById(int id)
+        {
+            return await _biochemistries.Where(x => x.Id == id).SingleOrDefaultAsync();
+        }
     }
 }

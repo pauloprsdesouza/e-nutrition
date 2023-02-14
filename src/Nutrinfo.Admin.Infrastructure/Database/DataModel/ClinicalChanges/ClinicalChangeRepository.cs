@@ -1,7 +1,3 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 using Nutrinfo.Admin.Domain.ClinicalChanges;
 using NutrInfo.Admin.Api.Infrastructure.Database.DataModel;
@@ -21,7 +17,12 @@ namespace Nutrinfo.Admin.Infrastructure.Database.DataModel.ClinicalChanges
 
         public async Task<List<ClinicalChange>> FindAll()
         {
-            return await _clinicalChanges.ToListAsync();
+            return await _clinicalChanges.Include(x => x.SignsAndSymptoms).ToListAsync();
+        }
+
+        public async Task<ClinicalChange> FindById(int clinicalChangeId)
+        {
+            return await _clinicalChanges.Where(x => x.Id == clinicalChangeId).SingleOrDefaultAsync();
         }
     }
 }

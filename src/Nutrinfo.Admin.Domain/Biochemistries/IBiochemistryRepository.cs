@@ -8,5 +8,6 @@ namespace Nutrinfo.Admin.Domain.Biochemistries
     public interface IBiochemistryRepository
     {
         Task<List<Biochemistry>> FindAll();
+        Task<Biochemistry> FindById(int id);
     }
 }

@@ -87,9 +87,9 @@ namespace NutrInfo.Admin.Api.Infrastructure.Database.DataModel.Evaluations
                    .WithMany(x => x.Evaluations)
                    .UsingEntity("clinicalChanges");
 
-            builder.HasMany(x => x.BiochemistryExams)
-                   .WithMany(x => x.Evaluations)
-                   .UsingEntity("biochemistryExams");
+            builder.HasMany(x => x.BiochemistryResults)
+                   .WithOne(x => x.Evaluation)
+                   .HasForeignKey(x => x.EvaluationId);
         }
     }
 }

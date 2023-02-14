@@ -40,13 +40,17 @@ namespace Nutrinfo.Admin.Infrastructure.Database.DataModel.Evaluations
             return await _evaluations.Where(x => x.Id == evaluationId)
                                      .Include(x => x.Patient)
                                      .ThenInclude(x => x.AmputatedLimbs)
+                                     .ThenInclude(x => x.LimbPercentage)
                                      .Include(x => x.Patient)
                                      .ThenInclude(x => x.User)
                                      .Include(x => x.Ascites)
                                      .ThenInclude(x => x.AsciteDegree)
                                      .Include(x => x.Semiologies)
+                                     .ThenInclude(x => x.Semiology)
                                      .Include(x => x.ClinicalChanges)
-                                     .Include(x => x.BiochemistryExams)
+                                     .ThenInclude(x => x.SignsAndSymptoms)
+                                     .Include(x => x.BiochemistryResults)
+                                     .ThenInclude(x => x.Biochemistry)
                                      .SingleOrDefaultAsync();
         }
 
