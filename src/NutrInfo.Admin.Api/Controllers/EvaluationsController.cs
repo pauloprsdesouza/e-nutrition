@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Nutrinfo.Admin.Domain.AmputatedLimbs;
 using Nutrinfo.Admin.Domain.AmputatedLimbsPercentage;
+using Nutrinfo.Admin.Domain.ArmMuscleCircumferencePercentils;
 using Nutrinfo.Admin.Domain.AsciteDegrees;
 using Nutrinfo.Admin.Domain.Ascites;
 using Nutrinfo.Admin.Domain.Biochemistries;
@@ -37,12 +38,14 @@ namespace NutrInfo.Admin.Api.Controllers
         private readonly IAmputatedLimbPercentageRepository _amputatedLimbPercentage;
         private readonly INutritionalStateSemiologyRepository _nutritionalStateRepository;
         public readonly IClinicalChangeRepository _clinicalChangeRepository;
+        private readonly IArmMuscleCircumferencePercentilRepository _armRepository;
+
 
         public EvaluationsController(IEvaluationRepository evaluationRepository, IPatientRepository patientRepository,
                                      IAmputatedLimbRepository amputatedLimbRepository, IAsciteRepository asciteRepository,
                                      IAsciteDegreeRepository asciteDegreeRepository, IArmCircumferencePercentilRepository armPercentil,
                                      IAmputatedLimbPercentageRepository amputatedLimbPercentage, INutritionalStateSemiologyRepository nutritionalStateRepository,
-                                     IClinicalChangeRepository clinicalChangeRepository)
+                                     IClinicalChangeRepository clinicalChangeRepository, IArmMuscleCircumferencePercentilRepository armRepository)
         {
             _evaluationRepository = evaluationRepository;
             _patientRepository = patientRepository;
@@ -53,6 +56,7 @@ namespace NutrInfo.Admin.Api.Controllers
             _amputatedLimbPercentage = amputatedLimbPercentage;
             _nutritionalStateRepository = nutritionalStateRepository;
             _clinicalChangeRepository = clinicalChangeRepository;
+            _armRepository = armRepository;
         }
 
         /// <summary>
@@ -211,7 +215,7 @@ namespace NutrInfo.Admin.Api.Controllers
         [ProducesResponseType(typeof(ResponseError), StatusCodes.Status422UnprocessableEntity)]
         public async Task<IActionResult> Diagnosis([FromRoute] int evaluationId)
         {
-            var diagnosisEvaluationRegistration = new DiagnosisEvaluationRegistration(_evaluationRepository, _armPercentil);
+            var diagnosisEvaluationRegistration = new DiagnosisEvaluationRegistration(_evaluationRepository, _armPercentil, _armRepository);
             var diagnosis = await diagnosisEvaluationRegistration.Register(evaluationId);
 
             return Ok(diagnosis);

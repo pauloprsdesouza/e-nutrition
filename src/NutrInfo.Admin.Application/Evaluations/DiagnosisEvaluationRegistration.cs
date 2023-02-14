@@ -1,3 +1,4 @@
+using Nutrinfo.Admin.Domain.ArmMuscleCircumferencePercentils;
 using Nutrinfo.Admin.Domain.CircumferencePercentils;
 using Nutrinfo.Admin.Domain.Evaluations;
 using NutrInfo.Admin.Contracts.Evaluations.Diagnosis;
@@ -8,11 +9,13 @@ namespace NutrInfo.Admin.Application.Evaluations
     {
         private readonly IEvaluationRepository _evaluationRepository;
         private readonly IArmCircumferencePercentilRepository _armPercentil;
+        private readonly IArmMuscleCircumferencePercentilRepository _armRepository;
 
-        public DiagnosisEvaluationRegistration(IEvaluationRepository evaluationRepository, IArmCircumferencePercentilRepository armPercentil)
+        public DiagnosisEvaluationRegistration(IEvaluationRepository evaluationRepository, IArmCircumferencePercentilRepository armPercentil, IArmMuscleCircumferencePercentilRepository armRepository)
         {
             _evaluationRepository = evaluationRepository;
             _armPercentil = armPercentil;
+            _armRepository = armRepository;
         }
 
         public bool EvaluationNotFound { get; private set; }
@@ -31,7 +34,10 @@ namespace NutrInfo.Admin.Application.Evaluations
             var armCalculation = new ArmCircumferenceCalculation(_armPercentil);
             var armClassification = await armCalculation.GetArmCircumferenceClassification(evaluation);
 
-            return evaluation.MapToDiagnosisResponse(armClassification);
+            var cmbCalculation = new ArmMuscleCircumferenceCalculation(_armRepository);
+            var cmbResult = await cmbCalculation.CalculateCMB(evaluation);
+
+            return evaluation.MapToDiagnosisResponse(armClassification, cmbResult);
         }
     }
 }

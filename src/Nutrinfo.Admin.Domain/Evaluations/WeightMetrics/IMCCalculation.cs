@@ -24,7 +24,7 @@ namespace Nutrinfo.Admin.Domain.Evaluations.WeightMetrics
                 <= 70 => NutritionalStateEnum.SEVERE_MALNUTRITION,
                 > 70 and <= 80 => NutritionalStateEnum.MODERATE_MALNUTRITION,
                 > 80 and <= 90 => NutritionalStateEnum.LIGHT_MALNUTRITION,
-                > 80 and <= 110 => NutritionalStateEnum.EUTROPHY,
+                > 90 and <= 110 => NutritionalStateEnum.EUTROPHY,
                 > 110 and <= 120 => NutritionalStateEnum.OVERWEIGHT,
                 _ => NutritionalStateEnum.OBESITY,
             };

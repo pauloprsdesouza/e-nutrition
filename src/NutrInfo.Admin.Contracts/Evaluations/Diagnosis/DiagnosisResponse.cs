@@ -10,6 +10,7 @@ namespace NutrInfo.Admin.Contracts.Evaluations.Diagnosis
     public class DiagnosisResponse
     {
         public ArmCircumferenceClassificationEnum ArmCircumferenceClassification { get; set; }
+        public NutritionalStateEnum NutritionalStateCMB { get; set; }
         public NutritionalStateEnum Imc { get; set; }
         public bool HasLossMuscleMass { get; set; }
         public List<NutritionalStateSemiologyResponse> Semiologies { get; set; }
