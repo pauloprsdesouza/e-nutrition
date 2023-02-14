@@ -29,6 +29,8 @@ using Nutrinfo.Admin.Domain.Semiologies;
 using Nutrinfo.Admin.Domain.NutritionalStatesSemiology;
 using Nutrinfo.Admin.Domain.SignsAndSymptoms;
 using Nutrinfo.Admin.Domain.BiochemistryResults;
+using Nutrinfo.Admin.Domain.ArmMuscleCircumferencePercentils;
+using Nutrinfo.Admin.Infrastructure.Database.DataModel.ArmMuscleCircumferencePercentils;
 
 namespace NutrInfo.Admin.Api.Infrastructure.Database.DataModel
 {
@@ -53,6 +55,7 @@ namespace NutrInfo.Admin.Api.Infrastructure.Database.DataModel
         public DbSet<NutritionalStateSemiology> NutritionalStatesSemiology { get; set; }
         public DbSet<SignAndSymptom> SignsAndSymptoms { get; set; }
         public DbSet<BiochemistryResult> BiochemistryResults { get; set; }
+        public DbSet<ArmMuscleCircumferencePercentil> ArmMuscleCircunferences { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -73,6 +76,7 @@ namespace NutrInfo.Admin.Api.Infrastructure.Database.DataModel
             modelBuilder.Entity<NutritionalStateSemiology>().Configure();
             modelBuilder.Entity<SignAndSymptom>().Configure();
             modelBuilder.Entity<BiochemistryResult>().Configure();
+            modelBuilder.Entity<ArmMuscleCircumferencePercentil>().Configure();
         }
     }
 }
